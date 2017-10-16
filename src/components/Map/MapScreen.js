@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Animated, Image, Dimensions, Button, TouchableOpacity } from "react-native";
-import { Components, MapView, Permissions, Constants } from 'expo';
+import { Components, MapView, Permissions, Constants, AppLoading } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import axios from 'axios';
 import Location from './AddLocation.js';
 import GetCurrentLocation from './GetCurrentLocation';
+import TaskModal from '../TaskView/TaskModal.js';
+
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,39 +26,37 @@ export default class MapScreen extends Component {
     },
     currentLocation: {},
     render: false,
-    iconLoaded: false
+    iconLoaded: false,
+    modalVisible: false,
+    currentPress: []
   };
+
 
 
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-      });
-    } else {
-      console.log('map rendering...should get markers')
-      axios.get('http://10.16.1.152:3000/mapMarkers', {params: {user: 777}})
-        .then(markers => this.setState({
-          markers: markers.data
-        }))
-        .then(res => {
-          console.log(this.state.markers)
-          GetCurrentLocation().then(location => {
-            this.setState({
-              region: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.04864195044303443,
-                longitudeDelta: 0.040142817690068,
-              }
-            }, () => this.updateCurrentLocation())
-          })
-          .then(res => this.setState({render: true}))
-          .catch(err => console.log(err))
+
+    console.log('map rendering...should get markers')
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {user: 2}})
+      .then(markers => this.setState({
+        markers: markers.data
+      }))
+      .then(res => {
+        console.log('STATE MARKERS BEFORE CURRENT LOCATION', this.state.markers)
+        GetCurrentLocation().then(location => {
+          this.setState({
+            region: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.04864195044303443,
+              longitudeDelta: 0.040142817690068,
+            }
+          }, () => this.updateCurrentLocation())
         })
+        .then(res => setTimeout(() => this.setState({render: true})), 500)
         .catch(err => console.log(err))
-    }
+      })
+      .catch(err => console.log(err))
   }
 
   updateCurrentLocation() {
@@ -82,12 +83,21 @@ export default class MapScreen extends Component {
     })
   }
 
-
+  toggleModal(marker) {
+    if(marker.tasks) {
+      this.setState({
+        modalVisible: true,
+        currentPress: marker.tasks
+      }, () => console.log(this.state.modalVisible))
+    }
+  }
 
   zoom(marker) {
+    console.log(marker);
     this.map.animateToRegion(
       {
-        ...marker.coordinate,
+        latitude: marker.Latitude,
+        longitude: marker.Longitude,
         latitudeDelta: 0.00984,
         longitudeDelta: 0.00834,
       })
@@ -96,6 +106,8 @@ export default class MapScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
+    console.log('BEFORE RENDERING currentlocation', this.state.currentLocation.coordinate)
+    console.log('render', this.state.render)
     return this.state.render ? (
       <View style={styles.container}>
         <MapView
@@ -120,6 +132,7 @@ export default class MapScreen extends Component {
                 title={marker.Title}
                 description={marker.Description}
                 identifier={marker.Title}
+                onPress={() => this.toggleModal(marker)}
                 >
                 <Image source={images[marker.Avatar][1]} style={styles.marker} />
               </MapView.Marker>
@@ -137,7 +150,7 @@ export default class MapScreen extends Component {
           {this.state.markers.map((marker, index) => (
             <TouchableOpacity key={index} onPress={() => this.zoom(marker)} style={styles.cardContainer}>
               <Text style={styles.cardtitle}>
-                {marker.Title}
+                {marker.Marker_Title}
               </Text>
               <Image source={images[marker.Avatar][1]} style={styles.cardImage}/>
             </TouchableOpacity>
@@ -149,20 +162,24 @@ export default class MapScreen extends Component {
         <TouchableOpacity style={styles.recenter} onPress={() => this.updateCurrentLocation()}>
           <Image source={require("../assets/egg6.png")} style={{width: 50, height: 50}} />
         </TouchableOpacity>
+        {this.state.modalVisible ? (
+          <TaskModal tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleModal={this.toggleModal}/>
+        ) : null }
       </View>
-    ) : (
-      <View>
+    ) :
+      <AppLoading/>
+      {/* <View>
         <Image source={require("../assets/loading.gif")} style={{width: 200, height: 200}}/>
-      </View>
-    )
+      </View> */}
+
   }
 }
 
 
 const images = [
-  [0, require("../assets/egg.png")],
-  [1, require("../assets/egg2.png")],
-  [2, require("../assets/egg4.png")],
+  [0, require("../assets/home2.png")],
+  [1, require("../assets/work2.png")],
+  [2, require("../assets/gym.png")],
   [3, require("../assets/egg5.png")]
 ]
 

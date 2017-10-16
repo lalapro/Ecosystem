@@ -16,7 +16,7 @@ export default class AddAvatar extends React.Component {
       <View style={styles.container}>
         {images.map((pic, key) => {
           return (
-            <TouchableOpacity onPress={() => navigate('Title', {avatar: pic[0]})}>
+            <TouchableOpacity key={key} onPress={() => navigate('Title', {avatar: pic[0]})}>
               <Image
                 source={pic[1]}
                 style={styles.ecobuds}
@@ -30,9 +30,9 @@ export default class AddAvatar extends React.Component {
 }
 
 const images = [
-  [0, require("../assets/egg.png")],
-  [1, require("../assets/egg2.png")],
-  [2, require("../assets/egg4.png")],
+  [0, require("../assets/home2.png")],
+  [1, require("../assets/work2.png")],
+  [2, require("../assets/gym.png")],
   [3, require("../assets/egg5.png")]
 ]
 

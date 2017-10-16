@@ -43,6 +43,7 @@ export default class AddLocation extends React.Component {
     })
     .then(res => console.log('posted'))
     .catch(err => console.err(err))
+
   }
 
   render() {
@@ -84,9 +85,9 @@ export default class AddLocation extends React.Component {
 }
 
 const images = [
-  [0, require("../assets/egg.png")],
-  [1, require("../assets/egg2.png")],
-  [2, require("../assets/egg4.png")],
+  [0, require("../assets/home2.png")],
+  [1, require("../assets/work2.png")],
+  [2, require("../assets/gym.png")],
   [3, require("../assets/egg5.png")]
 ]
 

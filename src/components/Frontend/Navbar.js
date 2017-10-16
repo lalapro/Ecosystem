@@ -32,16 +32,6 @@ class Logout extends React.Component {
 
 const NavigationBar = DrawerNavigator(
 	{
-		// ' ': {
-		// 	path: '/',
-		// 	screen: Main,
-		// 	// navigationOptions: {
-		// 	// 	drawerIcon: ({tintColor}) => {
-		// 	// 		<Image source={require('./Images/toast.png')} style={{width: 70, height: 70, marginLeft: 40}}
-		// 	// 		/>
-		// 	// 	}
-		// 	// }
-		// },
 		Home: {
 			path: '/',
 			screen: EcoSystem
