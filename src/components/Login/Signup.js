@@ -15,6 +15,7 @@ export default class Signup extends Component {
     this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
   }
+
   handleUserInput(event) {
     this.setState({ username: event })
   }

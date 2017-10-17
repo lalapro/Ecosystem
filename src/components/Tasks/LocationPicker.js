@@ -17,7 +17,7 @@ class LocationPicker extends Component {
   //axios.get for existing markers
   componentWillMount() {
     //give axios user id and get Location names
-    axios.get('http://10.16.1.152:3000/markers', {params: {userID: 2}})
+    axios.get('http://10.16.1.218:3000/markers', {params: {userID: 2}})
       .then((response) => {
         let markers = response.data;
         console.log(markers)
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
   },
   onePicker: {
     width: 200,
-    height: 44,
+    height: 88,
   },
   onePickerItem: {
-    height: 44,
+    height: 88,
     color: '#8A7D80'
   },
 });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker } from 'react-native';
+import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker, ScrollView } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import TaskForm from './TaskForm.js';
 import axios from 'axios';
@@ -33,6 +33,7 @@ class TaskBuilder extends Component {
     this.handleFrequencyChange = this.handleFrequencyChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.saveTask = this.saveTask.bind(this);
+    this.cancelTask = this.cancelTask.bind(this);
   }
 
   handleTaskTitleChange(title) {
@@ -77,7 +78,7 @@ class TaskBuilder extends Component {
     let frequency = this.state.frequency;
     let userID = this.state.userID;
     //need to send username to get userId
-    axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+    axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
       .then((response) => this.setState({
         saved: 'Task Saved',
         title: '',
@@ -89,28 +90,36 @@ class TaskBuilder extends Component {
         frequency: ''
       }))
       .then(res => {
-        console.log('nav stack', this.props.navigation)
-        this.props.navigation.goBack()
+        this.props.navigation.goBack();
       })
       .catch((err) => console.error('taskbuilderjs. line 82', err))
+  }
+
+  cancelTask() {
+    this.props.navigation.goBack();
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <TaskForm style={styles.formContainer}
-          handleTaskTitleChange={this.handleTaskTitleChange}
-          handleDescriptionChange={this.handleDescriptionChange}
-          handleStartChange={this.handleStartChange}
-          handleEndChange={this.handleEndChange}
-          handleLocationChange={this.handleLocationChange}
-          handleCategoryChange={this.handleCategoryChange}
-          handleFrequencyChange={this.handleFrequencyChange}
-          saveTask={this.saveTask}
-        />
-        {this.state.saved ?
-          <Text>Task Saved!</Text> : <Text>Don't forget to save.</Text>
-        }
+         <ScrollView 
+            automaticallyAdjustContentInsets={false}
+            onScroll={() => { console.log('onScroll'); }}
+            scrollEventThrottle={200}
+            style={styles.scrollView}
+        >
+          <TaskForm style={styles.formContainer}
+            handleTaskTitleChange={this.handleTaskTitleChange}
+            handleDescriptionChange={this.handleDescriptionChange}
+            handleStartChange={this.handleStartChange}
+            handleEndChange={this.handleEndChange}
+            handleLocationChange={this.handleLocationChange}
+            handleCategoryChange={this.handleCategoryChange}
+            handleFrequencyChange={this.handleFrequencyChange}
+            saveTask={this.saveTask}
+            cancel={this.cancelTask}
+          />
+        </ScrollView>
       </View>
     )
   }
@@ -120,7 +129,7 @@ class TaskBuilder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     top: 50,

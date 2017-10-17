@@ -28,7 +28,7 @@ export default class Profile extends Component {
 	// 	}
 	// }
 	uploadImageAsync = async (uri) => {
-  let apiUrl = 'http://10.16.1.144:3000/profile/picture';
+  let apiUrl = 'http://10.16.1.218:3000/profile/picture';
   let uriParts = uri.split('.');
   let fileType = uri[uri.length - 1];
   let formData = new FormData();

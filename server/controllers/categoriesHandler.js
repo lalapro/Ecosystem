@@ -2,21 +2,13 @@ const express = require('express');
 const db = require('../../db/index.js');
 
 const handleCategories = (req, res) => {
-  let username = req.query.username;
-  let selectUserID = `SELECT ID FROM User WHERE Username = '${username}'`;
-  db.query(selectUserID, null, (err, results) => {
+  let User_ID = req.query.userID;
+  let selectCats = `SELECT ID, Category FROM CategoryDeets WHERE User_ID = ${User_ID}`;
+  db.query(selectCats, null, (err, results) => {
     if (err) {
-      res.status(404).send(`We encountered an error looking up your information ${err}`);
+      res.status(404).send(`We encountered an error looking up the categories ${err}`);
     } else {
-      let User_ID = results[0].ID;
-      let selectCats = `SELECT ID, Category FROM CategoryDeets WHERE User_ID = ${User_ID}`;
-      db.query(selectCats, null, (err, results) => {
-        if (err) {
-          res.status(404).send(`We encountered an error looking up the categories ${err}`);
-        } else {
-          res.status(201).send(results);
-        }
-      })
+      res.status(201).send(results);
     }
   })
 }
