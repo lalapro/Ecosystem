@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Picker, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Picker, Button, TouchableHighlight, Text } from 'react-native';
 import TaskDatePicker from './DatePicker.js';
 import LocationPicker from './LocationPicker.js';
 import CategoryPicker from './CategoryPicker.js';
@@ -45,10 +45,10 @@ class TaskForm extends Component {
           <Picker.Item label="Monthly" value="monthly" />
           <Picker.Item label="Yearly" value="yearly" />
         </Picker>
-        <Button
-          onPress={this.props.saveTask}
-          title="Save Task"
-        />
+        <View style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
+          <TouchableHighlight onPress={() => {this.props.saveTask()}}><Text style={{fontSize: 30, textAlign: 'right'}}>&#x2714;</Text></TouchableHighlight>
+          <TouchableHighlight onPress={() => {this.props.cancel()}}><Text style={{fontSize: 30, textAlign: 'right'}}>&#x274c;</Text></TouchableHighlight>
+        </View>
       </View>
     )
   }
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
   },
   onePicker: {
     width: 200,
-    height: 44,
+    height: 88,
   },
   onePickerItem: {
-    height: 44,
+    height: 88,
     color: '#8A7D80'
   }
 });

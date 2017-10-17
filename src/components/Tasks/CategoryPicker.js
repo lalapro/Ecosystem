@@ -10,6 +10,7 @@ class CategoryPicker extends Component {
       newCategory: '',
       category: '',
       created: '',
+      userID: 2
     }
     this.newCategory = this.newCategory.bind(this);
     this.changeCategory = this.changeCategory.bind(this);
@@ -17,23 +18,17 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.218:3000/categories', {params: {username: 'krb'}})
+    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.state.userID}})
       .then((response) => {
         let arr = response.data;
-        console.log('first get request in taskbuilder', arr)
-        let categories = arr
-        // .map((row) => {
-        //   return row.Category;
-        // })
+        let categories = arr.map((row) => {
+          return row.Category;
+        })
         categories.unshift('none')
         this.setState({categories})
       })
-      .catch((err) => {console.error('category picker', err)})
+      .catch((err) => {console.error(err)})
   }
-
-
-
-
 
   changeCategory(category) {
     this.setState({category});
@@ -42,7 +37,7 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.218:3000/categories', {category, username: 'krb'})
+    axios.post('http://10.16.1.218:3000/categories', {category, userID: this.state.userID})
       .then((response) => {
         console.log(`save category ${response}`)
       })
@@ -63,7 +58,7 @@ class CategoryPicker extends Component {
           {this.state.categories ?
             this.state.categories.map((category, i) => {
               return (
-                <Picker.Item key={i} label={category.Category} value={category.Category}/>
+                <Picker.Item key={i} label={category} value={category} />
               )
             }) : ''
           }
@@ -101,10 +96,10 @@ const styles = StyleSheet.create({
   },
   onePicker: {
     width: 200,
-    height: 44,
+    height: 88,
   },
   onePickerItem: {
-    height: 44,
+    height: 88,
     color: '#8A7D80'
   }
 });

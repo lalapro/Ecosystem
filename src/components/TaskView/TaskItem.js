@@ -25,26 +25,33 @@ class TaskItem extends Component {
     const {task} = this.props
     return (
       <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <Text>{this.props.task.Task_Title}</Text>
         {!this.state.expanded ? (
-          <View style={styles.subtitleView}>
-            <Text style={styles.collapsed}>{task.Task_Description}</Text>
-            <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 50}}>&#x21E9;</Text>
+          <View>
+            <Text style={{fontSize: 30, alignItems: 'left', justifyContent: 'left'}}>{this.props.task.Task_Title}</Text>
+            <View style={styles.subtitleView} >
+              <Text style={styles.collapsed}>{task.Task_Description}</Text>
+              <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E9;</Text>
+              <TouchableHighlight onPress={this.editTask}><Text style={{fontSize: 30}}>&#x2699;</Text></TouchableHighlight>
+            </View>
           </View>
         ) : (
-          <View style={styles.subtitleView}>
-            <Text style={styles.expanded}>
-              {task.Task_Description} {"\n"}
-              {task.Completion} {"\n"}
-              {task.Start} {"\n"}
-              {task.End} {"\n"}
-              {task.Frequency}
-            </Text>
-            <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 50}}>&#x21E7;</Text>
+          <View>
+            <Text style={{fontSize: 30}}>{this.props.task.Task_Title}</Text>
+            <View style={styles.subtitleView}>
+              <Text style={styles.expanded} style={styles.subtitleView}>
+                {task.Task_Description} {"\n"}
+                {task.Completion} {"\n"}
+                {task.Start} {"\n"}
+                {task.End} {"\n"}
+                {task.Frequency}
+              </Text>
+              <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E7;</Text>
+              <TouchableHighlight onPress={this.editTask}><Text style={{fontSize: 30}}>&#x2699;</Text></TouchableHighlight>
+            </View>
           </View>
         )
         }
-      <TouchableHighlight onPress={this.editTask}><Text style={{fontSize: 50}}>&#x2699;</Text></TouchableHighlight>
+      
       </View>
     )
   }
@@ -55,6 +62,7 @@ export default TaskItem;
 
 styles = StyleSheet.create({
   subtitleView: {
+    display: 'flex',
     flexDirection: 'row',
     paddingLeft: 10,
     paddingTop: 5,
