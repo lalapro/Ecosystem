@@ -1,21 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import { SignedOut, SignedIn } from "./src/components/router.js"
-import { isSignedIn } from './src/components/auth.js'
+import { SignedOut, SignedIn, createRootNavigator } from "./src/components/router.js"
+import { getUserInfo, isSignedIn } from './src/components/auth.js'
 import Login from './src/components/Login/Login.js';
 import Signup from './src/components/Login/Signup.js';
-import TaskBuilder from './src/components/Tasks/TaskBuilder.js';
-import Home from './src/components/Home/Home.js'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       signedIn: false,
-      checkedSignIn: false
+      checkedSignIn: false,
+      user: {}
     }
+    this.getUserInfo = this.getUserInfo.bind(this);
   }
 
+  getUserInfo = (user) => {
+    this.setState({
+      user: user
+    })
+  }
 
   componentWillMount() {
     isSignedIn()
@@ -30,6 +35,7 @@ export default class App extends React.Component {
       return null;
     }
 
-    return <SignedIn />
+    const Layout = createRootNavigator(signedIn);
+    return <Layout screenProps={ this.getUserInfo }/>
   }
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Text, Image, Button, AsyncStorage } from 'react-native';
+import { onSignOut } from '../auth'
 
 export default class Logout extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props.screenProps.logOutUser)
 	}
 	static navigationOptions = {
     drawerLabel: 'Logout'
@@ -13,7 +13,7 @@ export default class Logout extends React.Component {
   render() {
     return (
       <Button
-				onPress={this.props.screenProps.logOutUser}
+				onPress={() => onSignOut().then(() => this.props.navigation.navigate("SignedOut"))}
 				title="LogOuttttt"
 			/>
     );

@@ -1,0 +1,7 @@
+node_modules/
+.expo/
+npm-debug.*
+watchman.exe
+watchman.pdb
+.env
+.DS_Store
