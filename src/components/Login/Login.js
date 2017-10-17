@@ -4,6 +4,7 @@ import axios from 'axios';
 import LoginForm from './LoginForm';
 import { onSignIn } from '../auth.js'
 
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +16,6 @@ export default class Login extends Component {
     this.handlePasswordInput = this.handlePasswordInput.bind(this);
   }
 
-
   handleUserInput(event) {
     this.setState({ username: event })
   }
@@ -25,6 +25,7 @@ export default class Login extends Component {
   }
 
   render() {
+    
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -44,7 +45,11 @@ export default class Login extends Component {
         </View>
 
         <TouchableOpacity
-          onPress={ onSignIn }
+          onPress={() => {
+            username = this.state.username
+            password = this.state.password;
+            this.props.navigation.navigate("SignedIn")
+            }}
           style={styles.buttonContainer}
           >
           <Text style={styles.buttonText}>LOGIN</Text>

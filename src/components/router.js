@@ -25,6 +25,7 @@ import Profile from './Frontend/Profile';
 import Home from './Home/Home';
 import EcoSystem from './Frontend/EcoSystem';
 import TaskBuilder from './Tasks/TaskBuilder';
+import Logout from './Login/Logout.js';
 
 export const SignedIn = DrawerNavigator(
 	{
@@ -40,10 +41,12 @@ export const SignedIn = DrawerNavigator(
 		},
 		TaskBuilder: {
 			screen: TaskBuilder
+		},
+		Logout: {
+			screen: Logout
 		}
 	},
 	{
-		initialRouteName: 'Profile',
 		initialRouteName: 'Home',
 		drawerPosition: 'left',
 		drawerWidth: 100,
@@ -69,6 +72,11 @@ export const createRootNavigator = (signedIn = false) => {
 					gesturesEnabled: false
 				}
 			}
+		},
+		{
+			headerMode: "none",
+			// mode: "modal"
+			initialRouteName: signedIn ? "SignedIn" : "SignedOut"
 		}
 	)
 }

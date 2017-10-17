@@ -2,11 +2,12 @@ const express = require('express');
 const db = require('../../db/index.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jwt-simple')
+const moment = require('moment');
 
 const handleLogin = (req, res) => {
   let username = req.query.username;
   let password = req.query.password;
-
   let select = `SELECT * FROM User WHERE Username ='${username}'`;
   db.query(select, null, (err, users) => {
     if (err) {
@@ -16,7 +17,16 @@ const handleLogin = (req, res) => {
         bcrypt.compare(password, users[0].Hash_Password, function(err, result) {
           if (result === true) {
             delete users[0].Hash_Password;
-            res.send(users[0]);
+            var expires = moment().add('days', 30).valueOf();
+            var token = jwt.encode({
+              iss: username,
+              exp: expires
+            }, req.app.get('jwtTokenSecret'));
+            res.json({
+              token: token,
+              expires: expires,
+              user: users[0]
+            })
           } else {
             res.send('error in bcrypcompare');
           }

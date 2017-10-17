@@ -3,5 +3,5 @@ node_modules
 npm-debug.*
 watchman.exe
 watchman.pdb
-.enb
+.env
 .DS_Store

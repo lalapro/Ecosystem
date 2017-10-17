@@ -21,7 +21,8 @@ class SignupForm extends Component {
         <TextInput
           onChangeText={ this.props.handlePasswordInput }
           placeholder="password"
-          style={styles.input} />
+          style={styles.input} 
+          secureTextEntry="true"/>
         <TextInput
           onChangeText={ this.props.handleEmailInput }
           placeholder="email"
