@@ -37,22 +37,23 @@ class TaskModal extends Component {
     const { fontsAreLoaded } = this.state;
     
     return (
-      <View style={{marginTop: 22}}>
+      <View style={{marginTop: 22, marginHorizontal: 22}}>
         <Modal
           animationType="slide"
           transparent={true}
           visible={this.state.modalVisible}
+          style={{marginTop: 22, backgroundColor: 'rgba(255,255,255,0.5'}}
           onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{marginTop: 22}}>
+        >
+         <View >
          <ScrollView 
             automaticallyAdjustContentInsets={false}
             onScroll={() => { console.log('onScroll'); }}
             scrollEventThrottle={200}
             style={styles.scrollView}
           >
-          <TouchableHighlight onPress={() => {this.hideModal()}}><Text style={{fontSize: 30, textAlign: 'right'}}>&#x2612;</Text></TouchableHighlight>
             <List>
+              <TouchableHighlight onPress={() => {this.hideModal()}}><Text style={{fontSize: 30, textAlign: 'right', marginTop: 5}}>&#x2612;</Text></TouchableHighlight>
               {this.state.tasks.map((task, i) => {
                 return (
                   <TaskItem key={i} task={task}/>
@@ -69,7 +70,7 @@ class TaskModal extends Component {
 
 var styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: '#8A7D80',
+    // backgroundColor: '#8A7D80',
     height: 300
   }
 })
