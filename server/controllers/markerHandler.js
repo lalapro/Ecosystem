@@ -10,6 +10,7 @@ const handleMarkers = (req, res) => {
     if (err) {
       res.status(404).send(`We encountered an error looking up the locations ${err}`);
     } else {
+      console.log('markers found!')
       res.status(201).send(results);
     }
   })

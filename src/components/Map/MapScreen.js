@@ -18,6 +18,7 @@ export default class MapScreen extends Component {
 
   state = {
     markers: [],
+    userID: 2,
     region: {
       latitude: 0,
       longitude: 0,
@@ -37,7 +38,7 @@ export default class MapScreen extends Component {
     const { params } = this.props.navigation.state;
 
     console.log('map rendering...should get markers')
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {user: 2}})
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => this.setState({
         markers: markers.data
       }))
@@ -90,6 +91,12 @@ export default class MapScreen extends Component {
         currentPress: marker.tasks
       }, () => console.log(this.state.modalVisible))
     }
+  }
+
+  toggleHide() {
+    this.setState({
+      modalVisible: false
+    })
   }
 
   zoom(marker) {
@@ -163,15 +170,13 @@ export default class MapScreen extends Component {
           <Image source={require("../assets/egg6.png")} style={{width: 50, height: 50}} />
         </TouchableOpacity>
         {this.state.modalVisible ? (
-          <TaskModal tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleModal={this.toggleModal}/>
+          <TaskModal tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
         ) : null }
       </View>
     ) :
-      <AppLoading/>
-      {/* <View>
+      <View>
         <Image source={require("../assets/loading.gif")} style={{width: 200, height: 200}}/>
-      </View> */}
-
+      </View>
   }
 }
 
@@ -226,8 +231,8 @@ const styles = StyleSheet.create({
   recenter: {
     flex: 1,
     position: "absolute",
-    bottom: 20,
-    right: 50
+    bottom: 60,
+    right: 30
   },
   ecoContainer: {
     flex: 1,

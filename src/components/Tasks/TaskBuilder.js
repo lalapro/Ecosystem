@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker } from 'react-native';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import TaskForm from './TaskForm.js';
 import axios from 'axios';
 
 class TaskBuilder extends Component {
+  // static navigationOptions = {
+  //   title: 'Add a location!',
+  // };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -83,6 +88,10 @@ class TaskBuilder extends Component {
         category: 'none',
         frequency: ''
       }))
+      .then(res => {
+        console.log('nav stack', this.props.navigation)
+        this.props.navigation.goBack()
+      })
       .catch((err) => console.error('taskbuilderjs. line 82', err))
   }
 

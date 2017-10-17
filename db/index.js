@@ -1,4 +1,6 @@
 const mysql = require('mysql');
+var Bluebird = require("bluebird");
+
 
 const connection = mysql.createConnection({
   host: "mysqlcluster22.registeredsite.com",
@@ -15,4 +17,7 @@ connection.query('SELECT 1', function (error, results, fields) {
   console.log(`mysql connected`)
 });
 
-module.exports = connection;
+var db = Bluebird.promisifyAll(connection);
+
+// module.exports = connection;
+module.exports = db;
