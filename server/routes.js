@@ -5,7 +5,8 @@ const handlenNewTask = require('./controllers/newTaskHandler.js');
 const {handleCategories, handleNewCategories} = require('./controllers/categoriesHandler');
 const handleMarkers = require('./controllers/markerHandler.js');
 const handleNewLocation = require('./controllers/newLocationHandler.js')
-const getMapMarkers = require('./controllers/getMapMarkers')
+const getMapMarkers = require('./controllers/getMapMarkers');
+const handleTasks = require('./controllers/taskHandler');
 
 routes.post('/signup', handleSignup);
 routes.get('/login', handleLogin);
@@ -15,5 +16,6 @@ routes.post('/categories', handleNewCategories);
 routes.get('/markers', handleMarkers);
 routes.post('/newLocation', handleNewLocation);
 routes.get('/mapMarkers', getMapMarkers);
+routes.get('/tasks', handleTasks)
 
 module.exports = routes;

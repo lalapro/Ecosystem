@@ -6,7 +6,7 @@ class LocationPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      categories: [],
+      markers: [],
       newLocation: '',
       location: 'Attach a Location',
       created: '',
@@ -14,19 +14,20 @@ class LocationPicker extends Component {
 
     this.changeLocation = this.changeLocation.bind(this);
   }
-  //axios.get for existing categories
+  //axios.get for existing markers
   componentWillMount() {
     //give axios user id and get Location names
-    axios.get('http://10.16.1.152:3000/markers', {params: {username: 'krb'}})
+    axios.get('http://10.16.1.152:3000/markers', {params: {userID: 2}})
       .then((response) => {
-        let arr = response.data;
-        let categories = arr.map((row) => {
-          return row.Title;
+        let markers = response.data;
+        console.log(markers)
+        markers = markers.map((row) => {
+          return row.Marker_Title;
         })
-        categories.unshift('none')
-        this.setState({categories})
+        markers.unshift('none')
+        this.setState({markers})
       })
-      .catch((err) => {console.error(err)})
+      .catch((err) => {console.error('locationpickers', err)})
   }
 
   changeLocation(location) {
@@ -41,8 +42,8 @@ class LocationPicker extends Component {
           selectedValue={this.state.location}
           onValueChange={this.changeLocation}
         >
-          {this.state.categories ?
-            this.state.categories.map((location, i) => {
+          {this.state.markers ?
+            this.state.markers.map((location, i) => {
               return (
                 <Picker.Item key={i} label={location} value={location} />
               )

@@ -20,14 +20,20 @@ class CategoryPicker extends Component {
     axios.get('http://10.16.1.152:3000/categories', {params: {username: 'krb'}})
       .then((response) => {
         let arr = response.data;
-        let categories = arr.map((row) => {
-          return row.Category;
-        })
+        console.log('first get request in taskbuilder', arr)
+        let categories = arr
+        // .map((row) => {
+        //   return row.Category;
+        // })
         categories.unshift('none')
         this.setState({categories})
       })
-      .catch((err) => {console.error(err)})
+      .catch((err) => {console.error('category picker', err)})
   }
+
+
+
+
 
   changeCategory(category) {
     this.setState({category});
@@ -57,7 +63,7 @@ class CategoryPicker extends Component {
           {this.state.categories ?
             this.state.categories.map((category, i) => {
               return (
-                <Picker.Item key={i} label={category} value={category} />
+                <Picker.Item key={i} label={category.Category} value={category.Category}/>
               )
             }) : ''
           }

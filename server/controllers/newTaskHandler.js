@@ -12,43 +12,38 @@ const handlenNewTask = (req, res) => {
   //pull category_ID and marker_ID
   let Category = req.body.category;
   let Marker = req.body.location;
-  let Username = req.body.username;
-  let selectUsername = `SELECT ID FROM User WHERE Username = '${Username}'`;
-  let selectCategory = `SELECT ID FROM CategoryDeets WHERE Category = '${Category}'`;
-  let selectMarker = `SELECT ID FROM Marker WHERE Title = '${Marker}'`;
+  let User_ID = req.body.userID;
 
-  db.query(selectUsername, null, (err, results) => {
+  let selectCategory = `SELECT ID FROM CategoryDeets WHERE Category = '${Category}'`;
+  let selectMarker = `SELECT Marker_ID FROM Marker WHERE Marker_Title = '${Marker}'`;
+  console.log(Category)
+
+  db.query(selectCategory, null, (err, results) => {
     if (err) {
-      res.status(404).send(`We encountered an error looking up your information ${err}`);
+      res.status(404).send(`We encountered an error looking up the category ${err}`);
     } else {
-      let User_ID = 2;
-      // results[0].ID || 
-      db.query(selectCategory, null, (err, results) => {
+      let Category_ID;
+      results[0] ? Category_ID = results[0].ID : Category_ID = 'undefined';
+      db.query(selectMarker, null, (err, results) => {
         if (err) {
-          res.status(404).send(`We encountered an error looking up the category ${err}`);
+          console.log('location', Marker)
+          res.status(404).send(`We encountered an error looking up the location ${err}`);
         } else {
-          let Category_ID;
-          results[0] ? Category_ID = results[0].ID : Category_ID = 'undefined';
-          db.query(selectMarker, null, (err, results) => {
+          let Marker_ID;
+          results[0] ? Marker_ID = results[0].Marker_ID : Marker_ID = 'undefined';
+          let insert = `INSERT INTO Tasks (Task_ID, Task_Title, Task_Description, Completion, Start, End, Frequency, Days, User_ID, Category_ID, Marker_ID) VALUES (null, '${Title}', '${Description}', null, '${Start}', '${End}', '${Frequency}', '${Days}', '${User_ID}', '${Category_ID}', '${Marker_ID}')`
+          db.query(insert, null, (err, results) => {
             if (err) {
-              res.status(404).send(`We encountered an error looking up the location ${err}`);
+              res.status(404).send(`We encountered an error creating the task ${err}`);
             } else {
-              let Marker_ID;
-              results[0] ? Marker_ID = results[0].ID : Marker_ID = 'undefined';
-              let insert = `INSERT INTO Tasks (ID, Title, Description, Completion, Start, End, Frequency, Days, User_ID, Category_ID, Marker_ID) VALUES (null, '${Title}', '${Description}', null, '${Start}', '${End}', '${Frequency}', '${Days}', '${User_ID}', '${Category_ID}', '${Marker_ID}')`
-              db.query(insert, null, (err, results) => {
-                if (err) {
-                  res.status(404).send(`We encountered an error creating the task ${err}`);
-                } else {
-                  res.status(201).send(results);
-                }
-              })
+              res.status(201).send(results);
             }
           })
         }
-      });
+      })
     }
-  })  
+  })
 }
+
 
 module.exports = handlenNewTask;

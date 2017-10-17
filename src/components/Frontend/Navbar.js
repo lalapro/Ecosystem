@@ -8,8 +8,9 @@ import Map from '../Map/MapStack';
 import Profile from './Profile';
 import Login from '../Login/Login.js'
 import Home from '../Home/Home';
-import EcoSystem from './EcoSystem';
-import TaskBuilder from '../Tasks/TaskBuilder';
+// import EcoSystem from './EcoSystem';
+// import TaskBuilder from '../Tasks/TaskBuilder';
+import HomeTaskAdd from './HomeTaskAdd';
 
 class Logout extends React.Component {
 	constructor(props) {
@@ -32,19 +33,9 @@ class Logout extends React.Component {
 
 const NavigationBar = DrawerNavigator(
 	{
-		// ' ': {
-		// 	path: '/',
-		// 	screen: Main,
-		// 	// navigationOptions: {
-		// 	// 	drawerIcon: ({tintColor}) => {
-		// 	// 		<Image source={require('./Images/toast.png')} style={{width: 70, height: 70, marginLeft: 40}}
-		// 	// 		/>
-		// 	// 	}
-		// 	// }
-		// },
 		Home: {
 			path: '/',
-			screen: EcoSystem
+			screen: HomeTaskAdd
 		},
 		Profile: {
 			screen: Profile
@@ -54,9 +45,6 @@ const NavigationBar = DrawerNavigator(
 		},
 		Logout: {
 			screen: Login
-		},
-		TaskBuilder: {
-			screen: TaskBuilder
 		}
 	},
 	{

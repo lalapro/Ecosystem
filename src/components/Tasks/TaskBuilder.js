@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker } from 'react-native';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import TaskForm from './TaskForm.js';
 import axios from 'axios';
 
 class TaskBuilder extends Component {
+  // static navigationOptions = {
+  //   title: 'Add a location!',
+  // };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +19,10 @@ class TaskBuilder extends Component {
       location: '',
       category: '',
       frequency: '',
-      saved: null
+      saved: null,
+      categoryID: '',
+      markerID: '',
+      userID: 2
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -67,8 +75,9 @@ class TaskBuilder extends Component {
     let location = this.state.location;
     let category = this.state.category;
     let frequency = this.state.frequency;
+    let userID = this.state.userID;
     //need to send username to get userId
-    axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency})
+    axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
       .then((response) => this.setState({
         saved: 'Task Saved',
         title: '',
@@ -79,7 +88,11 @@ class TaskBuilder extends Component {
         category: 'none',
         frequency: ''
       }))
-      .catch((err) => console.error(err))
+      .then(res => {
+        console.log('nav stack', this.props.navigation)
+        this.props.navigation.goBack()
+      })
+      .catch((err) => console.error('taskbuilderjs. line 82', err))
   }
 
   render() {
@@ -95,7 +108,7 @@ class TaskBuilder extends Component {
           handleFrequencyChange={this.handleFrequencyChange}
           saveTask={this.saveTask}
         />
-        {this.state.saved ? 
+        {this.state.saved ?
           <Text>Task Saved!</Text> : <Text>Don't forget to save.</Text>
         }
       </View>
