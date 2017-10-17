@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CheckBox, FlatList, Modal, Text, TouchableHighlight, View, Button } from 'react-native';
+import { CheckBox, FlatList, Modal, Text, TouchableHighlight, View, Button, ScrollView, StyleSheet } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { Font, AppLoading} from 'expo';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
@@ -35,6 +35,7 @@ class TaskModal extends Component {
 
   render() {
     const { fontsAreLoaded } = this.state;
+    
     return (
       <View style={{marginTop: 22}}>
         <Modal
@@ -44,7 +45,13 @@ class TaskModal extends Component {
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
          <View style={{marginTop: 22}}>
-          <View>
+         <ScrollView 
+            automaticallyAdjustContentInsets={false}
+            onScroll={() => { console.log('onScroll'); }}
+            scrollEventThrottle={200}
+            style={styles.scrollView}
+          >
+          <TouchableHighlight onPress={() => {this.hideModal()}}><Text style={{fontSize: 30, textAlign: 'right'}}>&#x2612;</Text></TouchableHighlight>
             <List>
               {this.state.tasks.map((task, i) => {
                 return (
@@ -52,8 +59,7 @@ class TaskModal extends Component {
                 )
               })}
             </List>
-            <Button title="Hide Modal" onPress={() => {this.hideModal()}}/>
-          </View>
+          </ScrollView>
          </View>
         </Modal>
       </View>
@@ -61,4 +67,10 @@ class TaskModal extends Component {
   }
 }
 
+var styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: '#8A7D80',
+    height: 300
+  }
+})
 export default TaskModal;
