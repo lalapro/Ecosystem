@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const handleSignup = (req, res) => {
-  let name = req.body.name;
+  // let name = req.body.name;
   let username = req.body.username;
   let email = req.body.email;
   let password = req.body.password;

@@ -1,8 +1,28 @@
 import { AsyncStorage } from "react-native";
+import axios from "axios";
 
 export const USER_KEY = "auth-demo-key";
 
-export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");
+export const onSignIn = (username, password) => {
+  axios.get('http://10.16.1.131:3000/login', {
+    params: {
+      username: username,
+      password: password
+    }
+  })
+    .then((res) => {
+      AsyncStorage.setItem(USER_KEY, res.data.token);
+      return res;
+    })
+    .then((res) => {
+      
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  //also set user information on the App state
+  //?? create middleware to check if token exists?
+}
 
 export const onSignOut = () => AsyncStorage.removeItem(USER_KEY);
 
@@ -19,3 +39,4 @@ export const isSignedIn = () => {
       .catch(err => reject(err));
   });
 };
+

@@ -19,6 +19,7 @@ class LoginForm extends Component {
         <TextInput
           onChangeText={ this.props.handlePasswordInput }
           placeholder="password"
+          secureTextEntry="true"
           style={styles.input} />
       </View>
     );

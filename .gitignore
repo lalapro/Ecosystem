@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 node_modules
-=======
 node_modules/
->>>>>>> rebasing
 .expo/
 npm-debug.*
 watchman.exe
 watchman.pdb
-<<<<<<< HEAD
-.enb
-=======
 .env
->>>>>>> rebasing
+.env
 .DS_Store

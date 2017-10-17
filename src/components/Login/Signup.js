@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import{ StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import SignupForm from './SignupForm';
+import { onSignIn } from '../auth.js';
 
 export default class Signup extends Component {
   constructor(props) {
@@ -10,30 +11,9 @@ export default class Signup extends Component {
       password: "",
       email: ""
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUserInput = this.handleUserInput.bind(this);
     this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
-  }
-
-  handleSubmit() {
-    let username = this.state.username;
-    let password = this.state.password;
-    let email = this.state.email;
-    axios.post('http://10.16.1.218:3000/signup', {
-      username: username,
-      password: password,
-      email: email
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((res) => {
-      console.log(res);
-    })
-    .then((res) => {
-      this.props.logInUser(username, password);
-    })
   }
 
   handleUserInput(event) {
@@ -67,7 +47,9 @@ export default class Signup extends Component {
         </View>
 
         <TouchableOpacity
-          onPress={this.handleSubmit}
+          onPress={() => {
+            onSignIn().then(() => this.props.navigation.navigate("SignedIn"))
+          }}
           style={styles.buttonContainer}
           >
           <Text style={styles.buttonText}>SIGNUP</Text>
