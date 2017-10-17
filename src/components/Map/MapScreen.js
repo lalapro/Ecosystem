@@ -38,7 +38,7 @@ export default class MapScreen extends Component {
     const { params } = this.props.navigation.state;
 
     console.log('map rendering...should get markers')
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => this.setState({
         markers: markers.data
       }))

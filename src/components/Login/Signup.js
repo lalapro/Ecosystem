@@ -20,7 +20,7 @@ export default class Signup extends Component {
     let username = this.state.username;
     let password = this.state.password;
     let email = this.state.email;
-    axios.post('http://10.16.1.152:3000/signup', {
+    axios.post('http://10.16.1.218:3000/signup', {
       username: username,
       password: password,
       email: email
