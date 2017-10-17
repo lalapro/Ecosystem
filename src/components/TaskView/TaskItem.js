@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableHighlight, FlatList } from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { Font, AppLoading} from 'expo';
+=======
+import { Modal, StyleSheet, Text, View, TextInput, Button, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { ListItem } from 'react-native-elements';
+>>>>>>> rebasing
 
 class TaskItem extends Component {
   constructor(props) {
@@ -11,7 +16,6 @@ class TaskItem extends Component {
     }
     this.editTask = this.editTask.bind(this);
   }
-
 
   editTask() {
     //send props to fill out a taskbuilder page

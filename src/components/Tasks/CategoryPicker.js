@@ -17,7 +17,7 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.152:3000/categories', {params: {username: 'krb'}})
+    axios.get('http://10.16.1.218:3000/categories', {params: {username: 'krb'}})
       .then((response) => {
         let arr = response.data;
         console.log('first get request in taskbuilder', arr)
@@ -42,7 +42,7 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.152:3000/categories', {category, username: 'krb'})
+    axios.post('http://10.16.1.218:3000/categories', {category, username: 'krb'})
       .then((response) => {
         console.log(`save category ${response}`)
       })
