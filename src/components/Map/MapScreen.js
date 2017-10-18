@@ -177,7 +177,7 @@ export default class MapScreen extends Component {
           <Image source={require("../assets/egg6.png")} style={{width: 50, height: 50}} />
         </TouchableOpacity>
         {this.state.modalVisible ? (
-          <TaskModal tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
+          <TaskModal userID={this.state.userID} tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
         ) : null }
       </View>
     ) :  (

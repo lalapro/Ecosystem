@@ -3,7 +3,6 @@ const db = require('../../db/index.js');
 
 const handleTasks = (req, res) => {
   let User_ID = req.query.User_ID;
-  console.log(User_ID)
   let selectTasks = `SELECT * FROM Tasks WHERE User_ID = '${User_ID}'`;
   db.query(selectTasks, null, (err, results) => {
     if (err) {
