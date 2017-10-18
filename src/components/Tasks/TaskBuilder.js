@@ -36,6 +36,10 @@ class TaskBuilder extends Component {
     this.cancelTask = this.cancelTask.bind(this);
   }
 
+  componentDidMount() {
+    console.log('after logging in TASKBUILDER', this.props.screenProps)
+  }
+
   handleTaskTitleChange(title) {
     this.setState({title})
   }

@@ -14,14 +14,9 @@ export const onSignIn = (username, password) => {
       AsyncStorage.setItem(USER_KEY, res.data.token);
       return res;
     })
-    .then((res) => {
-
-    })
     .catch((err) => {
       console.log(err);
     })
-  //also set user information on the App state
-  //?? create middleware to check if token exists?
 }
 
 export const onSignOut = () => AsyncStorage.removeItem(USER_KEY);

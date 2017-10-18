@@ -4,6 +4,6 @@ import MapStack from './MapStack'
 
 export default class Map extends Component {
   render() {
-    return <MapStack />;
+    return <MapStack screenProps={this.props.screenProps}/>;
   }
 }

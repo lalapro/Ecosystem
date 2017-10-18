@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, ScrollView, Button, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-import Navbar from '../Frontend/Navbar.js';
-import Objects from './Objects';
-import Tasks from './Tasks';
 import profile from './Profile';
 import axios from 'axios';
 
@@ -36,6 +33,8 @@ export default class EcoSystem extends Component {
       .then(res => this.setState({
         render: true
       }))
+      //49
+    console.log('after logging in', this.props.screenProps)
   }
   //
   showTask(task) {
@@ -48,7 +47,7 @@ export default class EcoSystem extends Component {
   render() {
     const { height, width } = Dimensions.get('window');
     const { navigate } = this.props.navigation;
-    console.log(this.state.render, this.state.locations)
+    // console.log(this.state.render, this.state.locations)
     return this.state.render ? (
       <View style={styles.wrapper}>
         <View style={{flex: 7}}>
