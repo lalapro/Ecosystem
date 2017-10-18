@@ -35,7 +35,7 @@ export default class MapScreen extends Component {
 
 
 
-  componentDidMount() {;
+  componentDidMount() {
      axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => {
         console.log('markers got')

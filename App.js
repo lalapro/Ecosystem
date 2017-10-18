@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { SignedOut, SignedIn, createRootNavigator } from "./src/components/router.js"
 import { getUserInfo, isSignedIn } from './src/components/auth.js'
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 import Login from './src/components/Login/Login.js';
 import Signup from './src/components/Login/Signup.js';
+
 
 export default class App extends React.Component {
   constructor(props) {
