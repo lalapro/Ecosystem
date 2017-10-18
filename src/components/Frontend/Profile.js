@@ -16,7 +16,8 @@ export default class Profile extends Component {
             type: Camera.Constants.Type.back,
             image: require('../assets/Profile.png'),
             uploading: false,
-            visibleModal: false
+            visibleModal: false,
+            username: 'Minwoo'
         }
         // this.takePhoto = this.takePhoto.bind(this);
         // this.pickPhoto = this.pickPhoto.bind(this);
@@ -30,11 +31,12 @@ export default class Profile extends Component {
 		componentDidMount() {
         axios({
             method: 'get',
-            username: 'Minwoo',
-            url: 'http://10.16.1.152:3000/pictures'
+            url: 'http://10.16.1.152:3000/pictures',
+            params: {
+              username: this.state.username
+            }
         })
         .then(res => {
-					console.log(res.data)
             let jpg = 'data:image/jpg;base64,' + res.data.picture;
             this.setState({
                 image: jpg

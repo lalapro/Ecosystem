@@ -12,31 +12,35 @@ import TaskModal from '../TaskView/TaskModal.js';
 const { width, height } = Dimensions.get("window");
 
 export default class MapScreen extends Component {
-  static navigationOptions = {
-    title: 'Map',
-  };
 
-  state = {
-    markers: [],
-    markerIDs: [],
-    userID: 2,
-    region: {
-      latitude: 0,
-      longitude: 0,
-      latitudeDelta: 0,
-      longitudeDelta: 0,
-    },
-    currentLocation: {},
-    render: false,
-    iconLoaded: false,
-    modalVisible: false,
-    currentPress: []
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      markers: [],
+      markerIDs: [],
+      userID: 2,
+      region: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+      },
+      currentLocation: {},
+      render: false,
+      iconLoaded: false,
+      modalVisible: false,
+      currentPress: []
+    };
+    this.editTask = this.editTask.bind(this);
+  }
+  
+  // static navigationOptions = {
+  //   title: 'Map',
+  // }
 
 
   componentDidMount() {;
-     axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+     axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => {
         console.log('markers got')
         this.setState({markers: markers.data})
@@ -60,6 +64,10 @@ export default class MapScreen extends Component {
     this.setState({
       render: true
     })
+  }
+
+  editTask(task) {
+    this.props.navigation.navigate('TaskBuilder', { specificTask: task });
   }
 
   animateMap() {
@@ -104,6 +112,7 @@ export default class MapScreen extends Component {
   }
 
   toggleHide() {
+    console.log('invoked')
     this.setState({
       modalVisible: false
     })
@@ -177,7 +186,7 @@ export default class MapScreen extends Component {
           <Image source={require("../assets/egg6.png")} style={{width: 50, height: 50}} />
         </TouchableOpacity>
         {this.state.modalVisible ? (
-          <TaskModal userID={this.state.userID} tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
+          <TaskModal userID={this.state.userID} editTask={this.editTask} tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
         ) : null }
       </View>
     ) :  (

@@ -56,7 +56,7 @@ export default class EcoSystem extends Component {
 
   editTask(task) {
     // console.log('@@@@@@@@@@@@@@',task,'@@@@@@@@@@@')
-    this.props.navigation.navigate('TaskBuilder', {specificTask: this.state.editSpecificTask})
+    this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask })
   }
 
   deleteTask() {

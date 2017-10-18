@@ -26,11 +26,11 @@ import Home from './Home/Home';
 import EcoSystem from './Frontend/EcoSystem';
 import TaskBuilder from './Tasks/TaskBuilder';
 import Logout from './Login/Logout.js';
+import TaskItem from './TaskView/TaskItem.js';
 
 export const SignedIn = DrawerNavigator(
 	{
 		Home: {
-			path: '/',
 			screen: EcoSystem
 		},
 		Profile: {

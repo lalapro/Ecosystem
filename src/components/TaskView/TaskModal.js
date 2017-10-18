@@ -6,10 +6,13 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import TaskItem from './TaskItem.js';
 
 class TaskModal extends Component {
-
-  state = {
-    modalVisible: false,
-    tasks: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+      tasks: []
+    }
+    this.hideModal = this.hideModal.bind(this);
   }
 
   componentWillMount() {
@@ -47,15 +50,15 @@ class TaskModal extends Component {
          <View >
          <ScrollView 
             automaticallyAdjustContentInsets={false}
-            onScroll={() => { console.log('onScroll'); }}
+            onScroll={() => { }}
             scrollEventThrottle={200}
             style={styles.scrollView}
           >
             <List>
-              <TouchableHighlight onPress={() => {this.hideModal()}}><Text style={{fontSize: 30, textAlign: 'right', marginTop: 5}}>&#x2612;</Text></TouchableHighlight>
+              <TouchableHighlight onPress={() => this.hideModal()}><Text style={{fontSize: 30, textAlign: 'right', marginTop: 5}}>&#x2612;</Text></TouchableHighlight>
               {this.state.tasks.map((task, i) => {
                 return (
-                  <TaskItem key={i} userID={this.props.userID} task={task}/>
+                  <TaskItem hideModal={this.hideModal.bind(this)} key={i} userID={this.props.userID} task={task} editTask={this.props.editTask}/>
                 )
               })}
             </List>
@@ -69,8 +72,18 @@ class TaskModal extends Component {
 
 var styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: 'black',
     height: 300
+  },
+  button: {
+    backgroundColor: '#ddd',
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: 'black',
+    width: 250,
+    alignItems: 'center',
+    marginLeft: 60,
+    marginTop: 5,
+    marginBottom: 5,
   }
 })
 export default TaskModal;

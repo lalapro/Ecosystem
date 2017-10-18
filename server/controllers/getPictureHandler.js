@@ -11,7 +11,6 @@ const getPictureHandler = (req, res) => {
     var usersRef = db.ref(`/users`);
     var userRef = db.ref(`/users/${username}`);
     usersRef.once('value', snapshot => {
-      // console.log(snapshot.val().Minwoo)
       let user = snapshot.val()[username];
       callback(user)
     })
