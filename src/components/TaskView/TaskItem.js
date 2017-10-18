@@ -52,12 +52,12 @@ class TaskItem extends Component {
         {this.state.task ? (
           <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: 350}}>
             <Swipeout right={swipeBtns}
-              autoClose='true'
+              autoClose={true}
               backgroundColor= 'transparent'
             >
             {!this.state.expanded ? (
               <View>
-                <Text style={{fontSize: 30, alignItems: 'left', justifyContent: 'left'}}>{this.state.task.Task_Title}</Text>
+                <Text style={{fontSize: 30, alignItems: 'flex-start', justifyContent: 'flex-start'}}>{this.state.task.Task_Title}</Text>
                 <View style={styles.subtitleView} >
                   <Text style={styles.collapsed}>{this.state.task.Task_Description}</Text>
                   <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E9;</Text>
