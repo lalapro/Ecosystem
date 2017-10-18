@@ -8,7 +8,11 @@ class TaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      frequency: 'Does not repeat.'
+      frequency: 'Does not repeat.',
+      taskName: null,
+      description: null,
+      start: null,
+      end: null
     }
     this.changeFrequency = this.changeFrequency.bind(this);
   }
@@ -22,16 +26,16 @@ class TaskForm extends Component {
       <View style={styles.container}>
         <TextInput 
           onChangeText={(title) => this.props.handleTaskTitleChange(title)}
-          placeholder="Name of Task"
+          placeholder={this.props.task.Task_Title ? this.props.task.Task_Title : "Name of Task"}
           style={styles.input} 
         />
         <TextInput
           onChangeText={(description) => this.props.handleDescriptionChange(description)}
-          placeholder="Description"
+          placeholder={this.props.task.Task_Description ? this.props.task.Task_Description :"Description"}
           style={styles.input} 
         />
-        <TaskDatePicker placeholder="Start" onSelect={(startTime) => this.props.handleStartChange(startTime)} />
-        <TaskDatePicker placeholder="End" onSelect={(endTime) => this.props.handleEndChange(endTime)} />
+        <TaskDatePicker placeholder={this.props.task.Start ? this.props.task.Start : "Start"} onSelect={(startTime) => this.props.handleStartChange(startTime)} />
+        <TaskDatePicker placeholder={this.props.task.End ? this.props.task.End : "End"} onSelect={(endTime) => this.props.handleEndChange(endTime)} />
         <LocationPicker style={styles.picker} onSelect={(itemValue) => this.props.handleLocationChange(itemValue)}/>
         <CategoryPicker style={styles.picker} onSelect={(itemValue) => this.props.handleCategoryChange(itemValue)}/>
         <Picker
