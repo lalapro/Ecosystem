@@ -31,8 +31,7 @@ class TaskModal extends Component {
       modalVisible: false
     }, () => this.props.toggleHide())
   }
-
-
+ 
   render() {
     const { fontsAreLoaded } = this.state;
     
@@ -56,7 +55,7 @@ class TaskModal extends Component {
               <TouchableHighlight onPress={() => {this.hideModal()}}><Text style={{fontSize: 30, textAlign: 'right', marginTop: 5}}>&#x2612;</Text></TouchableHighlight>
               {this.state.tasks.map((task, i) => {
                 return (
-                  <TaskItem key={i} task={task}/>
+                  <TaskItem key={i} userID={this.props.userID} task={task}/>
                 )
               })}
             </List>

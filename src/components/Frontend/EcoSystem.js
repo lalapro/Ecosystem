@@ -200,10 +200,9 @@ const styles = StyleSheet.create({
   //  backgroundColor: 'red'
  },
  separator: {
-  height: 1,
-  width: 400,
-  backgroundColor: '#8A7D80',
-  marginLeft: 15,
-  
-}
+    height: 1,
+    width: 400,
+    backgroundColor: '#8A7D80',
+    marginLeft: 15 
+  }
 })

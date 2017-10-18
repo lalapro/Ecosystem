@@ -4,7 +4,7 @@ const db = require('../../db/index.js');
 const handleDeleteTasks = (req, res) => {
   let User_ID = req.query.userID;
   let Task_Title = req.query.taskTitle;
-  console.log('here')
+  console.log(User_ID, Task_Title)
   let deleteTasks = `DELETE FROM Tasks WHERE User_ID = '${User_ID}' AND Task_Title = '${Task_Title}'`;
   db.query(deleteTasks, null, (err, results) => {
     if (err) {
