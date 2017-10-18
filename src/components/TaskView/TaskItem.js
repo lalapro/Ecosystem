@@ -110,6 +110,6 @@ styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
-    marginLeft: 15 
+    // marginLeft: 15 
   }
 })
