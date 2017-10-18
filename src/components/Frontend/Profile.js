@@ -23,7 +23,7 @@ export default class Profile extends Component {
         // this.handlePicture = this.handlePicture.bind(this)
         this.showModal = this.showModal.bind(this);
         this.uploadPhoto = this.uploadPhoto.bind(this);
-        this.Picker = this.Picker.bind(this);
+
         // this.SaveURI = this.SaveURI.bind(this);
     }
 
