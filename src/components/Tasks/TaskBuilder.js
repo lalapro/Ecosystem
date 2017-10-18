@@ -78,7 +78,7 @@ class TaskBuilder extends Component {
     let frequency = this.state.frequency;
     let userID = this.state.userID;
     //need to send username to get userId
-    axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+    axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
       .then((response) => this.setState({
         saved: 'Task Saved',
         title: '',
@@ -102,7 +102,7 @@ class TaskBuilder extends Component {
   render() {
     return(
       <View style={styles.container}>
-         <ScrollView 
+         <ScrollView
             automaticallyAdjustContentInsets={false}
             onScroll={() => { console.log('onScroll'); }}
             scrollEventThrottle={200}

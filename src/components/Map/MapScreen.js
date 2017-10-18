@@ -18,6 +18,7 @@ export default class MapScreen extends Component {
 
   state = {
     markers: [],
+    markerIDs: [],
     userID: 2,
     region: {
       latitude: 0,
@@ -34,31 +35,37 @@ export default class MapScreen extends Component {
 
 
 
-  componentDidMount() {
-    const { params } = this.props.navigation.state;
-
-    console.log('map rendering...should get markers')
-    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
-      .then(markers => this.setState({
-        markers: markers.data
-      }))
-      .then(res => {
-        console.log('STATE MARKERS BEFORE CURRENT LOCATION', this.state.markers)
-        GetCurrentLocation().then(location => {
-          this.setState({
-            region: {
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-              latitudeDelta: 0.04864195044303443,
-              longitudeDelta: 0.040142817690068,
-            }
-          }, () => this.updateCurrentLocation())
-        })
-        .then(res => setTimeout(() => this.setState({render: true})), 500)
-        .catch(err => console.log(err))
+  componentDidMount() {;
+     axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+      .then(markers => {
+        console.log('markers got')
+        this.setState({markers: markers.data})
       })
-      .catch(err => console.log(err))
+      .then(res => {
+        this.setState({markerIDs: []});
+        let allMarkers = this.state.markers
+        for(let i = 0; i < allMarkers.length; i++) {
+          this.state.markerIDs.push(allMarkers[i].Marker_Title)
+        }
+      })
+      .then(res => this.updateCurrentLocation())
+      .then(res => setTimeout(this.startRender, 350))
+      .then(res => setTimeout(() => {this.animateMap()}, 1550))
+      .catch(err => console.error(err))
+
   }
+
+  startRender = () => {
+    console.log('hi')
+    this.setState({
+      render: true
+    })
+  }
+
+  animateMap() {
+    this.map.fitToSuppliedMarkers(this.state.markerIDs, true)
+  }
+
 
   updateCurrentLocation() {
     GetCurrentLocation().then(location => {
@@ -74,13 +81,16 @@ export default class MapScreen extends Component {
       })
     })
     .then(res => {
-      this.map.animateToRegion(
-        {
-          ...this.state.currentLocation.coordinate,
-          latitudeDelta: 0.00984,
-          longitudeDelta: 0.00834,
-        }
-      )
+      if (this.state.render) {
+        console.log('should center to me')
+        this.map.animateToRegion(
+          {
+            ...this.state.currentLocation.coordinate,
+            latitudeDelta: 0.0084,
+            longitudeDelta: 0.0034,
+          }
+        )
+      }
     })
   }
 
@@ -105,48 +115,45 @@ export default class MapScreen extends Component {
       {
         latitude: marker.Latitude,
         longitude: marker.Longitude,
-        latitudeDelta: 0.00984,
-        longitudeDelta: 0.00834,
+        latitudeDelta: 0.000984,
+        longitudeDelta: 0.000834,
       })
   }
 
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    console.log('BEFORE RENDERING currentlocation', this.state.currentLocation.coordinate)
-    console.log('render', this.state.render)
     return this.state.render ? (
       <View style={styles.container}>
         <MapView
           ref={map => this.map = map}
           initialRegion={this.state.region}
           style={styles.container}
-          // onLayout={() => { this.mark.showCallout() }}
         >
-          <MapView.Marker
-            key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
-            coordinate={this.state.currentLocation.coordinate}
-            title={this.state.currentLocation.title}
-            description={this.state.currentLocation.description}
-            >
-            <Image style={{width: 20, height: 20}} source={require('../assets/egg6.png')} onLoadEnd={() => {if (!this.state.iconLoaded) this.setState({iconLoaded: true});}}/>
-          </MapView.Marker>
+          {this.state.render ? (
+            <MapView.Marker
+              key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
+              coordinate={this.state.currentLocation.coordinate}
+              title={this.state.currentLocation.title}
+              description={this.state.currentLocation.description}
+              >
+                <Image style={{width: 20, height: 20}} source={require('../assets/egg6.png')} onLoadEnd={() => {if (!this.state.iconLoaded) this.setState({iconLoaded: true});}}/>
+              </MapView.Marker>
+          ) : null }
           {this.state.markers.map((marker, index) => {
             return (
               <MapView.Marker
                 key={index}
                 coordinate={{latitude: marker.Latitude, longitude: marker.Longitude}}
-                title={marker.Title}
-                description={marker.Description}
-                identifier={marker.Title}
+                title={marker.Marker_Title}
+                description={marker.Marker_Description}
+                identifier={marker.Marker_Title}
                 onPress={() => this.toggleModal(marker)}
                 >
                 <Image source={images[marker.Avatar][1]} style={styles.marker} />
               </MapView.Marker>
             );
           })}
-
-
         </MapView>
         <Animated.ScrollView
           vertical
@@ -173,10 +180,11 @@ export default class MapScreen extends Component {
           <TaskModal userID={this.state.userID} tasks={this.state.currentPress} modalVisible={this.state.modalVisible} toggleHide={this.toggleHide.bind(this)}/>
         ) : null }
       </View>
-    ) :
-      <View>
-        <Image source={require("../assets/loading.gif")} style={{width: 200, height: 200}}/>
-      </View>
+    ) :  (
+        <View>
+          <Image source={require("../assets/loading.gif")} style={{width: 200, height: 200}}/>
+        </View>
+    )
   }
 }
 

@@ -11,7 +11,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         <TextInput
           onChangeText={this.props.handleUserInput}
           placeholder="username"
@@ -19,7 +19,7 @@ class LoginForm extends Component {
         <TextInput
           onChangeText={ this.props.handlePasswordInput }
           placeholder="password"
-          secureTextEntry="true"
+          secureTextEntry={true}
           style={styles.input} />
       </View>
     );
