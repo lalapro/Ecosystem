@@ -23,7 +23,7 @@ export default class Profile extends Component {
         // this.handlePicture = this.handlePicture.bind(this)
         this.showModal = this.showModal.bind(this);
         this.uploadPhoto = this.uploadPhoto.bind(this);
-        this.Picker = this.Picker.bind(this);
+        // this.Picker = this.Picker.bind(this);
         // this.SaveURI = this.SaveURI.bind(this);
     }
 
@@ -152,6 +152,58 @@ export default class Profile extends Component {
             .then(res => {
 								let jpg = 'data:image/jpg;base64,' + res.data.picture
 
+								this.setState({
+									image: jpg
+								})
+                // let pictureText = 'data:image/jpg;base64' + res.data.Picture;
+                // this.setState({
+                //  image: pictureText
+                // })
+            })
+        // ImageStore.addImageFromBase64(uri, (success) => { this.SaveURI(success) },
+        //      (failure) => { console.log(failure) });
+    }
+    showModal(stat) {
+        this.setState({ visibleModal: stat })
+    }
+    // uploadPhoto = () => {
+    //  let { image } = this.state;
+    //  if (!image) alert('you dont have image!');
+    //      else {return (
+    //       <View
+    //         style={{
+    //           marginTop: 30,
+    //           width: 250,
+    //           borderRadius: 3,
+    //           elevation: 2,
+    //           shadowColor: 'rgba(0,0,0,1)',
+    //           shadowOpacity: 0.2,
+    //           shadowOffset: { width: 4, height: 4 },
+    //           shadowRadius: 5,
+    //         }}>
+    //         <View
+    //           style={{
+    //             borderTopRightRadius: 3,
+    //             borderTopLeftRadius: 3,
+    //             overflow: 'hidden',
+    //           }}>
+    //           <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+    //         </View>
+    //         <Text
+    //          // onPress={this.CameraPermission.bind(this)}
+    //           // onPress={this.takePhoto}
+    //           // onLongPress={this.share}
+    //           style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
+    //           {image}
+    //         </Text>
+    //       </View>
+    //      );
+    //      }
+    //  };
+    // addPhoto = () => {
+    //  Clipboard.setString(this.state.image);
+    //      alert('Hi');
+    // };
   
  	render() {
  		// let Hidden = () => {
