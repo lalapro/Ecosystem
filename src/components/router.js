@@ -20,7 +20,7 @@ export const SignedOut = StackNavigator({
   }
 });
 
-import Map from './Map/Map.js';
+import Map from './Map/MapStack.js';
 import Profile from './Frontend/Profile';
 import Home from './Home/Home';
 import EcoSystem from './Frontend/EcoSystem';

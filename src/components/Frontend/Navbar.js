@@ -25,7 +25,7 @@ class Logout extends React.Component {
     return (
       <Button
 				onPress={this.props.screenProps.logOutUser}
-				title="LogOuttttt"
+				title="LogOut"
 			/>
     );
   }

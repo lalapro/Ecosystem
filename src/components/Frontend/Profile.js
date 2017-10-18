@@ -204,55 +204,66 @@ export default class Profile extends Component {
     //  Clipboard.setString(this.state.image);
     //      alert('Hi');
     // };
+  
+ 	render() {
+ 		// let Hidden = () => {
+ 		// 	return this.state.showDiv ? <View style={{marignRight: 10, position: 'absolute' }}>
+ 		// 		<Button onPress={this.takePhoto} title={`Take a Photo`}/>
+ 		// 		<Button onPress={this.pickPhoto} title={`Select from Library`}/>
+ 		// 	</View> : null;
+ 		// }
+    return (
+	 
+      <View style={{flex: 1, backgroundColor: 'yellow', alignItems: 'center'}}>
+				<View style={{margin: 20, alignItems: 'flex-start', alignSelf: 'left'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
+      	<View style={{flex: 1}}>
+      		<Image style={styles.photo} source={{uri: `${this.state.image}`}} />
+     			<Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
+	      </View>
 
-    render() {
-        // let Hidden = () => {
-        //  return this.state.showDiv ? <View style={{marignRight: 10, position: 'absolute' }}>
-        //      <Button onPress={this.takePhoto} title={`Take a Photo`}/>
-        //      <Button onPress={this.pickPhoto} title={`Select from Library`}/>
-        //  </View> : null;
-        // }
-        return (
-            <View style={{flex: 1, alignItems: 'center'}}>
-                <View style={{flex: 1}}>
-                    <Image style={styles.photo} source={{uri: `${this.state.image}`}} />
-                    <Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
-                </View>
-                <View style={styles.location}>
-                    <TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(0, 0, 0, 0.7)"
-                    onChangeText={(title) => {this.setState({title: title})}} />
-                    <TextInput style={styles.input} placeholder="Add Location Name" placeholderTextColor="rgba(0, 0, 0, 0.7)"
-                    onChange={(locationName) => {this.setState({locationName})}} />
-                    <TextInput style={styles.input} placeholder="Add Location Address" placeholderTextColor="rgba(0, 0, 0, 0.7)"
-                    onChange={(locationAddress) => {this.setState({locationAddress})}} />
-                </View>
-                <View style={styles.map} />
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={this.state.visibleModal}
-                        onRequestClosed={() => {alert('Photo is not selected!!')}}
-                    >
-                     <View>
-                            <View style={{height: 470, opacity: 0.7, backgroundColor: '#ddd'}}>
-                                <Image source={require('../assets/toastlogo.png')} style={{height: '100%', width: '100%', opacity: 0.8}}/>
-                            </View>
-                            <View style={{height: '100%', backgroundColor: '#ddd', opacity: 0.7}}>
-                                <View style={styles.button} >
-                                    <Button title={`Take a photo`} onPress={this.takePhoto}/>
-                                </View>
-                                <View style={styles.button} >
-                                    <Button title={`Photo from library`} onPress={this.pickPhoto} />
-                                </View>
-                                <View style={styles.button} >
-                                    <Button title={`Close`} onPress={() => {this.showModal(!this.state.visibleModal)}} />
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-        );
-    }
+				
+	      <View style={styles.location}>
+	      	<TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+	      	onChangeText={(title) => {this.setState({title: title})}} />
+	      	<TextInput style={styles.input} placeholder="Add Location Name" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+	      	onChange={(locationName) => {this.setState({locationName})}} />
+	      	<TextInput style={styles.input} placeholder="Add Location Address" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+	      	onChange={(locationAddress) => {this.setState({locationAddress})}} />
+	      </View>
+
+
+      	<View style={styles.map} />
+	        <Modal
+	          animationType="slide"
+	          transparent={true}
+	          visible={this.state.visibleModal}
+	          onRequestClosed={() => {alert('Photo is not selected!!')}}
+	        >
+	         <View>
+	            <View style={{height: 470, opacity: 0.7, backgroundColor: '#ddd'}}>
+	            	<Image source={require('../assets/toastlogo.png')} style={{height: '100%', width: '100%', opacity: 0.8}}/>
+	            </View>
+	            <View style={{height: '100%', backgroundColor: '#ddd', opacity: 0.7}}>
+	          	  <View style={styles.button} >
+	            		<Button title={`Take a photo`} onPress={this.takePhoto}/>
+	            	</View>
+	            	<View style={styles.button} >
+	            		<Button title={`Photo from library`} onPress={this.pickPhoto} />
+	            	</View>
+	            	<View style={styles.button} >
+	            		<Button title={`Close`} onPress={() => {this.showModal(!this.state.visibleModal)}} />
+		          	</View>
+		          </View>
+	          </View>
+	        </Modal>
+	      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
     photo: {

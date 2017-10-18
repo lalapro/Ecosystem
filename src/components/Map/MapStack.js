@@ -11,5 +11,5 @@ export default MapStack = StackNavigator({
   Avatar: { screen: Avatar },
   Title: { screen: Title },
   Location: { screen: Location },
-  TaskBuilder: { screen: TaskBuilder }
+  // TaskBuilder: { screen: TaskBuilder }
 });

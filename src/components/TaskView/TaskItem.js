@@ -57,7 +57,7 @@ class TaskItem extends Component {
             >
             {!this.state.expanded ? (
               <View>
-                <Text style={{fontSize: 30, justifyContent: 'left'}}>{this.state.task.Task_Title}</Text>
+                <Text style={{fontSize: 30, alignItems: 'flex-start', justifyContent: 'flex-start'}}>{this.state.task.Task_Title}</Text>
                 <View style={styles.subtitleView} >
                   <Text style={styles.collapsed}>{this.state.task.Task_Description}</Text>
                   <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E9;</Text>
@@ -84,6 +84,7 @@ class TaskItem extends Component {
             </Swipeout>
           </View>
         ) : (<Text>Task was deleted.</Text>)}
+        <View style={styles.separator} />
       </View>
     )
   }
@@ -109,6 +110,6 @@ styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
-    marginLeft: 15 
+    // marginLeft: 15 
   }
 })
