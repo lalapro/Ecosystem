@@ -213,7 +213,7 @@ export default class Profile extends Component {
  		// 	</View> : null;
  		// }
     return (
-	 
+
       <View style={{flex: 1, backgroundColor: 'yellow', alignItems: 'center'}}>
 				<View style={{margin: 20, alignItems: 'flex-start', alignSelf: 'left'}}>
           <Button
@@ -226,7 +226,7 @@ export default class Profile extends Component {
      			<Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
 	      </View>
 
-				
+
 	      <View style={styles.location}>
 	      	<TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
 	      	onChangeText={(title) => {this.setState({title: title})}} />

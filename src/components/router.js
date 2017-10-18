@@ -75,7 +75,6 @@ export const createRootNavigator = (signedIn = true) => {
 		},
 		{
 			headerMode: "none",
-			// mode: "modal"
 			initialRouteName: signedIn ? "SignedIn" : "SignedOut"
 		}
 	)
