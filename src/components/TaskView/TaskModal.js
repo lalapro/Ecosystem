@@ -75,7 +75,7 @@ class TaskModal extends Component {
 
 var styles = StyleSheet.create({
   scrollView: {
-    // backgroundColor: '#8A7D80',
+    backgroundColor: 'black',
     height: 300
   }
 })

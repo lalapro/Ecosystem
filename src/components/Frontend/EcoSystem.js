@@ -20,7 +20,8 @@ export default class EcoSystem extends Component {
       render: false,
       index: 0,
       currentTask: '',
-      currentDescription: ''
+      currentDescription: '',
+      editSpecificTask: '',
       // currentLocation: 'Home',
       // currentTasks: ['a', 'b'],
       // currentData: [],
@@ -45,16 +46,17 @@ export default class EcoSystem extends Component {
     this.getMarkers();
   }
   //
-  showTask(task) {
+  showTask(task, specificTask) {
     this.setState({
       currentTask: task.Task_Title,
-      currentDescription: task.Task_Description
+      currentDescription: task.Task_Description,
+      editSpecificTask: specificTask
     })
   }
 
-  editTask() {
-    //send back to task builder with auto populated fields
-
+  editTask(task) {
+    // console.log('@@@@@@@@@@@@@@',task,'@@@@@@@@@@@')
+    this.props.navigation.navigate('TaskBuilder', {specificTask: this.state.editSpecificTask})
   }
 
   deleteTask() {
@@ -80,7 +82,6 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-    console.log(this.state.render, this.state.locations)
     return this.state.render ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
@@ -130,7 +131,8 @@ export default class EcoSystem extends Component {
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => (
-                <TouchableHighlight style={styles.circle} key={index} onPress={() => this.showTask(task)}>
+                <TouchableHighlight style={styles.circle} key={index} 
+                onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
                   <Text style={{fontSize: 18, fontWeight: 'bold'}}>
                     {task.Task_Title}
                   </Text>
