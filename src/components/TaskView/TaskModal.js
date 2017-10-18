@@ -37,6 +37,12 @@ class TaskModal extends Component {
     
     return (
       <View style={{marginTop: 22, marginHorizontal: 22}}>
+        <View style={{margin: 20, alignItems: 'flex-start', alignSelf: 'left'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
         <Modal
           animationType="slide"
           transparent={true}

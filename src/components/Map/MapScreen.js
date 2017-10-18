@@ -130,16 +130,20 @@ export default class MapScreen extends Component {
           initialRegion={this.state.region}
           style={styles.container}
         >
-          {this.state.render ? (
-            <MapView.Marker
-              key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
-              coordinate={this.state.currentLocation.coordinate}
-              title={this.state.currentLocation.title}
-              description={this.state.currentLocation.description}
-              >
-                <Image style={{width: 20, height: 20}} source={require('../assets/egg6.png')} onLoadEnd={() => {if (!this.state.iconLoaded) this.setState({iconLoaded: true});}}/>
-              </MapView.Marker>
-          ) : null }
+          <View style={{margin: 20, alignSelf: 'flex-start'}}>
+            <Button
+              onPress={() => this.props.navigation.navigate('DrawerToggle')}
+              title="&#9776;"
+            />
+          </View>
+          <MapView.Marker
+            key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
+            coordinate={this.state.currentLocation.coordinate}
+            title={this.state.currentLocation.title}
+            description={this.state.currentLocation.description}
+            >
+            <Image style={{width: 20, height: 20}} source={require('../assets/egg6.png')} onLoadEnd={() => {if (!this.state.iconLoaded) this.setState({iconLoaded: true});}}/>
+          </MapView.Marker>
           {this.state.markers.map((marker, index) => {
             return (
               <MapView.Marker
