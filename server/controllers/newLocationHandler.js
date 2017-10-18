@@ -9,7 +9,6 @@ const handleNewLocation = (req, res) => {
   let avatar = req.body.avatar;
   let lng = req.body.longitude;
   let lat = req.body.latitude;
-  console.log('new location received', req.body)
   let query = `INSERT INTO Marker (Marker_ID, Marker_Title, Marker_Description, Avatar, Latitude, Longitude, Radius, User_ID) VALUES (NULL, '${title}', '${description}', '${avatar}', '${lat}', '${lng}', ${50}, '${user}')`;
   // `INSERT INTO CategoryDeets (ID, Category, Completion_Points, User_ID, Reward_ID, Marker_ID) VALUES (NULL, '${category}', NULL, '${User_ID}', NULL, NULL)`;
   db.query(query, null, (err, results) => {

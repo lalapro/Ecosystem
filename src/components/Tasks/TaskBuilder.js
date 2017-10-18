@@ -77,6 +77,8 @@ class TaskBuilder extends Component {
   }
 
   saveTask() {
+    //if no props.task
+                         
     let title = this.state.title;
     let description = this.state.description;
     let startTime = this.state.startTime;
@@ -102,6 +104,10 @@ class TaskBuilder extends Component {
       })
       .catch((err) => console.error('taskbuilderjs. line 82', err))
   }
+  
+  editTask() {
+    //if received tasks - update in database on save
+  }
 
   cancelTask() {
     this.props.navigation.goBack();
@@ -118,7 +124,6 @@ class TaskBuilder extends Component {
         </View>
         <ScrollView 
           automaticallyAdjustContentInsets={false}
-          onScroll={() => { console.log('onScroll'); }}
           scrollEventThrottle={200}
           style={styles.scrollView}
         >
