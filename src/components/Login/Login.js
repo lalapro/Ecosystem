@@ -25,7 +25,7 @@ export default class Login extends Component {
   }
 
   render() {
-    
+
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -38,7 +38,6 @@ export default class Login extends Component {
 
         <View style={styles.formContainer}>
           <LoginForm
-
             handleUserInput={this.handleUserInput}
             handlePasswordInput={this.handlePasswordInput}
             />

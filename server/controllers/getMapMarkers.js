@@ -3,7 +3,6 @@ const db = require('../../db/index.js');
 var Promise = require("bluebird");
 
 
-
 const getMapMarkers = (req, res) => {
   let userID = req.query.userID;
 
@@ -19,6 +18,9 @@ const getMapMarkers = (req, res) => {
       // console.log(results)
       let length = results.length;
       let count = 0;
+      if (length === 0 ) {
+        res.send();
+      } 
       for (let i = 0; i < results.length; i++) {
         let marker = results[i]
         db.query(innerQuery, null, (err, tasks) => {
@@ -32,6 +34,7 @@ const getMapMarkers = (req, res) => {
               }
             })
             count++;
+            console.log('count')
             if (count === length) {
               res.send(results)
             }

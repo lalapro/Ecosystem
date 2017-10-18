@@ -9,6 +9,7 @@ var config = {
     messagingSenderId: "645192842848"
 };
 
+
 const firebaseApp = firebase.initializeApp(config);
 console.log('its working');
 

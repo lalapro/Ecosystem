@@ -38,6 +38,7 @@ export default class MapScreen extends Component {
   componentDidMount() {;
      axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => {
+        console.log('markers got')
         this.setState({markers: markers.data})
       })
       .then(res => {
@@ -50,10 +51,12 @@ export default class MapScreen extends Component {
       .then(res => this.updateCurrentLocation())
       .then(res => setTimeout(this.startRender, 350))
       .then(res => setTimeout(() => {this.animateMap()}, 1550))
+      .catch(err => console.error(err))
 
   }
 
   startRender = () => {
+    console.log('hi')
     this.setState({
       render: true
     })
@@ -66,9 +69,6 @@ export default class MapScreen extends Component {
 
   updateCurrentLocation() {
     GetCurrentLocation().then(location => {
-      if (!this.state.render) {
-
-      }
       this.setState({
         currentLocation: {
           coordinate: {
@@ -86,8 +86,8 @@ export default class MapScreen extends Component {
         this.map.animateToRegion(
           {
             ...this.state.currentLocation.coordinate,
-            latitudeDelta: 0.00984,
-            longitudeDelta: 0.00834,
+            latitudeDelta: 0.0084,
+            longitudeDelta: 0.0034,
           }
         )
       }
@@ -115,8 +115,8 @@ export default class MapScreen extends Component {
       {
         latitude: marker.Latitude,
         longitude: marker.Longitude,
-        latitudeDelta: 0.00984,
-        longitudeDelta: 0.00834,
+        latitudeDelta: 0.000984,
+        longitudeDelta: 0.000834,
       })
   }
 
