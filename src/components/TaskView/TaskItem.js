@@ -84,6 +84,7 @@ class TaskItem extends Component {
             </Swipeout>
           </View>
         ) : (<Text>Task was deleted.</Text>)}
+        <View style={styles.separator} />
       </View>
     )
   }

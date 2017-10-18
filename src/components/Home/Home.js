@@ -14,9 +14,15 @@ export default class Home extends Component {
     return (
 
       <View style={{flex: 1}}>
+        <View style={{margin: 20, alignItems: 'left'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
         <Navbar
           screenProps={this.props}
-          />
+        />
       </View>
     );
   }

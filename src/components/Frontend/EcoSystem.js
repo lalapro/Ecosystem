@@ -83,6 +83,12 @@ export default class EcoSystem extends Component {
     console.log(this.state.render, this.state.locations)
     return this.state.render ? (
       <View style={styles.wrapper}>
+        <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
         <View style={{flex: 7}}>
           <Swiper
             horizontal={true}
@@ -90,7 +96,7 @@ export default class EcoSystem extends Component {
             loop={false}
             >
               {this.state.locations.map((location, index) => (
-                <View key={index} style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
+                <View key={index} style={{alignItems: 'center', justifyContent: 'center'}}>
                   <Text style={styles.cardtitle}>
                     {location.Marker_Title}
                   </Text>
@@ -106,7 +112,7 @@ export default class EcoSystem extends Component {
             </Swiper>
             <View style={styles.separator} />
             <Swipeout right={swipeBtns}
-              autoClose='true'
+              autoClose={true}
               backgroundColor= 'transparent'
             >
               <View style={{margin: 10, justifyContent: 'center', alignItems: 'center'}}>
@@ -180,7 +186,7 @@ const styles = StyleSheet.create({
   },
   cardtitle: {
     fontSize: 50,
-    marginTop: 5,
+    // marginTop: 5,
     fontWeight: "bold",
   },
   cardDescription: {
@@ -203,6 +209,6 @@ const styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
-    marginLeft: 15 
+    // marginLeft: 15 
   }
 })

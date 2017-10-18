@@ -102,11 +102,17 @@ class TaskBuilder extends Component {
   render() {
     return(
       <View style={styles.container}>
-         <ScrollView 
-            automaticallyAdjustContentInsets={false}
-            onScroll={() => { console.log('onScroll'); }}
-            scrollEventThrottle={200}
-            style={styles.scrollView}
+        <View style={{margin: 10, alignSelf: 'flex-start'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
+        <ScrollView 
+          automaticallyAdjustContentInsets={false}
+          onScroll={() => { console.log('onScroll'); }}
+          scrollEventThrottle={200}
+          style={styles.scrollView}
         >
           <TaskForm style={styles.formContainer}
             handleTaskTitleChange={this.handleTaskTitleChange}
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    top: 50,
+    top: 10,
     bottom: 50,
 
   },

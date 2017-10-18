@@ -123,6 +123,12 @@ export default class MapScreen extends Component {
           style={styles.container}
           // onLayout={() => { this.mark.showCallout() }}
         >
+          <View style={{margin: 20, alignSelf: 'flex-start'}}>
+            <Button
+              onPress={() => this.props.navigation.navigate('DrawerToggle')}
+              title="&#9776;"
+            />
+          </View>
           <MapView.Marker
             key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
             coordinate={this.state.currentLocation.coordinate}

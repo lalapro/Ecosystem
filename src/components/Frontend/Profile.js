@@ -142,13 +142,20 @@ export default class Profile extends Component {
  		// 	</View> : null;
  		// }
     return (
+	 
       <View style={{flex: 1, backgroundColor: 'yellow', alignItems: 'center'}}>
+				<View style={{margin: 20, alignItems: 'flex-start', alignSelf: 'left'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            title="&#9776;"
+          />
+        </View>
       	<View style={{flex: 1}}>
       		<Image style={styles.photo} source={{uri: `${this.state.image}`}} />
      			<Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
 	      </View>
 
-
+				
 	      <View style={styles.location}>
 	      	<TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
 	      	onChangeText={(title) => {this.setState({title: title})}} />
