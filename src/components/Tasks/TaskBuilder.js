@@ -22,7 +22,8 @@ class TaskBuilder extends Component {
       saved: null,
       categoryID: '',
       markerID: '',
-      userID: 2
+      userID: 2,
+      editTask: '',
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -34,6 +35,13 @@ class TaskBuilder extends Component {
     this.handleCheck = this.handleCheck.bind(this);
     this.saveTask = this.saveTask.bind(this);
     this.cancelTask = this.cancelTask.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.navigation.state.params) {
+      var task = this.props.navigation.state.params.specificTask
+      setTimeout(() => { this.setState({ editTask: task }) }, 200);
+    }
   }
 
   handleTaskTitleChange(title) {
@@ -118,6 +126,7 @@ class TaskBuilder extends Component {
             handleFrequencyChange={this.handleFrequencyChange}
             saveTask={this.saveTask}
             cancel={this.cancelTask}
+            task={this.state.editTask}
           />
         </ScrollView>
       </View>
