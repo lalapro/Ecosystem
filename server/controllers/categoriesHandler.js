@@ -14,25 +14,17 @@ const handleCategories = (req, res) => {
 }
 
 const handleNewCategories = (req, res) => {
-  let username = req.body.username;
+  let Uaer_ID = req.body.userID;
   let category = req.body.category;
 
-  let selectUserID = `SELECT ID FROM User WHERE Username = '${username}'`;
-  db.query(selectUserID, null, (err, results) => {
+  let insertCategory = `INSERT INTO CategoryDeets (ID, Category, Completion_Points, User_ID, Reward_ID, Marker_ID) VALUES (NULL, '${category}', NULL, '${User_ID}', NULL, NULL)`;
+  db.query(insertCategory, null, (err, results) => {
     if (err) {
-      res.status(404).send(`We encountered an error looking up your information ${err}`);
+      res.status(404).send(`We encountered an error creating the category ${err}`);
     } else {
-      let User_ID = results[0].ID;
-      let insertCategory = `INSERT INTO CategoryDeets (ID, Category, Completion_Points, User_ID, Reward_ID, Marker_ID) VALUES (NULL, '${category}', NULL, '${User_ID}', NULL, NULL)`;
-      db.query(insertCategory, null, (err, results) => {
-        if (err) {
-          res.status(404).send(`We encountered an error creating the category ${err}`);
-        } else {
-          res.status(201).send(results);
-        }
-      })
+      res.status(201).send(results);
     }
-  })
+  });
 }
 
 module.exports = {

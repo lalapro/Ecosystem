@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Dimensions, ScrollView, Button, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Separator, Dimensions, ScrollView, Button, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Swiper from 'react-native-swiper';
+import Swipeout from 'react-native-swipeout';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import Navbar from '../Frontend/Navbar.js';
 import Objects from './Objects';
@@ -28,14 +29,20 @@ export default class EcoSystem extends Component {
     // this.viewChange = this.viewChange.bind(this);
   }
 
+  getMarkers() {
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
+    .then(res => this.setState({
+      locations: res.data,
+      currentDescription: '',
+      currentTask: ''
+    }))
+    .then(res => this.setState({
+      render: true
+    }))
+    .catch(err => console.error(err))
+  }
   componentDidMount() {
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
-      .then(res => this.setState({
-        locations: res.data
-      }))
-      .then(res => this.setState({
-        render: true
-      }))
+    this.getMarkers();
   }
   //
   showTask(task) {
@@ -45,9 +52,34 @@ export default class EcoSystem extends Component {
     })
   }
 
+  editTask() {
+    //send back to task builder with auto populated fields
+
+  }
+
+  deleteTask() {
+    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    .then(res => this.getMarkers())
+    .catch(err => console.error(err))
+  }
+
   render() {
     const { height, width } = Dimensions.get('window');
     const { navigate } = this.props.navigation;
+    const swipeBtns = [
+      {
+        text: 'Edit',
+        backgroundColor: '#f4a316',
+        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        onPress: () => { this.editTask() }
+     },
+      {
+        text: 'Delete',
+        backgroundColor: 'red',
+        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        onPress: () => { this.deleteTask() }
+     }
+    ];
     console.log(this.state.render, this.state.locations)
     return this.state.render ? (
       <View style={styles.wrapper}>
@@ -69,15 +101,24 @@ export default class EcoSystem extends Component {
                     source={images[location.Avatar][1]}
                     style={{width: 200, height: 200}}
                   />
-                  <Text style={{fontSize: 20}}>
-                    {this.state.currentTask} {"\n"}
-                  </Text>
-                  <Text stlye={{fontSize: 14}}>
-                    {this.state.currentDescription}
-                  </Text>
                 </View>
               ))}
             </Swiper>
+            <View style={styles.separator} />
+            <Swipeout right={swipeBtns}
+              autoClose='true'
+              backgroundColor= 'transparent'
+            >
+              <View style={{margin: 10, justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontSize: 20}}>
+                  {this.state.currentTask} {"\n"}
+                </Text>
+                <Text stlye={{fontSize: 14}}>
+                  {this.state.currentDescription}
+                </Text>
+              </View>
+            </Swipeout>
+          <View style={styles.separator} />
         </View>
         <View style={{flex: 3}}>
           <ScrollView horizontal={true}>
@@ -157,5 +198,12 @@ const styles = StyleSheet.create({
    alignItems: 'center',
    justifyContent: 'center'
   //  backgroundColor: 'red'
- }
+ },
+ separator: {
+  height: 1,
+  width: 400,
+  backgroundColor: '#8A7D80',
+  marginLeft: 15,
+  
+}
 })

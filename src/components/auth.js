@@ -4,7 +4,7 @@ import axios from "axios";
 export const USER_KEY = "auth-demo-key";
 
 export const onSignIn = (username, password) => {
-  axios.get('http://10.16.1.131:3000/login', {
+  axios.get('http://10.16.1.218:3000/login', {
     params: {
       username: username,
       password: password
@@ -13,9 +13,6 @@ export const onSignIn = (username, password) => {
     .then((res) => {
       AsyncStorage.setItem(USER_KEY, res.data.token);
       return res;
-    })
-    .then((res) => {
-      
     })
     .catch((err) => {
       console.log(err);

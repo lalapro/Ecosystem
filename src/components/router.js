@@ -57,7 +57,7 @@ export const SignedIn = DrawerNavigator(
 	}
 )
 
-export const createRootNavigator = (signedIn = false) => {
+export const createRootNavigator = (signedIn = true) => {
 	return StackNavigator(
 		{
 			SignedIn: {
