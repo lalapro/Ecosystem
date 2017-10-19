@@ -9,7 +9,8 @@ class LocationPicker extends Component {
       markers: [],
       newLocation: '',
       location: 'Attach a Location',
-      created: ''
+      created: '',
+      MarkerID: ''
     }
 
     this.changeLocation = this.changeLocation.bind(this);
@@ -21,10 +22,10 @@ class LocationPicker extends Component {
     axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
         let markers = response.data;
-        markers = markers.map((row) => {
-          return row.Marker_Title;
-        })
-        markers.unshift('none')
+        // markers = markers.map((row) => {
+        //   return row.Marker_Title;
+        // })
+        // markers.unshift('none')
         this.setState({markers})
       })
       .catch((err) => {console.error('locationpickers', err)})
@@ -35,6 +36,18 @@ class LocationPicker extends Component {
     this.props.onSelect(location);
   }
 
+  componentWillReceiveProps(oldone, newone){
+    setTimeout(() => {this.setState({ MarkerID: oldone.task.Marker_ID}); 
+      this.state.markers.map(ele => {
+        if (this.state.MarkerID === ele.Marker_ID) {
+           this.setState({ location: ele.Marker_Title })
+          }
+        });
+
+    console.log(this.state)  
+      }); 
+  }
+
   render() {
     return(
         <Picker
@@ -42,10 +55,12 @@ class LocationPicker extends Component {
           selectedValue={this.state.location}
           onValueChange={this.changeLocation}
         >
+        {this.state.location ?           
+          <Picker.Item label={this.state.location} value={this.state.MarkerID}/> : null}
           {this.state.markers ?
             this.state.markers.map((location, i) => {
               return (
-                <Picker.Item key={i} label={location} value={location} />
+                <Picker.Item key={i} label={location.Marker_Title} value={location.Marker_ID} />
               )
             }) : ''
           }

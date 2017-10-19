@@ -66,13 +66,13 @@ export default class EcoSystem extends Component {
       {
         text: 'Edit',
         backgroundColor: '#f4a316',
-        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        underlayColor: 'rgba(0, 0, 0, 0.6)',
         onPress: () => { this.editTask() }
      },
       {
         text: 'Delete',
         backgroundColor: 'red',
-        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        underlayColor: 'rgba(0, 0, 0, 0.6)',
         onPress: () => { this.deleteTask() }
      }
     ];

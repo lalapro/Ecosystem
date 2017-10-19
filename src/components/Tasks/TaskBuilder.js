@@ -43,8 +43,17 @@ class TaskBuilder extends Component {
       userID: this.props.screenProps.userID
     });
     if (this.props.navigation.state.params) {
-      var task = this.props.navigation.state.params.specificTask
-      setTimeout(() => { this.setState({ editTask: task }) }, 200);
+      var task = this.props.navigation.state.params.specificTask;
+      console.log(task, ';@@@@@@@@@@@@@@@@')
+      setTimeout(() => { this.setState({ 
+        title: task.Task_Title,
+        description: task.Task_Description,
+        startTime: task.Start,
+        endTime: task.End,
+        location: task.Marker_ID,
+        category: task.Category_ID,
+        frequency: task.Frequency,
+        editTask: task }) }, 200);
     }
   }
 
@@ -81,8 +90,6 @@ class TaskBuilder extends Component {
   }
 
   saveTask() {
-    //if no props.task
-
     let title = this.state.title;
     let description = this.state.description;
     let startTime = this.state.startTime;
@@ -92,25 +99,25 @@ class TaskBuilder extends Component {
     let frequency = this.state.frequency;
     let userID = this.state.userID;
     //need to send username to get userId
-    axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
-      .then((response) => this.setState({
-        saved: 'Task Saved',
-        title: '',
-        description: '',
-        startTime: null,
-        endTime: null,
-        location: 'none',
-        category: 'none',
-        frequency: ''
-      }))
-      .then(res => {
-        this.props.navigation.goBack();
-      })
-      .catch((err) => console.error('taskbuilderjs. line 82', err))
-  }
-
-  editTask() {
-    //if received tasks - update in database on save
+    if (!this.state.editTask) {
+      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+        .then((response) => this.setState({
+          saved: 'Task Saved',
+          title: '',
+          description: '',
+          startTime: null,
+          endTime: null,
+          location: 'none',
+          category: 'none',
+          frequency: ''
+        }))
+        .then(res => {
+          this.props.navigation.goBack();
+        })
+        .catch((err) => console.error('taskbuilderjs. line 82', err))
+      } else {
+        axios.put('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+      }
   }
 
   cancelTask() {
