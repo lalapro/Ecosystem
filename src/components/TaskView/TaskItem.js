@@ -118,9 +118,6 @@ styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
-<<<<<<< HEAD
-    // marginLeft: 15 
-=======
     marginLeft: 15 
   },
   button: {
@@ -133,6 +130,5 @@ styles = StyleSheet.create({
     marginLeft: 60,
     marginTop: 5,
     marginBottom: 5
->>>>>>> noserver
   }
 })
