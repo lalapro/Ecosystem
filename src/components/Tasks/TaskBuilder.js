@@ -74,7 +74,7 @@ class TaskBuilder extends Component {
   }
 
   handleLocationChange(location) {
-    this.setState({location})
+    this.setState({location}, () => console.log(this.state.location))
   }
 
   handleCategoryChange(category) {
@@ -100,7 +100,7 @@ class TaskBuilder extends Component {
     let userID = this.state.userID;
     //need to send username to get userId
     if (!this.state.editTask) {
-      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+      axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
         .then((response) => this.setState({
           saved: 'Task Saved',
           title: '',

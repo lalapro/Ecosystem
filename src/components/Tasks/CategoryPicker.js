@@ -19,13 +19,22 @@ class CategoryPicker extends Component {
 
   //axios.get for existing categories
   componentWillMount() {
+    setTimeout(() => {
+      if(this.props.task) {
+        this.setState({category: this.props.task.Category_ID}, () => console.log(this.state))
+      }
+    }, 800)
     //give axios user id and get category names
-    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
+    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
       .then((response) => {
         let categories = response.data;
         this.setState({categories})
       })
       .catch((err) => {console.error(err)})
+  }
+  
+  componentDidMount() {
+    
   }
 
 //axios.get for existing categories
@@ -48,14 +57,14 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
+    axios.post('http://10.16.1.218:3000/categories', {category, userID: this.props.userID})
       .then((response) => {
         console.log(`save category ${response}`)
       })
       .catch((err) => {
         console.error(err)
       })
-
+		}
 
 	render() {
 		return(

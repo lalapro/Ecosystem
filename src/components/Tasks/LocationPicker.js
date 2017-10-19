@@ -19,7 +19,7 @@ class LocationPicker extends Component {
   componentDidMount() {
     //give axios user id and get Location names
     console.log(this.props)
-    axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
+    axios.get('http://10.16.1.218:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
         let markers = response.data;
         // markers = markers.map((row) => {
@@ -30,7 +30,9 @@ class LocationPicker extends Component {
       })
       .catch((err) => {console.error('locationpickers', err)})
   }
-
+  componentWillReceiveProps() {
+    
+  }
   changeLocation(location) {
     this.setState({location});
     this.props.onSelect(location);
@@ -52,7 +54,7 @@ class LocationPicker extends Component {
     return(
         <Picker
           style={[styles.onePicker]} itemStyle={styles.onePickerItem}
-          selectedValue={this.state.location}
+          selectedValue={this.props.placeholder}
           onValueChange={this.changeLocation}
         >
         {this.state.location ?           
