@@ -9,15 +9,16 @@ class LocationPicker extends Component {
       markers: [],
       newLocation: '',
       location: 'Attach a Location',
-      created: '',
+      created: ''
     }
 
     this.changeLocation = this.changeLocation.bind(this);
   }
   //axios.get for existing markers
-  componentWillMount() {
+  componentDidMount() {
     //give axios user id and get Location names
-    axios.get('http://10.16.1.218:3000/markers', {params: {userID: 2}})
+    console.log(this.props)
+    axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
         let markers = response.data;
         markers = markers.map((row) => {

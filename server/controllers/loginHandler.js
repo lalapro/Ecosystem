@@ -8,7 +8,11 @@ const moment = require('moment');
 const handleLogin = (req, res) => {
   let username = req.query.username;
   let password = req.query.password;
-  let select = `SELECT * FROM User WHERE Token ='${username}'`;
+  let select = `SELECT * FROM User WHERE Username ='${username}'`;
+
+
+
+
   db.query(select, null, (err, users) => {
     if (err) {
       res.send('error in login query', err);
@@ -22,10 +26,18 @@ const handleLogin = (req, res) => {
               iss: username,
               exp: expires
             }, req.app.get('jwtTokenSecret'));
-            res.json({
-              token: token,
-              expires: expires,
-              user: users[0]
+
+            // query updates user row with token async maybe
+            let checkForExistingUser = `UPDATE User SET Token = '${token}' WHERE Username = '${username}'`;
+            db.query(checkForExistingUser, (err, updated) => {
+              if (err) {
+                res.send('error in updating existing user', err);
+              } else {
+                res.json({
+                  token: token,
+                  user: users[0].ID
+                })
+              }
             })
           } else {
             res.send('error in bcrypcompare');

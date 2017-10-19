@@ -17,6 +17,13 @@ class TaskForm extends Component {
     this.changeFrequency = this.changeFrequency.bind(this);
   }
 
+  componentWillMount() {
+    console.log('taskform', this.props)
+    this.setState({
+      userID: this.props.userID
+    })
+  }
+
   changeFrequency(itemValue) {
     this.setState({frequency: itemValue})
     this.props.handleFrequencyChange(itemValue)
@@ -24,20 +31,20 @@ class TaskForm extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <TextInput 
+        <TextInput
           onChangeText={(title) => this.props.handleTaskTitleChange(title)}
           placeholder={this.props.task.Task_Title ? this.props.task.Task_Title : "Name of Task"}
-          style={styles.input} 
+          style={styles.input}
         />
         <TextInput
           onChangeText={(description) => this.props.handleDescriptionChange(description)}
           placeholder={this.props.task.Task_Description ? this.props.task.Task_Description :"Description"}
-          style={styles.input} 
+          style={styles.input}
         />
         <TaskDatePicker placeholder={this.props.task.Start ? this.props.task.Start : "Start"} onSelect={(startTime) => this.props.handleStartChange(startTime)} />
         <TaskDatePicker placeholder={this.props.task.End ? this.props.task.End : "End"} onSelect={(endTime) => this.props.handleEndChange(endTime)} />
-        <LocationPicker style={styles.picker} onSelect={(itemValue) => this.props.handleLocationChange(itemValue)}/>
-        <CategoryPicker style={styles.picker} onSelect={(itemValue) => this.props.handleCategoryChange(itemValue)}/>
+        <LocationPicker style={styles.picker} onSelect={(itemValue) => this.props.handleLocationChange(itemValue)} userID={this.state.userID}/>
+        <CategoryPicker style={styles.picker} onSelect={(itemValue) => this.props.handleCategoryChange(itemValue)} userID={this.state.userID}/>
         <Picker
           style={[styles.onePicker]} itemStyle={styles.onePickerItem}
           selectedValue={this.state.frequency}
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 10,
     color: '#8A7D80',
-    borderColor: '#8A7D80', 
+    borderColor: '#8A7D80',
     borderWidth: 1
   },
   picker: {

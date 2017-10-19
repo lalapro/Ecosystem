@@ -12,36 +12,33 @@ export default class EcoSystem extends Component {
     super(props);
     this.state = {
       username: '',
-      userID: 2,
-      locations: [],
+      userID: null,
+      locations: undefined,
       render: false,
       index: 0,
       currentTask: '',
       currentDescription: '',
-      editSpecificTask: '',
-      // currentLocation: 'Home',
-      // currentTasks: ['a', 'b'],
-      // currentData: [],
-      // completionPoints: 0
+      editSpecificTask: ''
     }
-    // this.viewChange = this.viewChange.bind(this);
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
-    .then(res => this.setState({
-      locations: res.data,
-      currentDescription: '',
-      currentTask: ''
-    }))
-    .then(res => this.setState({
-      render: true
-    }))
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    .then(res => {
+      console.log('calling get markers', res.data)
+      this.setState({
+        locations: res.data,
+        currentDescription: '',
+        currentTask: ''
+      })
+    })
     .catch(err => console.error(err))
   }
 
   componentDidMount() {
-    this.getMarkers();
+    this.setState({
+      userID: this.props.screenProps.userID
+    }, () => this.getMarkers())
   }
   //
   showTask(task, specificTask) {
@@ -53,12 +50,11 @@ export default class EcoSystem extends Component {
   }
 
   editTask(task) {
-    // console.log('@@@@@@@@@@@@@@',task,'@@@@@@@@@@@')
     this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask })
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -80,7 +76,7 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-    return this.state.render ? (
+    return this.state.locations ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
           <Button
@@ -143,7 +139,12 @@ export default class EcoSystem extends Component {
           </ScrollView>
         </View>
       </View>
-    ) : null
+    ) :
+    <View>
+      <Text>
+        Hi mom
+      </Text>
+    </View>
   }
 }
 

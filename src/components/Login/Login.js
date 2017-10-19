@@ -16,12 +16,29 @@ export default class Login extends Component {
     this.handlePasswordInput = this.handlePasswordInput.bind(this);
   }
 
+  componentDidMount() {
+    console.log(this.props.screenProps)
+  }
+
   handleUserInput(event) {
     this.setState({ username: event })
   }
 
   handlePasswordInput(event) {
     this.setState({ password: event})
+  }
+
+  handleRegularLogin() {
+    axios.get(`http://10.16.1.152:3000/login`, {
+      params: {
+        username: this.state.username,
+        password: this.state.password
+      }
+    })
+    .then(userData => {
+      this.props.screenProps.handleLogIn(userData.data.user);
+      AsyncStorage.setItem(`user_token`, userData.data.token);
+    })
   }
 
   login = async () => {
@@ -76,8 +93,8 @@ export default class Login extends Component {
         <TouchableOpacity
           onPress={() => {
             username = this.state.username
-            password = this.state.password;
-            this.props.navigation.navigate("SignedIn")
+            password = this.state.password
+            this.handleRegularLogin()
             }}
           style={styles.buttonContainer}
           >
