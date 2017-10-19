@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import{ StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import{ StyleSheet, View, Image, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import SignupForm from './SignupForm';
 import { onSignIn } from '../auth.js';
+import axios from 'axios';
+
 
 export default class Signup extends Component {
   constructor(props) {
@@ -14,6 +16,21 @@ export default class Signup extends Component {
     this.handleUserInput = this.handleUserInput.bind(this);
     this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.handleEmailInput = this.handleEmailInput.bind(this);
+  }
+
+  handleSignup() {
+    axios.post(`http://10.16.1.152:3000/signup`, {
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email
+    })
+    .then((userData) => {
+      this.props.screenProps.handleLogIn(userData.data.userID);
+      AsyncStorage.setItem(`user_token`, userData.data.token);
+    })
+    .catch((err) => {
+      console.log('error in handleSignup', err);
+    })
   }
 
   handleUserInput(event) {
@@ -48,7 +65,7 @@ export default class Signup extends Component {
 
         <TouchableOpacity
           onPress={() => {
-            onSignIn().then(() => this.props.navigation.navigate("SignedIn"))
+            this.handleSignup()
           }}
           style={styles.buttonContainer}
           >

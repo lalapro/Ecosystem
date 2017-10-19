@@ -12,19 +12,14 @@ export default class EcoSystem extends Component {
     super(props);
     this.state = {
       username: '',
-      userID: 2,
-      locations: [],
+      userID: null,
+      locations: undefined,
       render: false,
       index: 0,
       currentTask: '',
       currentDescription: '',
-      editSpecificTask: '',
-      // currentLocation: 'Home',
-      // currentTasks: ['a', 'b'],
-      // currentData: [],
-      // completionPoints: 0
+      editSpecificTask: ''
     }
-    // this.viewChange = this.viewChange.bind(this);
   }
 
   getMarkers() {
@@ -34,16 +29,16 @@ export default class EcoSystem extends Component {
       this.setState({
         locations: res.data,
         currentDescription: '',
-        currentTask: '',
-        render: true
+        currentTask: ''
       })
     })
     .catch(err => console.error(err))
   }
 
   componentDidMount() {
-    this.getMarkers();
-    console.log('mounting home', this.props.screenProps)
+    this.setState({
+      userID: this.props.screenProps.userID
+    }, () => this.getMarkers())
   }
   //
   showTask(task, specificTask) {
@@ -55,7 +50,6 @@ export default class EcoSystem extends Component {
   }
 
   editTask(task) {
-    // console.log('@@@@@@@@@@@@@@',task,'@@@@@@@@@@@')
     this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask })
   }
 
@@ -82,8 +76,7 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-    console.log(this.state.render)
-    return this.state.render ? (
+    return this.state.locations ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
           <Button
@@ -146,7 +139,12 @@ export default class EcoSystem extends Component {
           </ScrollView>
         </View>
       </View>
-    ) : null
+    ) :
+    <View>
+      <Text>
+        Hi mom
+      </Text>
+    </View>
   }
 }
 

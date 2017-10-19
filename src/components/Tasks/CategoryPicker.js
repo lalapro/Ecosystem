@@ -10,7 +10,6 @@ class CategoryPicker extends Component {
       newCategory: '',
       category: '',
       created: '',
-      userID: 2
     }
     this.newCategory = this.newCategory.bind(this);
     this.changeCategory = this.changeCategory.bind(this);
@@ -18,7 +17,7 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
       .then((response) => {
         let arr = response.data;
         let categories = arr.map((row) => {
@@ -37,7 +36,7 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.state.userID})
+    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
       .then((response) => {
         console.log(`save category ${response}`)
       })

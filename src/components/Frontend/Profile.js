@@ -17,7 +17,8 @@ export default class Profile extends Component {
             image: require('../assets/Profile.png'),
             uploading: false,
             visibleModal: false,
-            username: 'Minwoo'
+            username: 'Minwoo',
+            userID: null
         }
         // this.takePhoto = this.takePhoto.bind(this);
         // this.pickPhoto = this.pickPhoto.bind(this);
@@ -29,6 +30,9 @@ export default class Profile extends Component {
     }
 
 		componentDidMount() {
+        this.setState({
+          userID: this.props.screenProps.userID
+        })
         axios({
             method: 'get',
             url: 'http://10.16.1.152:3000/pictures',
