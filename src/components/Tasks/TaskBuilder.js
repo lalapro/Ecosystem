@@ -38,6 +38,7 @@ class TaskBuilder extends Component {
   }
 
   componentDidMount() {
+  console.log('after logging in TASKBUILDER', this.props.screenProps)
     if (this.props.navigation.state.params) {
       var task = this.props.navigation.state.params.specificTask
       setTimeout(() => { this.setState({ editTask: task }) }, 200);
@@ -77,6 +78,8 @@ class TaskBuilder extends Component {
   }
 
   saveTask() {
+    //if no props.task
+                         
     let title = this.state.title;
     let description = this.state.description;
     let startTime = this.state.startTime;
@@ -102,6 +105,10 @@ class TaskBuilder extends Component {
       })
       .catch((err) => console.error('taskbuilderjs. line 82', err))
   }
+  
+  editTask() {
+    //if received tasks - update in database on save
+  }
 
   cancelTask() {
     this.props.navigation.goBack();
@@ -116,9 +123,8 @@ class TaskBuilder extends Component {
             title="&#9776;"
           />
         </View>
-        <ScrollView 
+        <ScrollView
           automaticallyAdjustContentInsets={false}
-          onScroll={() => { console.log('onScroll'); }}
           scrollEventThrottle={200}
           style={styles.scrollView}
         >

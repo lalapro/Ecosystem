@@ -8,7 +8,6 @@ const handleTasks = (req, res) => {
     if (err) {
       res.status(404).send(`We encountered an error looking up your tasks: ${err}`);
     } else {
-      console.log(results)
       res.status(201).send(results);
     }
   })
