@@ -12,6 +12,9 @@ import TaskModal from '../TaskView/TaskModal.js';
 const { width, height } = Dimensions.get("window");
 
 export default class MapScreen extends Component {
+  static navigationOptions = {
+    title: 'Map',
+  };
 
   constructor(props) {
     super(props);
@@ -35,7 +38,7 @@ export default class MapScreen extends Component {
   }
 
   getMarkers() {
-    console.log('in get markers', this.state.userID)
+    // console.log('in get markers', this.state.userID)
     axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
      .then(markers => {
        this.setState({markers: markers.data})
@@ -54,7 +57,7 @@ export default class MapScreen extends Component {
   }
 
   componentDidMount() {
-    console.log('map mounting?', this.props.screenProps.userID)
+    // console.log('map mounting?', this.props.screenProps.userID)
     this.setState({
       userID: this.props.screenProps.userID
     }, () => this.getMarkers())
@@ -116,7 +119,7 @@ export default class MapScreen extends Component {
   }
 
   toggleHide() {
-    console.log('invoked')
+    // console.log('invoked')
     this.setState({
       modalVisible: false
     })

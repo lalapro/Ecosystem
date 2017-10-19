@@ -29,7 +29,7 @@ export default class Signup extends Component {
       AsyncStorage.setItem(`user_token`, userData.data.token);
     })
     .catch((err) => {
-      console.log('error in handleSignup', err);
+      console.error('error in handleSignup', err);
     })
   }
 

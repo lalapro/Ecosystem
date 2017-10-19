@@ -5,7 +5,7 @@ export const USER_KEY = "auth-demo-key";
 
 export const onSignIn = (username, password) => {
 
-  axios.get('http://10.16.1.152:3000/login', {
+  axios.get('http://10.16.1.218:3000/login', {
     params: {
       username: username,
       password: password
@@ -16,7 +16,7 @@ export const onSignIn = (username, password) => {
       return res;
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     })
 }
 

@@ -8,9 +8,9 @@ class CategoryPicker extends Component {
 		this.state = {
 			categories: [],
 			newCategory: '',
-			category: '',
+			category: 'Attach a Category',
 			created: '',
-			userID: 2,
+			userID: '',
 			categoryID: ''
 		}
 		this.newCategory = this.newCategory.bind(this);
@@ -20,7 +20,7 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
+    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
       .then((response) => {
         let categories = response.data;
         this.setState({categories})
@@ -29,26 +29,18 @@ class CategoryPicker extends Component {
   }
 
 //axios.get for existing categories
-	componentWillReceiveProps(oldone, newone) {
-		setTimeout(() => {this.setState({ categoryID: oldone.task.Category_ID});
-			this.state.categories.map(ele => {
-				if (ele.ID === this.state.categoryID) {
-					this.setState({ category: ele.Category })
-				}
-			})
-		})
+	componentWillReceiveProps(oldone) {
+		setTimeout(() => {this.setState({ category: ('' + oldone.task.Category_ID)}) })
 	}
-
-
 
 	changeCategory(category) {
 		this.setState({category});
-		this.props.onSelect(category);
+		this.props.onSelect(Number(category));
 	}
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
+    axios.post('http://10.16.1.218:3000/categories', {category, userID: this.props.userID})
       .then((response) => {
         console.log(`save category ${response}`)
       })
@@ -57,21 +49,21 @@ class CategoryPicker extends Component {
 			})
 		}
 
-
 	render() {
 		return(
 			<View style={StyleSheet.picker}>
 				<Picker
 					style={[styles.onePicker]} itemStyle={styles.onePickerItem}
 					selectedValue={this.state.category}
-					onValueChange={this.changeCategory}
+					onValueChange={value => this.changeCategory(value)}
 				>
 			{this.state.category ?            
 			<Picker.Item label={this.state.category} value={this.state.categoryID}/> : null} 
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
+							let val = '' + category.ID;
 							return (
-								<Picker.Item key={i} label={category.Category} value={category.Category_ID} />
+								<Picker.Item key={i} label={category.Category} value={val} />
 							)
 						}) : ''
 					}
