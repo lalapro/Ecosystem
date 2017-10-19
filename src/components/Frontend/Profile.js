@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Modal, ImageStore, StyleSheet, Text, View, Image, TextInput, Button, Clipboard, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { AsyncStorage, Modal, ImageStore, StyleSheet, Text, View, Image, TextInput, Button, Clipboard, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
 import Expo, { Asset, Camera, Permissions, ImagePicker } from 'expo';
 import axios from 'axios';
 // import base from 'base-64';
@@ -172,6 +172,9 @@ export default class Profile extends Component {
     showModal(stat) {
         this.setState({ visibleModal: stat })
     }
+    toggleLogoutModal(stat) {
+      this.setState({ logoutModalVisibile: stat })
+    }
     // uploadPhoto = () => {
     //  let { image } = this.state;
     //  if (!image) alert('you dont have image!');
@@ -212,6 +215,7 @@ export default class Profile extends Component {
     // };
   
  	render() {
+     console.log(this.props.screenProps)
  		// let Hidden = () => {
  		// 	return this.state.showDiv ? <View style={{marignRight: 10, position: 'absolute' }}>
  		// 		<Button onPress={this.takePhoto} title={`Take a Photo`}/>
@@ -232,7 +236,6 @@ export default class Profile extends Component {
      			<Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
 	      </View>
 
-
 	      <View style={styles.location}>
 	      	<TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
 	      	onChangeText={(title) => {this.setState({title: title})}} />
@@ -240,8 +243,20 @@ export default class Profile extends Component {
 	      	onChange={(locationName) => {this.setState({locationName})}} />
 	      	<TextInput style={styles.input} placeholder="Add Location Address" placeholderTextColor="rgba(255, 255, 255, 0.7)"
 	      	onChange={(locationAddress) => {this.setState({locationAddress})}} />
+            <Button
+              title="Logout"
+              onPress={
+                ()=> {Alert.alert(
+                  "Logout",
+                  "Are you sure you want to leave?",
+                  [
+                    {text: "Yes", onPress: () => this.props.screenProps.handleLogout()},
+                    {text: "No", onPress: () => console.log('cancel pressed')}
+                  ]
+                )}
+              }
+            />
 	      </View>
-
 
       	<View style={styles.map} />
 	        <Modal
