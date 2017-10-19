@@ -42,6 +42,7 @@ export default class EcoSystem extends Component {
   }
 
   showTask(task, specificTask) {
+    console.log(specificTask, 'please')
     this.setState({
       currentTask: task.Task_Title,
       currentDescription: task.Task_Description,

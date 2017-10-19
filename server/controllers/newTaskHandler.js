@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../../db/index.js');
 
 const handlenNewTask = (req, res) => {
+  console.log(req.body)
   let Title = req.body.title;
   let Description = req.body.description;
   let Date = req.body.date;

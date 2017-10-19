@@ -12,6 +12,7 @@ class TaskBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      oldTitle: '',
       title: '',
       description: '',
       startTime: null,
@@ -24,6 +25,7 @@ class TaskBuilder extends Component {
       markerID: '',
       userID: null,
       editTask: '',
+      taskID: ''
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -44,8 +46,8 @@ class TaskBuilder extends Component {
     });
     if (this.props.navigation.state.params) {
       var task = this.props.navigation.state.params.specificTask;
-      console.log(task, ';@@@@@@@@@@@@@@@@')
       setTimeout(() => { this.setState({ 
+        oldTitle: task.Task_Title,
         title: task.Task_Title,
         description: task.Task_Description,
         startTime: task.Start,
@@ -53,6 +55,7 @@ class TaskBuilder extends Component {
         location: task.Marker_ID,
         category: task.Category_ID,
         frequency: task.Frequency,
+        taskID: task.Task_ID,
         editTask: task }) }, 200);
     }
   }
@@ -90,6 +93,7 @@ class TaskBuilder extends Component {
   }
 
   saveTask() {
+    let oldTitle = this.state.oldTitle;
     let title = this.state.title;
     let description = this.state.description;
     let startTime = this.state.startTime;
@@ -98,6 +102,7 @@ class TaskBuilder extends Component {
     let category = this.state.category;
     let frequency = this.state.frequency;
     let userID = this.state.userID;
+    let taskID = this.state.taskID;
     //need to send username to get userId
     if (!this.state.editTask) {
       axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
@@ -116,11 +121,26 @@ class TaskBuilder extends Component {
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+        axios.put('http://10.16.1.218:3000/editTask', {taskID, title, description, startTime, endTime, location, category, frequency, userID})
+        .then((res) => {
+          this.props.navigation.goBack();
+        })
+        .catch(err => console.error(err))
       }
   }
 
   cancelTask() {
+    this.setState({
+      saved: '',
+      title: '',
+      description: '',
+      startTime: null,
+      endTime: null,
+      location: 'none',
+      category: 'none',
+      frequency: '',
+      editTask: ''
+    });
     this.props.navigation.goBack();
   }
 

@@ -27,31 +27,15 @@ class CategoryPicker extends Component {
       })
       .catch((err) => {console.error(err)})
   }
-  
-  componentDidMount() {
-    setTimeout(() => {
-      if(this.props.marker) {
-        this.setState({category: this.props.category}, () => console.log(this.state))
-      }
-    }, 800)
-  }
 
 //axios.get for existing categories
-	componentWillReceiveProps(oldone, newone) {
-		setTimeout(() => {this.setState({ categoryID: oldone.task.Category_ID});
-			this.state.categories.map(ele => {
-				if (ele.ID === this.state.categoryID) {
-					this.setState({ category: ele.Category })
-				}
-			})
-		})
+	componentWillReceiveProps(oldone) {
+		setTimeout(() => {this.setState({ category: ('' + oldone.task.Category_ID)}) })
 	}
-
-
 
 	changeCategory(category) {
 		this.setState({category});
-		this.props.onSelect(category);
+		this.props.onSelect(Number(category));
 	}
 
   newCategory() {
@@ -71,14 +55,15 @@ class CategoryPicker extends Component {
 				<Picker
 					style={[styles.onePicker]} itemStyle={styles.onePickerItem}
 					selectedValue={this.state.category}
-					onValueChange={this.changeCategory}
+					onValueChange={value => this.changeCategory(value)}
 				>
 			{this.state.category ?            
 			<Picker.Item label={this.state.category} value={this.state.categoryID}/> : null} 
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
+							let val = '' + category.ID;
 							return (
-								<Picker.Item key={i} label={category.Category} value={category.Category_ID} />
+								<Picker.Item key={i} label={category.Category} value={val} />
 							)
 						}) : ''
 					}
