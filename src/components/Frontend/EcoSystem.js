@@ -3,9 +3,6 @@ import { StyleSheet, View, Text, Separator, Dimensions, ScrollView, Button, Imag
 import Swiper from 'react-native-swiper';
 import Swipeout from 'react-native-swipeout';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-import Navbar from '../Frontend/Navbar.js';
-import Objects from './Objects';
-import Tasks from './Tasks';
 import profile from './Profile';
 import axios from 'axios';
 
@@ -42,6 +39,7 @@ export default class EcoSystem extends Component {
     }))
     .catch(err => console.error(err))
   }
+
   componentDidMount() {
     this.getMarkers();
   }
@@ -131,7 +129,7 @@ export default class EcoSystem extends Component {
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => (
-                <TouchableHighlight style={styles.circle} key={index} 
+                <TouchableHighlight style={styles.circle} key={index}
                 onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
                   <Text style={{fontSize: 18, fontWeight: 'bold'}}>
                     {task.Task_Title}
@@ -211,6 +209,6 @@ const styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
-    // marginLeft: 15 
+    // marginLeft: 15
   }
 })

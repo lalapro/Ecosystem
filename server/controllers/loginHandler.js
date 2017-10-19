@@ -8,7 +8,7 @@ const moment = require('moment');
 const handleLogin = (req, res) => {
   let username = req.query.username;
   let password = req.query.password;
-  let select = `SELECT * FROM User WHERE Username ='${username}'`;
+  let select = `SELECT * FROM User WHERE Token ='${username}'`;
   db.query(select, null, (err, users) => {
     if (err) {
       res.send('error in login query', err);
@@ -35,5 +35,6 @@ const handleLogin = (req, res) => {
     }
   })
 }
+
 
 module.exports = handleLogin;

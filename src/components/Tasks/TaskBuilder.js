@@ -38,6 +38,7 @@ class TaskBuilder extends Component {
   }
 
   componentDidMount() {
+  console.log('after logging in TASKBUILDER', this.props.screenProps)
     if (this.props.navigation.state.params) {
       var task = this.props.navigation.state.params.specificTask
       setTimeout(() => { this.setState({ editTask: task }) }, 200);
@@ -122,7 +123,7 @@ class TaskBuilder extends Component {
             title="&#9776;"
           />
         </View>
-        <ScrollView 
+        <ScrollView
           automaticallyAdjustContentInsets={false}
           scrollEventThrottle={200}
           style={styles.scrollView}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import{ StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import LoginForm from './LoginForm';
 import { onSignIn } from '../auth.js'
@@ -22,6 +22,36 @@ export default class Login extends Component {
 
   handlePasswordInput(event) {
     this.setState({ password: event})
+  }
+
+  login = async () => {
+    console.log('login button hit', this.props.screenProps)
+      const APP_ID = "1729141044061993"
+      const options = {
+          permissions: ['public_profile', 'email', 'user_friends'],
+      }
+      const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync(APP_ID, options)
+      if (type === 'success') {
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
+
+        // send post request to user table
+        const user = await response.json()
+        axios.post(`http://10.16.1.152:3000/token`, {
+          name: user.name,
+          username: user.id,
+          token: token
+        })
+        .then(res => {
+          this.props.screenProps.handleLogIn(res.data.user)
+        })
+        AsyncStorage.setItem(`user_token`, token);
+
+    }
+  }
+
+  checkAsyncStorage = async () => {
+    const tokenInPhone = await AsyncStorage.getItem(`user_token`)
+    return tokenInPhone;
   }
 
   render() {
@@ -53,6 +83,16 @@ export default class Login extends Component {
           >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
+
+
+
+        <Button
+           onPress={this.login}
+           title='Login with facebook' />
+
+
+
+
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("SignUp")}
           style={styles.buttonContainer}

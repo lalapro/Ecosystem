@@ -35,7 +35,8 @@ export default class MapScreen extends Component {
 
 
 
-  componentDidMount() {;
+  componentDidMount() {
+    console.log('after logging in MAPPPP', JSON.stringify(this.props.screenProps))
      axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => {
         this.setState({markers: markers.data})

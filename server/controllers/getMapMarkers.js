@@ -17,7 +17,7 @@ const getMapMarkers = (req, res) => {
       let count = 0;
       if (length === 0 ) {
         res.send();
-      } 
+      }
       for (let i = 0; i < results.length; i++) {
         let marker = results[i]
         db.query(innerQuery, null, (err, tasks) => {
