@@ -21,8 +21,13 @@ class TaskItem extends Component {
     })
   }
 
+  hideModal() {
+    this.props.toggleHide()
+  }
+
   editTask() {
-    //send props to fill out a taskbuilder page
+    this.props.hideModal()
+    this.props.editTask(this.props.task)
   }
 
   deleteTask() {
@@ -37,20 +42,20 @@ class TaskItem extends Component {
       {
         text: 'Edit',
         backgroundColor: '#f4a316',
-        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        underlayColor: 'rgba(0, 0, 1, 0.6)',
         onPress: () => { this.editTask() }
      },
       {
         text: 'Delete',
         backgroundColor: 'red',
-        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+        underlayColor: 'rgba(0, 0, 1, 0.6)',
         onPress: () => { this.deleteTask() }
      }
     ];
     return (
-      <View>
+      <View style={styles.button}>
         {this.state.task ? (
-          <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: 350}}>
+          <View style={{display: 'flex', width: 350}}>
             <Swipeout right={swipeBtns}
               autoClose={true}
               backgroundColor= 'transparent'
@@ -58,6 +63,7 @@ class TaskItem extends Component {
             {!this.state.expanded ? (
               <View>
                 <Text style={{fontSize: 30, alignItems: 'flex-start', justifyContent: 'flex-start'}}>{this.state.task.Task_Title}</Text>
+                <Text style={{fontSize: 30}}>{this.state.task.Task_Title}</Text>
                 <View style={styles.subtitleView} >
                   <Text style={styles.collapsed}>{this.state.task.Task_Description}</Text>
                   <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E9;</Text>
@@ -68,7 +74,7 @@ class TaskItem extends Component {
               <View>
                 <Text style={{fontSize: 30}}>{this.props.task.Task_Title}</Text>
                 <View style={styles.subtitleView}>
-                  <Text style={styles.expanded} style={styles.subtitleView}>
+                  <Text style={styles.expanded}>
                     {this.state.task.Task_Description} {"\n"}
                     {this.state.task.Completion} {"\n"}
                     {this.state.task.Start} {"\n"}
@@ -76,7 +82,8 @@ class TaskItem extends Component {
                     {this.state.task.Frequency}
                   </Text>
                   <Text onPress={() => this.setState({expanded: !this.state.expanded})} style={{fontSize: 30}}>&#x21E7;</Text>
-                  <TouchableHighlight onPress={this.editTask}><Text style={{fontSize: 30}}>&#x2699;</Text></TouchableHighlight>
+                  <TouchableHighlight onPress={this.hideModal}
+                  onPress={this.editTask}><Text style={{fontSize: 30}}>&#x2699;</Text></TouchableHighlight>
                 </View>
               </View>
             ) 
@@ -99,6 +106,7 @@ styles = StyleSheet.create({
     flexDirection: 'row',
     paddingLeft: 10,
     paddingTop: 5,
+    alignItems: 'center'
   },
   expanded: {
     // fontFamily: 'HelevticaNeue'
@@ -110,6 +118,21 @@ styles = StyleSheet.create({
     height: 1,
     width: 400,
     backgroundColor: '#8A7D80',
+<<<<<<< HEAD
     // marginLeft: 15 
+=======
+    marginLeft: 15 
+  },
+  button: {
+    backgroundColor: '#ddd',
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: 'black',
+    width: 250,
+    alignItems: 'center',
+    marginLeft: 60,
+    marginTop: 5,
+    marginBottom: 5
+>>>>>>> noserver
   }
 })
