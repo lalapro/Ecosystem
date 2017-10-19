@@ -16,7 +16,19 @@ class CategoryPicker extends Component {
 		this.newCategory = this.newCategory.bind(this);
 		this.changeCategory = this.changeCategory.bind(this);
 	}
-	//axios.get for existing categories
+
+  //axios.get for existing categories
+  componentWillMount() {
+    //give axios user id and get category names
+    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
+      .then((response) => {
+        let categories = response.data;
+        this.setState({categories})
+      })
+      .catch((err) => {console.error(err)})
+  }
+
+//axios.get for existing categories
 	componentWillReceiveProps(oldone, newone) {
 		setTimeout(() => {this.setState({ categoryID: oldone.task.Category_ID});
 			this.state.categories.map(ele => {
@@ -27,36 +39,23 @@ class CategoryPicker extends Component {
 		})
 	}
 
-	componentWillMount() {
-		//give axios user id and get category names
-		axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.state.userID}})
-			.then((response) => {
-				let categories = response.data;
-				// let categories = arr.map((row) => {
-				//   return row.Category;
-				// })
-				// categories.unshift('none')
-				this.setState({categories})
-			})
-			.catch((err) => {console.error(err)})
-	}
+
 
 	changeCategory(category) {
 		this.setState({category});
 		this.props.onSelect(category);
 	}
 
-	newCategory() {
-		let category = this.state.category;
-		axios.post('http://10.16.1.152:3000/categories', {category, userID: this.state.userID})
-			.then((response) => {
-				console.log(`save category ${response}`)
-			})
-			.catch((err) => {
-				console.error(err)
-			})
+  newCategory() {
+    let category = this.state.category;
+    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
+      .then((response) => {
+        console.log(`save category ${response}`)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
 
-	}
 
 	render() {
 		return(

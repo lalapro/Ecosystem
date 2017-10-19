@@ -20,7 +20,9 @@ class TaskBuilder extends Component {
       category: '',
       frequency: '',
       saved: null,
-      userID: 2,
+      categoryID: '',
+      markerID: '',
+      userID: null,
       editTask: '',
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
@@ -36,6 +38,10 @@ class TaskBuilder extends Component {
   }
 
   componentDidMount() {
+    console.log('taskbuilder', this.props.screenProps.userID)
+    this.setState({
+      userID: this.props.screenProps.userID
+    });
     if (this.props.navigation.state.params) {
       var task = this.props.navigation.state.params.specificTask;
       console.log(task, ';@@@@@@@@@@@@@@@@')
@@ -84,8 +90,6 @@ class TaskBuilder extends Component {
   }
 
   saveTask() {
-    
-                         
     let title = this.state.title;
     let description = this.state.description;
     let startTime = this.state.startTime;
@@ -115,13 +119,13 @@ class TaskBuilder extends Component {
         axios.put('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
       }
   }
-  
+
   cancelTask() {
     this.props.navigation.goBack();
   }
 
   render() {
-    return(
+    return this.state.userID ? (
       <View style={styles.container}>
         <View style={{margin: 10, alignSelf: 'flex-start'}}>
           <Button
@@ -145,10 +149,11 @@ class TaskBuilder extends Component {
             saveTask={this.saveTask}
             cancel={this.cancelTask}
             task={this.state.editTask}
+            userID={this.state.userID}
           />
         </ScrollView>
       </View>
-    )
+    ) : null
   }
 }
 

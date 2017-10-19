@@ -18,7 +18,7 @@ export default class MapScreen extends Component {
     this.state = {
       markers: [],
       markerIDs: [],
-      userID: 2,
+      userID: null,
       region: {
         latitude: 0,
         longitude: 0,
@@ -34,24 +34,30 @@ export default class MapScreen extends Component {
     this.editTask = this.editTask.bind(this);
   }
 
-  componentDidMount() {
-    console.log('after logging in MAPPPP', JSON.stringify(this.props.screenProps))
-     axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
-      .then(markers => {
-        this.setState({markers: markers.data})
-      })
-      .then(res => {
-        this.setState({markerIDs: []});
-        let allMarkers = this.state.markers
-        for(let i = 0; i < allMarkers.length; i++) {
-          this.state.markerIDs.push(allMarkers[i].Marker_Title)
-        }
-      })
-      .then(res => this.updateCurrentLocation())
-      .then(res => setTimeout(this.startRender, 350))
-      .then(res => setTimeout(() => {this.animateMap()}, 1550))
-      .catch(err => console.error(err))
+  getMarkers() {
+    console.log('in get markers', this.state.userID)
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+     .then(markers => {
+       this.setState({markers: markers.data})
+     })
+     .then(res => {
+       this.setState({markerIDs: []});
+       let allMarkers = this.state.markers
+       for(let i = 0; i < allMarkers.length; i++) {
+         this.state.markerIDs.push(allMarkers[i].Marker_Title)
+       }
+     })
+     .then(res => this.updateCurrentLocation())
+     .then(res => setTimeout(this.startRender, 350))
+     .then(res => setTimeout(() => {this.animateMap()}, 1550))
+     .catch(err => console.error('error getting markers',err))
+  }
 
+  componentDidMount() {
+    console.log('map mounting?', this.props.screenProps.userID)
+    this.setState({
+      userID: this.props.screenProps.userID
+    }, () => this.getMarkers())
   }
 
   startRender = () => {
