@@ -7,8 +7,6 @@ import Signup from './src/components/Login/Signup.js';
 import Expo from 'expo';
 import axios from 'axios';
 
-
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);

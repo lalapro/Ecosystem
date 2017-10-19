@@ -11,6 +11,7 @@ const handleDeleteTasks = require('./controllers/deleteTaskHandler');
 const handlePicture = require('./controllers/pictureHandler.js');
 const handleGetPicture = require('./controllers/getPictureHandler.js');
 const { handleToken, handleAuth } = require('./controllers/handleToken');
+const handleEditTask = require('./controllers/editTask');
 
 routes.post('/signup', handleSignup);
 routes.get('/login', handleLogin);
@@ -27,5 +28,6 @@ routes.post('/pictures', handlePicture);
 routes.get('/pictures', handleGetPicture);
 routes.get('/token', handleToken);
 routes.post('/token', handleAuth);
+routes.post('/editTask', handleEditTask);
 
 module.exports = routes;

@@ -24,6 +24,7 @@ class TaskBuilder extends Component {
       markerID: '',
       userID: null,
       editTask: '',
+      taskID: null
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -38,14 +39,14 @@ class TaskBuilder extends Component {
   }
 
   componentDidMount() {
-    console.log('taskbuilder', this.props.screenProps.userID)
+    console.log('TASK BUILDER', this.props)
     this.setState({
       userID: this.props.screenProps.userID
     });
     if (this.props.navigation.state.params) {
       var task = this.props.navigation.state.params.specificTask;
       console.log(task, ';@@@@@@@@@@@@@@@@')
-      setTimeout(() => { this.setState({ 
+      setTimeout(() => { this.setState({
         title: task.Task_Title,
         description: task.Task_Description,
         startTime: task.Start,
@@ -73,8 +74,13 @@ class TaskBuilder extends Component {
     this.setState({endTime})
   }
 
-  handleLocationChange(location) {
-    this.setState({location})
+  handleLocationChange(location, taskID, markerID) {
+    console.log('HANDLE LOCATION CHANGE', location)
+    this.setState({
+      location: location,
+      taskID: taskID,
+      markerID: markerID
+    })
   }
 
   handleCategoryChange(category) {
@@ -94,10 +100,11 @@ class TaskBuilder extends Component {
     let description = this.state.description;
     let startTime = this.state.startTime;
     let endTime = this.state.endTime;
-    let location = this.state.location;
+    let markerID = this.state.markerID;
     let category = this.state.category;
     let frequency = this.state.frequency;
     let userID = this.state.userID;
+    let taskID = this.state.taskID;
     //need to send username to get userId
     if (!this.state.editTask) {
       axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
@@ -116,7 +123,11 @@ class TaskBuilder extends Component {
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+        console.log('should run here')
+        axios.post('http://10.16.1.152:3000/editTask', {title, description, startTime, endTime, markerID, category, frequency, userID, taskID})
+        .then(res => console.log('successfully changed '))
+        .catch(err => console.error('error connecting to db', err))
+        this.cancelTask();
       }
   }
 

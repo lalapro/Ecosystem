@@ -10,7 +10,7 @@ class CategoryPicker extends Component {
 			newCategory: '',
 			category: '',
 			created: '',
-			userID: 2,
+			userID: null,
 			categoryID: ''
 		}
 		this.newCategory = this.newCategory.bind(this);
@@ -55,6 +55,7 @@ class CategoryPicker extends Component {
       .catch((err) => {
         console.error(err)
       })
+		}
 
 
 	render() {
@@ -65,8 +66,8 @@ class CategoryPicker extends Component {
 					selectedValue={this.state.category}
 					onValueChange={this.changeCategory}
 				>
-			{this.state.category ?            
-			<Picker.Item label={this.state.category} value={this.state.categoryID}/> : null} 
+			{this.state.category ?
+			<Picker.Item label={this.state.category} value={this.state.categoryID}/> : null}
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
 							return (

@@ -10,7 +10,8 @@ class LocationPicker extends Component {
       newLocation: '',
       location: 'Attach a Location',
       created: '',
-      MarkerID: ''
+      MarkerID: '',
+      isEdit: false
     }
 
     this.changeLocation = this.changeLocation.bind(this);
@@ -21,49 +22,52 @@ class LocationPicker extends Component {
     console.log(this.props)
     axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
+        // console.log(response)
         let markers = response.data;
-        // markers = markers.map((row) => {
-        //   return row.Marker_Title;
-        // })
-        // markers.unshift('none')
         this.setState({markers})
       })
       .catch((err) => {console.error('locationpickers', err)})
   }
 
   changeLocation(location) {
-    this.setState({location});
-    this.props.onSelect(location);
+    console.log('on change', location)
+    // let marker = this.state.markers[location - 1];
+    for (let i = 0; i < this.state.markers.length; i++) {
+      if (this.state.markers[i].Marker_ID === location) {
+        this.setState({
+          location: this.state.markers[i].Marker_ID
+        }, () => this.props.handleSelect(this.state.markers[i].Marker_Title, this.state.taskID, this.state.location));
+        break;
+      }
+    }
   }
 
   componentWillReceiveProps(oldone, newone){
-    setTimeout(() => {this.setState({ MarkerID: oldone.task.Marker_ID}); 
-      this.state.markers.map(ele => {
-        if (this.state.MarkerID === ele.Marker_ID) {
-           this.setState({ location: ele.Marker_Title })
-          }
-        });
+    console.log('receiving props... Alex lukens was here', oldone)
+    if (oldone.task.Marker_ID && !this.state.isEdit) {
+      this.setState({
+        location: oldone.task.Marker_ID,
+        isEdit: true,
+        taskID: oldone.task.Task_ID
+      })
+    }
 
-    console.log(this.state)  
-      }); 
   }
 
   render() {
     return(
         <Picker
-          style={[styles.onePicker]} itemStyle={styles.onePickerItem}
+          style={styles.onePicker} itemStyle={styles.onePickerItem}
           selectedValue={this.state.location}
-          onValueChange={this.changeLocation}
+          onValueChange={(location) => this.changeLocation(location)}
         >
-        {this.state.location ?           
-          <Picker.Item label={this.state.location} value={this.state.MarkerID}/> : null}
-          {this.state.markers ?
-            this.state.markers.map((location, i) => {
-              return (
-                <Picker.Item key={i} label={location.Marker_Title} value={location.Marker_ID} />
-              )
-            }) : ''
-          }
+        {this.state.markers ?
+          this.state.markers.map((location, i) => {
+            return (
+              <Picker.Item key={i} label={location.Marker_Title} value={location.Marker_ID} />
+            )
+          }) : ''
+        }
         </Picker>
     )
   }

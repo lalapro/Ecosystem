@@ -142,8 +142,12 @@ export default class EcoSystem extends Component {
     ) :
     <View>
       <Text>
-        Hi mom
+        Looks like you don't have any locations added! Click on the map button to go to the map page!
       </Text>
+      <Button
+        title="Map"
+        onPress={() => navigate('Map')}
+      />
     </View>
   }
 }
