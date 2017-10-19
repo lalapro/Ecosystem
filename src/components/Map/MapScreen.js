@@ -39,7 +39,6 @@ export default class MapScreen extends Component {
     console.log('after logging in MAPPPP', JSON.stringify(this.props.screenProps))
      axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
       .then(markers => {
-        console.log('markers got')
         this.setState({markers: markers.data})
       })
       .then(res => {
@@ -57,7 +56,6 @@ export default class MapScreen extends Component {
   }
 
   startRender = () => {
-    console.log('hi')
     this.setState({
       render: true
     })
@@ -83,7 +81,6 @@ export default class MapScreen extends Component {
     })
     .then(res => {
       if (this.state.render) {
-        console.log('should center to me')
         this.map.animateToRegion(
           {
             ...this.state.currentLocation.coordinate,
@@ -100,7 +97,7 @@ export default class MapScreen extends Component {
       this.setState({
         modalVisible: true,
         currentPress: marker.tasks
-      }, () => console.log(this.state.modalVisible))
+      })
     }
   }
 
@@ -111,7 +108,6 @@ export default class MapScreen extends Component {
   }
 
   zoom(marker) {
-    console.log(marker);
     this.map.animateToRegion(
       {
         latitude: marker.Latitude,

@@ -11,7 +11,6 @@ export default class AddAvatar extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    console.log('avaatar', this.props.navigation)
     return (
       <View style={styles.container}>
         {images.map((pic, key) => {

@@ -21,7 +21,6 @@ export default class AddLocation extends React.Component {
   }
 
   componentDidMount() {
-    console.log('location', this.props.navigation.state.params)
     this.setState({
       // user: this.props.navigation.state.params.user_ID,
       avatar: this.props.navigation.state.params.avatar,
@@ -42,7 +41,7 @@ export default class AddLocation extends React.Component {
       latitude: latitude
     })
     .then(res => console.log('posted'))
-    .catch(err => console.err(err))
+    .catch(err => console.error(err))
 
   }
 

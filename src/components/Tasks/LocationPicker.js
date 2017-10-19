@@ -20,7 +20,6 @@ class LocationPicker extends Component {
     axios.get('http://10.16.1.218:3000/markers', {params: {userID: 2}})
       .then((response) => {
         let markers = response.data;
-        console.log(markers)
         markers = markers.map((row) => {
           return row.Marker_Title;
         })

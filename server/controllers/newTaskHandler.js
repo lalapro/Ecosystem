@@ -16,7 +16,6 @@ const handlenNewTask = (req, res) => {
 
   let selectCategory = `SELECT ID FROM CategoryDeets WHERE Category = '${Category}'`;
   let selectMarker = `SELECT Marker_ID FROM Marker WHERE Marker_Title = '${Marker}'`;
-  console.log(Category)
 
   db.query(selectCategory, null, (err, results) => {
     if (err) {
@@ -26,7 +25,6 @@ const handlenNewTask = (req, res) => {
       results[0] ? Category_ID = results[0].ID : Category_ID = 'undefined';
       db.query(selectMarker, null, (err, results) => {
         if (err) {
-          console.log('location', Marker)
           res.status(404).send(`We encountered an error looking up the location ${err}`);
         } else {
           let Marker_ID;

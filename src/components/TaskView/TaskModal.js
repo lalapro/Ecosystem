@@ -47,7 +47,6 @@ class TaskModal extends Component {
          <View >
          <ScrollView 
             automaticallyAdjustContentInsets={false}
-            onScroll={() => { console.log('onScroll'); }}
             scrollEventThrottle={200}
             style={styles.scrollView}
           >
