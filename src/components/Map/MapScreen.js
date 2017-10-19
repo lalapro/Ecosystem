@@ -74,9 +74,20 @@ export default class MapScreen extends Component {
   }
 
   animateMap() {
-    this.map.fitToSuppliedMarkers(this.state.markerIDs, true)
+    this.state.markerIDs.length > 0 ?
+    this.map.fitToSuppliedMarkers(this.state.markerIDs, true) :
+    this.animateToRegion()
   }
 
+  animateToRegion() {
+    this.map.animateToRegion(
+      {
+        ...this.state.currentLocation.coordinate,
+        latitudeDelta: 0.0084,
+        longitudeDelta: 0.0034,
+      }
+    )
+  }
 
   updateCurrentLocation() {
     GetCurrentLocation().then(location => {
@@ -93,13 +104,7 @@ export default class MapScreen extends Component {
     })
     .then(res => {
       if (this.state.render) {
-        this.map.animateToRegion(
-          {
-            ...this.state.currentLocation.coordinate,
-            latitudeDelta: 0.0084,
-            longitudeDelta: 0.0034,
-          }
-        )
+        this.animateToRegion()
       }
     })
   }
@@ -135,12 +140,14 @@ export default class MapScreen extends Component {
     const { params } = this.props.navigation.state;
     return this.state.render ? (
       <View style={styles.container}>
+
         <MapView
           ref={map => this.map = map}
           initialRegion={this.state.region}
           style={styles.container}
         >
-          <View style={{margin: 20, alignSelf: 'flex-start'}}>
+          {/* sadkflasfd */}
+          <View style={{margin: 20, alignSelf: 'flex-start', backgroundColor:'transparent'}}>
             <Button
               onPress={() => this.props.navigation.navigate('DrawerToggle')}
               title="&#9776;"
@@ -154,20 +161,22 @@ export default class MapScreen extends Component {
             >
             <Image style={{width: 20, height: 20}} source={require('../assets/egg6.png')} onLoadEnd={() => {if (!this.state.iconLoaded) this.setState({iconLoaded: true});}}/>
           </MapView.Marker>
-          {this.state.markers.map((marker, index) => {
-            return (
-              <MapView.Marker
-                key={index}
-                coordinate={{latitude: marker.Latitude, longitude: marker.Longitude}}
-                title={marker.Marker_Title}
-                description={marker.Marker_Description}
-                identifier={marker.Marker_Title}
-                onPress={() => this.toggleModal(marker)}
-                >
-                <Image source={images[marker.Avatar][1]} style={styles.marker} />
-              </MapView.Marker>
-            );
-          })}
+          {this.state.markers ? (
+            this.state.markers.map((marker, index) => {
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={{latitude: marker.Latitude, longitude: marker.Longitude}}
+                  title={marker.Marker_Title}
+                  description={marker.Marker_Description}
+                  identifier={marker.Marker_Title}
+                  onPress={() => this.toggleModal(marker)}
+                  >
+                  <Image source={images[marker.Avatar][1]} style={styles.marker} />
+                </MapView.Marker>
+              );
+            })
+          ) : null}
         </MapView>
         <Animated.ScrollView
           vertical
@@ -175,14 +184,16 @@ export default class MapScreen extends Component {
           snapToInterval={CARD_WIDTH}
           style={styles.scrollView}
         >
-          {this.state.markers.map((marker, index) => (
-            <TouchableOpacity key={index} onPress={() => this.zoom(marker)} style={styles.cardContainer}>
-              <Text style={styles.cardtitle}>
-                {marker.Marker_Title}
-              </Text>
-              <Image source={images[marker.Avatar][1]} style={styles.cardImage}/>
-            </TouchableOpacity>
-          ))}
+          {this.state.markers ? (
+            this.state.markers.map((marker, index) => (
+              <TouchableOpacity key={index} onPress={() => this.zoom(marker)} style={styles.cardContainer}>
+                <Text style={styles.cardtitle}>
+                  {marker.Marker_Title}
+                </Text>
+                <Image source={images[marker.Avatar][1]} style={styles.cardImage}/>
+              </TouchableOpacity>
+            ))
+          ) : null}
           <TouchableOpacity onPress={() => navigate('Avatar')} style={styles.cardContainer}>
             <Image source={require("../assets/plus.png")} style={styles.cardImage}/>
           </TouchableOpacity>
