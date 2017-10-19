@@ -40,14 +40,13 @@ export default class EcoSystem extends Component {
       userID: this.props.screenProps.userID
     }, () => this.getMarkers())
   }
-  //
+
   showTask(task, specificTask) {
-    console.log(specificTask, '&&&&&', task)
     this.setState({
       currentTask: task.Task_Title,
       currentDescription: task.Task_Description,
       editSpecificTask: specificTask
-    }, () => console.log(this.state.editSpecificTask, 'hi'))
+    })
   }
 
   editTask(task) {

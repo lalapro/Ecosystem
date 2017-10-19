@@ -30,8 +30,12 @@ class LocationPicker extends Component {
       })
       .catch((err) => {console.error('locationpickers', err)})
   }
-  componentWillReceiveProps() {
-    
+  componentDidMount() {
+    setTimeout(() => {
+      if(this.props) {
+        this.setState({location: this.props.marker}, () => console.log(this.state.location))
+      }
+    }, 800)
   }
   changeLocation(location) {
     this.setState({location});
@@ -57,8 +61,14 @@ class LocationPicker extends Component {
           selectedValue={this.props.placeholder}
           onValueChange={this.changeLocation}
         >
+<<<<<<< HEAD
         {this.state.location ?           
           <Picker.Item label={this.state.location} value={this.state.MarkerID}/> : null}
+=======
+          {this.state.location ? 
+            <Picker.Item label={this.state.location} value={this.state.location}/> : null
+          } 
+>>>>>>> working on location and category props
           {this.state.markers ?
             this.state.markers.map((location, i) => {
               return (
