@@ -28,20 +28,22 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
-    .then(res => this.setState({
-      locations: res.data,
-      currentDescription: '',
-      currentTask: ''
-    }))
-    .then(res => this.setState({
-      render: true
-    }))
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    .then(res => {
+      console.log('calling get markers', res.data)
+      this.setState({
+        locations: res.data,
+        currentDescription: '',
+        currentTask: '',
+        render: true
+      })
+    })
     .catch(err => console.error(err))
   }
 
   componentDidMount() {
     this.getMarkers();
+    console.log('mounting home', this.props.screenProps)
   }
   //
   showTask(task, specificTask) {
@@ -58,7 +60,7 @@ export default class EcoSystem extends Component {
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -80,6 +82,7 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
+    console.log(this.state.render)
     return this.state.render ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>

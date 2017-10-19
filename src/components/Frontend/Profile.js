@@ -122,7 +122,7 @@ export default class Profile extends Component {
     }
     // SaveURI(uri) {
     //  ImageStore.getBase64ForTag(uri, (success) => {
-    //      axios.post('http://10.16.1.218:3000/pictures', { Picture: uri })
+    //      axios.post('http://10.16.1.152:3000/pictures', { Picture: uri })
     //          .then(res => {
     //              console.log(res.data);
     //              let decoded = 'data:image/jpg;base64,' + success;
