@@ -43,7 +43,7 @@ const pictureHandler = (req, res) => {
     userRef.set({ picture: picture })
     usersRef.child(username).once('value', snapshot => {
         var exists = snapshot.val()
-        console.log(exists, 'EXIST')
+        // console.log(exists, 'EXIST')
         callback(snapshot.val())
     })
 }

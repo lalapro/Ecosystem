@@ -23,9 +23,9 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
-      console.log('calling get markers', res.data)
+      // console.log('calling get markers', res.data)
       this.setState({
         locations: res.data,
         currentDescription: '',
@@ -141,9 +141,13 @@ export default class EcoSystem extends Component {
       </View>
     ) :
     <View>
-      <Text>
-        Hi mom
-      </Text>
+      <View style={{margin: 10, alignSelf: 'flex-start'}}>
+      <Button
+        onPress={() => this.props.navigation.navigate('DrawerToggle')}
+        title="&#9776;"
+      />
+      <Text>ddddddddddd</Text>
+    </View>
     </View>
   }
 }

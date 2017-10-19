@@ -17,7 +17,7 @@ export default class Login extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.screenProps)
+    // console.log(this.props.screenProps)
   }
 
   handleUserInput(event) {
@@ -42,7 +42,7 @@ export default class Login extends Component {
   }
 
   login = async () => {
-    console.log('login button hit', this.props.screenProps)
+    // console.log('login button hit', this.props.screenProps)
       const APP_ID = "1729141044061993"
       const options = {
           permissions: ['public_profile', 'email', 'user_friends'],
