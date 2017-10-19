@@ -12,6 +12,9 @@ import TaskModal from '../TaskView/TaskModal.js';
 const { width, height } = Dimensions.get("window");
 
 export default class MapScreen extends Component {
+  static navigationOptions = {
+    title: 'Map',
+  };
 
   constructor(props) {
     super(props);

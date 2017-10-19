@@ -57,13 +57,18 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
+<<<<<<< HEAD
     axios.post('http://10.16.1.218:3000/categories', {category, userID: this.props.userID})
+=======
+    axios.post('http://10.16.1.218:3000/categories', {category, userID: this.state.userID})
+>>>>>>> working on edit functionality, rebasing
       .then((response) => {
         console.log(`save category ${response}`)
       })
       .catch((err) => {
         console.error(err)
       })
+<<<<<<< HEAD
 		}
 
 	render() {
@@ -95,6 +100,40 @@ class CategoryPicker extends Component {
 			</View>
 		)
 	}
+=======
+  }
+
+  render() {
+    return(
+      <View style={StyleSheet.picker}>
+        <Picker
+          style={[styles.onePicker]} itemStyle={styles.onePickerItem}
+          placeholder={this.props.placeholder}
+          onValueChange={this.changeCategory}
+        >
+          {this.state.category ? 
+            <Picker.Item label={this.state.category} value={this.state.category}/> : null
+          } 
+          {this.state.categories ?
+            this.state.categories.map((category, i) => {
+              return (
+                <Picker.Item key={i} label={category.Category} value={category.ID} />
+              )
+            }) : ''
+          }
+        </Picker>
+        <TextInput
+          onChangeText={this.changeCategory}
+          placeholder="Create a new category"
+        />
+        <Button
+          onPress={this.newCategory}
+          title="Save Category"
+        />
+      </View>
+    )
+  }
+>>>>>>> working on edit functionality, rebasing
 }
 
 const styles = StyleSheet.create({
