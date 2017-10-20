@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Animated, Image, Dimensions, Button, TouchableOpacity } from "react-native";
+import { Platform, StyleSheet, Text, View, Animated, Image, Dimensions, Button, TouchableOpacity, Alert } from "react-native";
 import { Components, MapView, Permissions, Constants, AppLoading } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import axios from 'axios';
 import Location from './AddLocation.js';
 import GetCurrentLocation from './GetCurrentLocation';
 import TaskModal from '../TaskView/TaskModal.js';
-
-
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,7 +30,8 @@ export default class MapScreen extends Component {
       render: false,
       iconLoaded: false,
       modalVisible: false,
-      currentPress: []
+      currentPress: [],
+      specifiedLocation: null
     };
     this.editTask = this.editTask.bind(this);
   }
@@ -61,6 +60,8 @@ export default class MapScreen extends Component {
     this.setState({
       userID: this.props.screenProps.userID
     }, () => this.getMarkers())
+    console.log("componentDidMount triggered")
+
   }
 
   startRender = () => {
@@ -90,7 +91,8 @@ export default class MapScreen extends Component {
   }
 
   updateCurrentLocation() {
-    GetCurrentLocation().then(location => {
+    GetCurrentLocation()
+    .then(location => {
       this.setState({
         currentLocation: {
           coordinate: {
@@ -106,6 +108,9 @@ export default class MapScreen extends Component {
       if (this.state.render) {
         this.animateToRegion()
       }
+    })
+    .catch(err => {
+      console.log('error in updateCurrentLocation', err);
     })
   }
 
@@ -133,9 +138,44 @@ export default class MapScreen extends Component {
         latitudeDelta: 0.000984,
         longitudeDelta: 0.000834,
       })
+    this.setState({
+      specifiedLocation: marker
+    })
+    
+  }
+
+  alertAtLocation() {
+    console.log('alertAtLocation is triggered');
+    var locations = this.state.markers.map((curr, idx, arr) => {
+      return {
+        title: curr.Marker_Title,
+        longitude: curr.Longitude,
+        latitude: curr.Latitude
+      }
+    })
+    var currentLocation = {
+      title: this.state.currentLocation.title,
+      longitude: this.state.currentLocation.coordinate.longitude,
+      latitude: this.state.currentLocation.coordinate.latitude
+    }
+    console.log('location and currentLocation', locations, currentLocation);
+    locations.forEach((location) => {
+      if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
+        Alert.alert(
+          'You are at ' + location.title,
+          'Want to see what you need to do?',
+          [
+            {text: 'Yes', onPress: () => console.log('go to tasks later')},
+            {text: 'No', onPress: () => console.log('just close this thing')}
+          ],
+          {cancelable: true}
+        )
+      }
+    })
   }
 
   render() {
+    var specifiedLocation = this.state.specifiedLocation;
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return this.state.render ? (
@@ -177,6 +217,11 @@ export default class MapScreen extends Component {
               );
             })
           ) : null}
+        {specifiedLocation ?
+          (<MapView.Circle
+            center={{longitude: specifiedLocation.Longitude, latitude: specifiedLocation.Latitude}}
+            radius={25} 
+          />) : null}
         </MapView>
         <Animated.ScrollView
           vertical

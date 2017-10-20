@@ -13,5 +13,5 @@ export default GetCurrentLocation = async () => {
 
   let location = await Location.getCurrentPositionAsync({});
 
-  return location
+  return location;
 }
