@@ -10,7 +10,6 @@ const handlenNewTask = (req, res) => {
   let End = req.body.endTime;
   let Frequency = req.body.frequency;
   let Days = req.body.days;
-  //pull category_ID and marker_ID
   let Category_ID = req.body.category;
   let Marker_ID = req.body.markerID;
   let User_ID = req.body.userID;

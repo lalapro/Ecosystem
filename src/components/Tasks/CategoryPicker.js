@@ -10,10 +10,11 @@ class CategoryPicker extends Component {
 			categories: [],
 			newCategory: '',
 			category: 'Attach a Category',
+			newCategory: '',
 			created: '',
 			userID: '',
 			categoryID: '',
-			isEdit: false, 
+			isEdit: false,
 			color: null
 		}
 		this.newCategory = this.newCategory.bind(this);
@@ -24,20 +25,47 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
-      .then((response) => {
-				let categories = response.data;
-				this.setState({categories})
-				this.props.onSelect(categories[0].ID);
-      })
-      .catch((err) => {console.error(err)})
+		console.log('mounting')
+		this.grabCategories()
   }
+
+	componentDidMount() {
+		console.log('DID MOUNT')
+	}
+
+	grabCategories(specific) {
+		axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
+			.then((response) => {
+				let categories = response.data;
+				console.log('AM I BEING CALLED HERE?')
+				this.setState({
+					categories: categories,
+					category: categories[0].ID
+				})
+				console.log('state has been set ...', this.state.category)
+				if (specific) {
+
+					for(let i = 0; i < categories.length; i++) {
+						console.log('loop loop', categories[i])
+						if (categories[i].Category === specific) {
+							console.log('should set to cuirse', categories[i])
+							this.setState({
+								category: categories[i].ID
+							})
+							console.log('ID should show', categories[i].ID)
+							this.changeCategory(categories[i].ID);
+						}
+					}
+				}
+			})
+			.catch((err) => {console.error(err)})
+	}
 
 //axios.get for existing categories
 	componentWillReceiveProps(oldone) {
-		// console.log('receiving props... CATEGORIES was here', oldone)
+		console.log('receiving props... CATEGORIES was here', oldone)
     if (oldone.task.Category_ID && !this.state.isEdit) {
-			// console.log(oldone)
+			// console.log('receiving props', oldone)
       this.setState({
         category: oldone.task.Category_ID,
         isEdit: true
@@ -46,8 +74,15 @@ class CategoryPicker extends Component {
 	}
 
 	changeCategory(category) {
-		this.setState({category});
-		this.props.onSelect(Number(category));
+		console.log('called.....', category)
+		this.setState({category})
+		this.props.onSelect(category);
+	}
+
+	addCategory(category) {
+		this.setState({
+			newCategory: category
+		})
 	}
 
 	selectColor(color) {
@@ -56,21 +91,28 @@ class CategoryPicker extends Component {
 	}
 
   newCategory() {
-		let category = this.state.category;
+    let category = this.state.newCategory;
 		let color = this.state.color;
-		if (category) {
-			axios.post('http://10.16.1.218:3000/categories', {category, color, userID: this.props.userID})
-			.then((response) => {
+		if (category.length > 1) {
+			axios.post('http://10.16.1.152:3000/categories', {category, color, userID: this.props.userID})
+			.then(response => {
 				console.log(`save category ${response}`)
+				this.grabCategories(category)
+				this.setState({ newCategory: '' })
+			})
+			.catch((err) => {
+				console.error(err)
 			})
 			.catch((err) => {
 				console.error(err)
 			})
 		}
 		}
+	}
 
 
 	render() {
+		console.log('before render', this.state.category)
 		return(
 			<View style={StyleSheet.picker}>
 				<Picker
@@ -80,16 +122,16 @@ class CategoryPicker extends Component {
 				>
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
-							let val = '' + category.ID;
 							return (
-								<Picker.Item key={i} style={{borderColor: category.Color}} label={category.Category} value={val} />
+								<Picker.Item key={i} style={{borderColor: category.Color}} label={category.Category} value={category.ID} />
 							)
 						}) : ''
-					}
+				}
 				</Picker>
 				{this.state.color ? <TouchableHighlight style={{backgroundColor: this.state.color, margin: 10, width: 30, height: 30, borderRadius: 30}}><View></View></TouchableHighlight> : null}
 				<TextInput
-					onChangeText={this.changeCategory}
+					onChangeText={this.addCategory.bind(this)}
+					value={this.state.newCategory}
 					placeholder="Create a new category"
 				/>
 				<ColorPicker

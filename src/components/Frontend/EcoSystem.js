@@ -20,7 +20,8 @@ export default class EcoSystem extends Component {
       currentTask: '',
       currentDescription: '',
       editSpecificTask: '',
-      currentLocation: {}
+      currentLocation: {},
+      render: false
     }
   }
 
@@ -44,6 +45,7 @@ export default class EcoSystem extends Component {
         }
       })
     })
+    .then(res => this.setState({render: true}))
     .then(res => this.showCurrentLocation())
     .catch(err => console.error(err))
   }
@@ -89,7 +91,7 @@ export default class EcoSystem extends Component {
   }
 
   editTask(task) {
-    this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask })
+    this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask, editing: true })
   }
 
   deleteTask() {
@@ -116,12 +118,11 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-   
-    return this.state.locations ? (
+    return this.state.render ? (this.state.locations ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
           <Button
-            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            onPress={() => this.props.navigation.navigate('DrawerToggle', {memes: true})}
             title="&#9776;"
           />
         </View>
@@ -203,6 +204,10 @@ export default class EcoSystem extends Component {
         onPress={() => navigate('Map')}
       />
     </View>
+  ) :
+  <View style={{display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+    <Image source={require('../assets/loading.gif')} style={{width: 400, height: 400}}/>
+  </View>
   }
 }
 
