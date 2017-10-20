@@ -9,6 +9,7 @@ const getMapMarkers = (req, res) => {
   // `SELECT * FROM Marker m JOIN Tasks t WHERE m.User_ID = t.User_ID AND m.User_ID = ${userID}`
   let query = `SELECT * FROM Marker WHERE User_ID = ${userID}`;
   let innerQuery = `SELECT * FROM Tasks WHERE User_ID = ${userID}`;
+  let categoryQuery = `SELECT * FROM CategoryDeets WHERE User_ID = ${userID}`
   db.query(query, null, (err, results) => {
     if (err) {
       res.status(404).send(`We encountered an error looking up the locations ${err}`);
@@ -24,16 +25,30 @@ const getMapMarkers = (req, res) => {
           if (err) {
             res.status(404).send(`We encountered an error looking up the tasks ${err}`);
           } else {
-            tasks.forEach(task => {
-              if(task.Marker_ID === marker.Marker_ID) {
-                marker.tasks = marker.tasks || [];
-                marker.tasks.push(task)
+            db.query(categoryQuery, null, (err, categories) => {
+              if (err) {
+                res.status(404).send(`We encountered an error looking up the categories ${err}`);
+              } else {
+                tasks.forEach(task => {
+                  categories.forEach(category => {
+                    if (task.Category_ID === category.ID) {
+                      task.Category = category.Category;
+                      task.Color = category.Color;
+                      task.Completion = category.Completion_Points;
+                      if (task.Marker_ID === marker.Marker_ID) {
+                        marker.tasks = marker.tasks || [];
+                        marker.tasks.push(task)
+                      }
+                    }
+                  }) 
+                })
+              }
+              count++;
+              if (count === length) {
+                res.send(results)
               }
             })
-            count++;
-            if (count === length) {
-              res.send(results)
-            }
+            
           }
         });
       }

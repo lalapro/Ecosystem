@@ -76,12 +76,10 @@ class TaskBuilder extends Component {
     this.setState({endTime})
   }
 
-  handleLocationChange(location, taskID, markerID) {
-    console.log('HANDLE LOCATION CHANGE', location)
+  handleLocationChange(markerID) {
+    console.log('HANDLE LOCATION CHANGE', markerID)
     this.setState({
-      location: location,
-      taskID: taskID,
-      markerID: markerID
+      markerID
     })
   }
 
@@ -104,13 +102,14 @@ class TaskBuilder extends Component {
     let startTime = this.state.startTime;
     let endTime = this.state.endTime;
     let markerID = this.state.markerID;
+    console.log(markerID, '-----------')
     let category = this.state.category;
     let frequency = this.state.frequency;
     let userID = this.state.userID;
     let taskID = this.state.taskID;
     //need to send username to get userId
     if (!this.state.editTask) {
-      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+      axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((response) => this.setState({
           saved: 'Task Saved',
           title: '',
@@ -119,14 +118,15 @@ class TaskBuilder extends Component {
           endTime: null,
           location: 'none',
           category: 'none',
-          frequency: ''
+          frequency: '',
+          markerID: ''
         }))
         .then(res => {
           this.props.navigation.goBack();
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.152:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
+        axios.put('http://10.16.1.218:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((res) => {
           this.props.navigation.goBack();
         })
