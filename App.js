@@ -11,7 +11,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      currentLocation: {}
     }
   }
 

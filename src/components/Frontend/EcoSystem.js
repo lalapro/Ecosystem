@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Separator, Dimensions, ScrollView, Button, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Separator, Dimensions, ScrollView, Button, Image, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Swipeout from 'react-native-swipeout';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import profile from './Profile';
 import axios from 'axios';
 
+import GetCurrentLocation from '../Map/GetCurrentLocation';
 
 export default class EcoSystem extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ export default class EcoSystem extends Component {
       index: 0,
       currentTask: '',
       currentDescription: '',
-      editSpecificTask: ''
+      editSpecificTask: '',
+      currentLocation: {}
     }
   }
 
@@ -32,12 +34,48 @@ export default class EcoSystem extends Component {
         currentTask: ''
       })
     })
+    .then(res => GetCurrentLocation())
+    .then(res => {
+      this.setState({
+        currentLocation: {
+          title: 'Current Location',
+          longitude: res.coords.longitude,
+          latitude: res.coords.latitude
+        }
+      })
+    })
+    .then(res => this.showCurrentLocation())
     .catch(err => console.error(err))
   }
 
+  showCurrentLocation() {
+    console.log(this.state.currentLocation)
+    var locations = this.state.locations.map((curr, idx, arr) => {
+      return {
+        title: curr.Marker_Title,
+        longitude: curr.Longitude,
+        latitude: curr.Latitude,
+        index: idx
+      }
+    })
+    var currentLocation = {
+      title: this.state.currentLocation.title,
+      longitude: this.state.currentLocation.longitude,
+      latitude: this.state.currentLocation.latitude
+    }
+    locations.forEach((location) => {
+      if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
+        this.setState({
+          index: location.index
+        })
+      }
+    })
+  }
+
+
   componentDidMount() {
     this.setState({
-      userID: this.props.screenProps.userID
+      userID: this.props.screenProps.userID,
     }, () => this.getMarkers())
   }
 
@@ -61,6 +99,7 @@ export default class EcoSystem extends Component {
   }
 
   render() {
+    console.log('in Ecosystem', this.state.index)
     const { height, width } = Dimensions.get('window');
     const { navigate } = this.props.navigation;
     const swipeBtns = [
@@ -87,6 +126,7 @@ export default class EcoSystem extends Component {
         </View>
         <View style={{flex: 7}}>
           <Swiper
+            index={this.state.index}
             horizontal={true}
             onIndexChanged={(index) => this.setState({index: index, currentTask: '', currentDescription: ''})}
             loop={false}
