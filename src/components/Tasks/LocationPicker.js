@@ -10,61 +10,63 @@ class LocationPicker extends Component {
       newLocation: '',
       location: 'Attach a Location',
       created: '',
-      MarkerID: ''
+      MarkerID: '',
+      isEdit: false
     }
 
     this.changeLocation = this.changeLocation.bind(this);
   }
   //axios.get for existing markers
-  componenDidMount() {
+  componentDidMount() {
     //give axios user id and get Location names
-    axios.get('http://10.16.1.218:3000/markers', {params: {userID: this.props.userID}})
+    // console.log('DOES LOCATION MOUNT?????')
+    axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
         let markers = response.data;
+        // console.log('MOUNTING', markers)
         this.setState({markers})
       })
       .catch((err) => {console.error('locationpickers', err)})
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      if(this.props) {
-        this.setState({location: this.props.marker, userID: this.props.userID})
-      }
-    }, 800)
-  }
-
   changeLocation(location) {
-    this.setState({location});
-    this.props.onSelect(location);
+    // console.log('on change', location)
+    for (let i = 0; i < this.state.markers.length; i++) {
+      if (this.state.markers[i].Marker_ID === location) {
+        this.setState({
+          location: this.state.markers[i].Marker_ID
+        }, () => this.props.handleSelect(this.state.markers[i].Marker_Title, this.state.taskID, this.state.location));
+        break;
+      }
+    }
   }
 
   componentWillReceiveProps(oldone, newone){
-    setTimeout(() => {this.setState({ MarkerID: oldone.task.Marker_ID}); 
-      this.state.markers.map(ele => {
-        if (this.state.MarkerID === ele.Marker_ID) {
-           this.setState({ location: ele.Marker_Title })
-          }
-        });
-      }); 
+    // console.log('receiving props... Alex lukens was here', oldone)
+    if (oldone.task.Marker_ID && !this.state.isEdit) {
+      this.setState({
+        location: oldone.task.Marker_ID,
+        isEdit: true,
+        taskID: oldone.task.Task_ID
+      })
+    }
+
   }
 
   render() {
     return(
         <Picker
-          style={[styles.onePicker]} itemStyle={styles.onePickerItem}
-          selectedValue={this.props.placeholder}
-          onValueChange={this.changeLocation}
+          style={styles.onePicker} itemStyle={styles.onePickerItem}
+          selectedValue={this.state.location}
+          onValueChange={(location) => this.changeLocation(location)}
         >
-        {this.state.location ?           
-          <Picker.Item label={this.state.location} value={this.state.MarkerID}/> : null}
-          {this.state.markers ?
-            this.state.markers.map((location, i) => {
-              return (
-                <Picker.Item key={i} label={location.Marker_Title} value={location.Marker_ID} />
-              )
-            }) : ''
-          }
+        {this.state.markers ?
+          this.state.markers.map((location, i) => {
+            return (
+              <Picker.Item key={i} label={location.Marker_Title} value={location.Marker_ID} />
+            )
+          }) : ''
+        }
         </Picker>
     )
   }

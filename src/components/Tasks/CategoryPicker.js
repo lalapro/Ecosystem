@@ -11,7 +11,8 @@ class CategoryPicker extends Component {
 			category: 'Attach a Category',
 			created: '',
 			userID: '',
-			categoryID: ''
+			categoryID: '',
+			isEdit: false
 		}
 		this.newCategory = this.newCategory.bind(this);
 		this.changeCategory = this.changeCategory.bind(this);
@@ -20,7 +21,7 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
+    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
       .then((response) => {
         let categories = response.data;
         this.setState({categories})
@@ -30,7 +31,14 @@ class CategoryPicker extends Component {
 
 //axios.get for existing categories
 	componentWillReceiveProps(oldone) {
-		setTimeout(() => {this.setState({ category: ('' + oldone.task.Category_ID)}) })
+		// console.log('receiving props... CATEGORIES was here', oldone)
+    if (oldone.task.Category_ID && !this.state.isEdit) {
+			// console.log(oldone)
+      this.setState({
+        category: oldone.task.Category_ID,
+        isEdit: true
+      })
+    }
 	}
 
 	changeCategory(category) {
@@ -40,7 +48,7 @@ class CategoryPicker extends Component {
 
   newCategory() {
     let category = this.state.category;
-    axios.post('http://10.16.1.218:3000/categories', {category, userID: this.props.userID})
+    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
       .then((response) => {
         console.log(`save category ${response}`)
       })
@@ -48,6 +56,7 @@ class CategoryPicker extends Component {
         console.error(err)
 			})
 		}
+
 
 	render() {
 		return(
@@ -57,8 +66,6 @@ class CategoryPicker extends Component {
 					selectedValue={this.state.category}
 					onValueChange={value => this.changeCategory(value)}
 				>
-			{this.state.category ?            
-			<Picker.Item label={this.state.category} value={this.state.categoryID}/> : null} 
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
 							let val = '' + category.ID;

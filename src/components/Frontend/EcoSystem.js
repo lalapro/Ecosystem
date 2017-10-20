@@ -23,7 +23,7 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
       // console.log('calling get markers', res.data)
       this.setState({
@@ -142,13 +142,13 @@ export default class EcoSystem extends Component {
       </View>
     ) :
     <View>
-      <View style={{margin: 10, alignSelf: 'flex-start'}}>
+      <Text>
+        Looks like you don't have any locations added! Click on the map button to go to the map page!
+      </Text>
       <Button
-        onPress={() => this.props.navigation.navigate('DrawerToggle')}
-        title="&#9776;"
+        title="Map"
+        onPress={() => navigate('Map')}
       />
-      <Text>ddddddddddd</Text>
-    </View>
     </View>
   }
 }

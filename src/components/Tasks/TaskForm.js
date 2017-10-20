@@ -12,13 +12,18 @@ class TaskForm extends Component {
       taskName: null,
       description: null,
       start: null,
-      end: null
+      end: null,
+      reRender: false
     }
     this.changeFrequency = this.changeFrequency.bind(this);
   }
 
+  componentWillUnmount() {
+    this.props.tasks = "";
+  }
+
+
   componentWillMount() {
-    console.log('taskform', this.props)
     this.setState({
       userID: this.props.userID
     })
@@ -30,10 +35,12 @@ class TaskForm extends Component {
   }
 
   componentWillReceiveProps(oldone, newone) {
+    console.log('RECEIEVE PROPRS', this.props)
     this.setState({ frequency: oldone.task.Frequency })
   }
 
   render() {
+    console.log('BEFORE RENDER', this.props)
     return(
       <View style={styles.container}>
         <TextInput
@@ -48,7 +55,7 @@ class TaskForm extends Component {
         />
         <TaskDatePicker placeholder={this.props.task.Start ? this.props.task.Start : "Start"} onSelect={(startTime) => this.props.handleStartChange(startTime)} />
         <TaskDatePicker placeholder={this.props.task.End ? this.props.task.End : "End"} onSelect={(endTime) => this.props.handleEndChange(endTime)} />
-        <LocationPicker style={styles.picker} task={this.props.task} onSelect={(itemValue) => this.props.handleLocationChange(itemValue)} userID={this.state.userID}/>
+        <LocationPicker style={styles.picker} task={this.props.task} handleSelect={this.props.handleLocationChange} userID={this.state.userID}/>
         <CategoryPicker style={styles.picker} task={this.props.task} onSelect={(itemValue) => this.props.handleCategoryChange(itemValue)} userID={this.state.userID}/>
         <Picker
           style={[styles.onePicker]} itemStyle={styles.onePickerItem}
