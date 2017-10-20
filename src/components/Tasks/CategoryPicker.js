@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, Picker, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Picker, Button, TouchableHighlight } from 'react-native';
 import axios from 'axios';
+import ColorPicker from './ColorPicker.js';
 
 class CategoryPicker extends Component {
 	constructor(props) {
@@ -12,19 +13,22 @@ class CategoryPicker extends Component {
 			created: '',
 			userID: '',
 			categoryID: '',
-			isEdit: false
+			isEdit: false, 
+			color: null
 		}
 		this.newCategory = this.newCategory.bind(this);
 		this.changeCategory = this.changeCategory.bind(this);
+		this.selectColor = this.selectColor.bind(this);
 	}
 
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-    axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
+    axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
       .then((response) => {
-        let categories = response.data;
-        this.setState({categories})
+				let categories = response.data;
+				this.setState({categories})
+				this.props.onSelect(categories[0].ID);
       })
       .catch((err) => {console.error(err)})
   }
@@ -46,15 +50,23 @@ class CategoryPicker extends Component {
 		this.props.onSelect(Number(category));
 	}
 
+	selectColor(color) {
+		this.setState({color});
+		// this.props.onSelectColor(color);
+	}
+
   newCategory() {
-    let category = this.state.category;
-    axios.post('http://10.16.1.152:3000/categories', {category, userID: this.props.userID})
-      .then((response) => {
-        console.log(`save category ${response}`)
-      })
-      .catch((err) => {
-        console.error(err)
+		let category = this.state.category;
+		let color = this.state.color;
+		if (category) {
+			axios.post('http://10.16.1.218:3000/categories', {category, color, userID: this.props.userID})
+			.then((response) => {
+				console.log(`save category ${response}`)
 			})
+			.catch((err) => {
+				console.error(err)
+			})
+		}
 		}
 
 
@@ -70,14 +82,18 @@ class CategoryPicker extends Component {
 						this.state.categories.map((category, i) => {
 							let val = '' + category.ID;
 							return (
-								<Picker.Item key={i} label={category.Category} value={val} />
+								<Picker.Item key={i} style={{borderColor: category.Color}} label={category.Category} value={val} />
 							)
 						}) : ''
 					}
 				</Picker>
+				{this.state.color ? <TouchableHighlight style={{backgroundColor: this.state.color, margin: 10, width: 30, height: 30, borderRadius: 30}}><View></View></TouchableHighlight> : null}
 				<TextInput
 					onChangeText={this.changeCategory}
 					placeholder="Create a new category"
+				/>
+				<ColorPicker
+					selectColor={this.selectColor} color={this.state.color}
 				/>
 				<Button
 					onPress={this.newCategory}

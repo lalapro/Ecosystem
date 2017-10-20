@@ -23,9 +23,9 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
-      // console.log('calling get markers', res.data)
+      console.log('calling get markers', res.data)
       this.setState({
         locations: res.data,
         currentDescription: '',
@@ -55,7 +55,7 @@ export default class EcoSystem extends Component {
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -77,6 +77,7 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
+   
     return this.state.locations ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
@@ -125,14 +126,26 @@ export default class EcoSystem extends Component {
         <View style={{flex: 3}}>
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
-              this.state.locations[this.state.index].tasks.map((task, index) => (
-                <TouchableHighlight style={styles.circle} key={index}
+              this.state.locations[this.state.index].tasks.map((task, index) => {
+                let catStyle = {
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120,
+                  borderColor: task.Color || 'black',
+                  borderWidth: 1,
+                  margin: 5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }
+              return (
+                <TouchableHighlight style={catStyle} key={index}
                 onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
                   <Text style={{fontSize: 18, fontWeight: 'bold'}}>
                     {task.Task_Title}
                   </Text>
                 </TouchableHighlight>
-              ))
+              )})
             ) : null}
             <TouchableOpacity onPress={() => { navigate('TaskBuilder')}}>
               <Image source={require('../assets/plus.png')} style={{height: 150, width: 150}} />
@@ -142,7 +155,7 @@ export default class EcoSystem extends Component {
       </View>
     ) :
     <View>
-      <Text>
+      <Text style={{marginTop: 30}}>
         Looks like you don't have any locations added! Click on the map button to go to the map page!
       </Text>
       <Button
@@ -203,13 +216,12 @@ const styles = StyleSheet.create({
    width: 120,
    height: 120,
    borderRadius: 120,
-   borderColor: 'red',
+  //  borderColor: 'red',
    borderWidth: 0.5,
    margin: 5,
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'center'
-  //  backgroundColor: 'red'
  },
  separator: {
     height: 1,
