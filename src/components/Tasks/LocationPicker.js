@@ -18,27 +18,20 @@ class LocationPicker extends Component {
   }
   //axios.get for existing markers
   componentDidMount() {
-    //give axios user id and get Location names
-    // console.log('DOES LOCATION MOUNT?????')
     axios.get('http://10.16.1.152:3000/markers', {params: {userID: this.props.userID}})
       .then((response) => {
         let markers = response.data;
-        // console.log('MOUNTING', markers)
+        this.props.handleSelect(null, null, markers[0].Marker_ID);
         this.setState({markers})
       })
       .catch((err) => {console.error('locationpickers', err)})
   }
 
-  changeLocation(location) {
-    // console.log('on change', location)
-    for (let i = 0; i < this.state.markers.length; i++) {
-      if (this.state.markers[i].Marker_ID === location) {
-        this.setState({
-          location: this.state.markers[i].Marker_ID
-        }, () => this.props.handleSelect(this.state.markers[i].Marker_Title, this.state.taskID, this.state.location));
-        break;
-      }
-    }
+  changeLocation(markerID) {
+    this.props.handleSelect(markerID, this.state.taskID);
+    this.setState({
+      location: markerID
+    })
   }
 
   componentWillReceiveProps(oldone, newone){
@@ -49,6 +42,7 @@ class LocationPicker extends Component {
         isEdit: true,
         taskID: oldone.task.Task_ID
       })
+      setTimeout(() => {this.changeLocation(oldone.task.Marker_ID)}, 2000)
     }
 
   }

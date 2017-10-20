@@ -14,11 +14,14 @@ const handleCategories = (req, res) => {
 }
 
 const handleNewCategories = (req, res) => {
+  console.log(req.body)
   let User_ID = req.body.userID;
+  let category = req.body.category;
   let insertCategory = `INSERT INTO CategoryDeets (ID, Category, Completion_Points, User_ID, Reward_ID, Marker_ID) VALUES (NULL, '${category}', NULL, '${User_ID}', NULL, NULL)`;
   db.query(insertCategory, null, (err, results) => {
     if (err) {
       res.status(404).send(`We encountered an error creating the category ${err}`);
+    } else {
       res.status(201).send(results);
     }
   });

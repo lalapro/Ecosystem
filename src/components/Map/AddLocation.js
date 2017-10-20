@@ -13,7 +13,7 @@ export default class AddLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: 2,
+      user: this.props.screenProps.userID,
       avatar: '',
       title: '',
       description: ''

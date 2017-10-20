@@ -32,7 +32,8 @@ export default class MapScreen extends Component {
       render: false,
       iconLoaded: false,
       modalVisible: false,
-      currentPress: []
+      currentPress: [],
+      radius: undefined
     };
     this.editTask = this.editTask.bind(this);
   }
@@ -126,6 +127,7 @@ export default class MapScreen extends Component {
   }
 
   zoom(marker) {
+    console.log(marker)
     this.map.animateToRegion(
       {
         latitude: marker.Latitude,
@@ -133,6 +135,9 @@ export default class MapScreen extends Component {
         latitudeDelta: 0.000984,
         longitudeDelta: 0.000834,
       })
+    this.setState({
+      radius: marker
+    })
   }
 
   render() {
@@ -140,19 +145,17 @@ export default class MapScreen extends Component {
     const { params } = this.props.navigation.state;
     return this.state.render ? (
       <View style={styles.container}>
-
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            style={{position: 'absolute', backgroundColor:'transparent', zIndex: 2}}
+          >
+            <Text>&#9776;</Text>
+          </TouchableOpacity>
         <MapView
           ref={map => this.map = map}
           initialRegion={this.state.region}
           style={styles.container}
         >
-          {/* sadkflasfd */}
-          <View style={{margin: 20, alignSelf: 'flex-start', backgroundColor:'transparent'}}>
-            <Button
-              onPress={() => this.props.navigation.navigate('DrawerToggle')}
-              title="&#9776;"
-            />
-          </View>
           <MapView.Marker
             key={this.state.iconLoaded ? 'markerLoaded' : 'marker'}
             coordinate={this.state.currentLocation.coordinate}
@@ -176,6 +179,12 @@ export default class MapScreen extends Component {
                 </MapView.Marker>
               );
             })
+          ) : null}
+          {this.state.radius ? (
+            <MapView.Circle
+              radius={25}
+              center={{latitude: this.state.radius.Latitude, longitude: this.state.radius.Longitude}}
+            />
           ) : null}
         </MapView>
         <Animated.ScrollView
@@ -206,7 +215,7 @@ export default class MapScreen extends Component {
         ) : null }
       </View>
     ) :  (
-        <View>
+        <View style={{display:'flex', alignItems: 'center', justifyContent: 'center'}}>
           <Image source={require("../assets/loading.gif")} style={{width: 200, height: 200}}/>
         </View>
     )

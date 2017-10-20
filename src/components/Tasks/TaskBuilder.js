@@ -25,13 +25,14 @@ class TaskBuilder extends Component {
       markerID: '',
       userID: null,
       editTask: '',
-      taskID: null
+      taskID: null,
+      reRender: false
     }
     this.handleTaskTitleChange = this.handleTaskTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleStartChange = this.handleStartChange.bind(this);
     this.handleEndChange = this.handleEndChange.bind(this);
-    this.handleLocationChange = this.handleLocationChange.bind(this);
+    // this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleFrequencyChange = this.handleFrequencyChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
@@ -76,12 +77,11 @@ class TaskBuilder extends Component {
     this.setState({endTime})
   }
 
-  handleLocationChange(location, taskID, markerID) {
-    console.log('HANDLE LOCATION CHANGE', location)
+  handleLocationChange(markerID, taskID) {
+    console.log('i heard you...', markerID, taskID)
     this.setState({
-      location: location,
-      taskID: taskID,
-      markerID: markerID
+      markerID: markerID,
+      taskID: taskID
     })
   }
 
@@ -97,6 +97,7 @@ class TaskBuilder extends Component {
 
   }
 
+
   saveTask() {
     let oldTitle = this.state.oldTitle;
     let title = this.state.title;
@@ -109,17 +110,19 @@ class TaskBuilder extends Component {
     let userID = this.state.userID;
     let taskID = this.state.taskID;
     //need to send username to get userId
+    let readyToSend = false;
+
     if (!this.state.editTask) {
-      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, endTime, location, category, frequency, userID})
+      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, markerID, endTime, category, frequency, userID})
         .then((response) => this.setState({
           saved: 'Task Saved',
           title: '',
           description: '',
           startTime: null,
           endTime: null,
-          location: 'none',
           category: 'none',
-          frequency: ''
+          frequency: '',
+          markerID: ''
         }))
         .then(res => {
           this.props.navigation.goBack();
@@ -128,6 +131,7 @@ class TaskBuilder extends Component {
       } else {
         axios.put('http://10.16.1.152:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((res) => {
+          this.props.navigation.state.params = ''
           this.props.navigation.goBack();
         })
         .catch(err => console.error(err))
@@ -146,7 +150,19 @@ class TaskBuilder extends Component {
       frequency: '',
       editTask: ''
     });
+    this.props.navigation.state.params = ''
     this.props.navigation.goBack();
+  }
+
+  reRender() {
+    this.setState({
+      reRender: !this.state.reRender
+    })
+  }
+
+  jankyNav() {
+    this.props.navigation.state.params = ''
+    this.props.navigation.navigate('DrawerToggle')
   }
 
   render() {
@@ -154,7 +170,7 @@ class TaskBuilder extends Component {
       <View style={styles.container}>
         <View style={{margin: 10, alignSelf: 'flex-start'}}>
           <Button
-            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            onPress={() => this.jankyNav()}
             title="&#9776;"
           />
         </View>
@@ -168,9 +184,10 @@ class TaskBuilder extends Component {
             handleDescriptionChange={this.handleDescriptionChange}
             handleStartChange={this.handleStartChange}
             handleEndChange={this.handleEndChange}
-            handleLocationChange={this.handleLocationChange}
+            handleLocationChange={this.handleLocationChange.bind(this)}
             handleCategoryChange={this.handleCategoryChange}
             handleFrequencyChange={this.handleFrequencyChange}
+            reRender={this.reRender.bind(this)}
             saveTask={this.saveTask}
             cancel={this.cancelTask}
             task={this.state.editTask}

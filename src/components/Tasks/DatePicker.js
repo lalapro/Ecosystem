@@ -14,9 +14,9 @@ class TaskDatePicker extends Component {
     }, () => {
       this.props.onSelect(this.state.date);
     });
-   
+
   }
-  
+
   render(){
     return (
       <DatePicker
@@ -25,8 +25,8 @@ class TaskDatePicker extends Component {
         mode="datetime"
         placeholder={this.props.placeholder}
         format="MMMM Do YYYY, h:mm a"
-        minDate="2017-08-01"
-        maxDate="2018-08-01"
+        minuteInterval = {30}
+        minDate={new Date()}
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -48,5 +48,5 @@ class TaskDatePicker extends Component {
   }
 }
 
- 
+
 export default TaskDatePicker;

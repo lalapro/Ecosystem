@@ -25,13 +25,15 @@ export default class EcoSystem extends Component {
   getMarkers() {
     axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
-      // console.log('calling get markers', res.data)
       this.setState({
         locations: res.data,
         currentDescription: '',
         currentTask: ''
       })
     })
+    .then(res => this.setState({
+      render: true
+    }))
     .catch(err => console.error(err))
   }
 
@@ -51,7 +53,7 @@ export default class EcoSystem extends Component {
   }
 
   editTask(task) {
-    this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask })
+    this.props.navigation.navigate('TaskBuilder', { specificTask: this.state.editSpecificTask, editing: true })
   }
 
   deleteTask() {
@@ -77,11 +79,11 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-    return this.state.locations ? (
+    return this.state.render ? (this.state.locations ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
           <Button
-            onPress={() => this.props.navigation.navigate('DrawerToggle')}
+            onPress={() => this.props.navigation.navigate('DrawerToggle', {memes: true})}
             title="&#9776;"
           />
         </View>
@@ -150,6 +152,10 @@ export default class EcoSystem extends Component {
         onPress={() => navigate('Map')}
       />
     </View>
+  ) :
+  <View style={{display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+    <Image source={require('../assets/loading.gif')} style={{width: 400, height: 400}}/>
+  </View>
   }
 }
 

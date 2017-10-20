@@ -40,7 +40,7 @@ export const SignedIn = DrawerNavigator(
 			screen: Map
 		},
 		TaskBuilder: {
-			screen: TaskBuilder
+			screen: props => <TaskBuilder {...props}/>
 		},
 		Logout: {
 			screen: Logout
@@ -53,7 +53,7 @@ export const SignedIn = DrawerNavigator(
 		alignItems: 'center',
 		contentOptions: {
 			activeTintColor: 'rgba(0, 0, 0, 0.3)'
-		}
+		},
 	}
 )
 
