@@ -127,6 +127,9 @@ export default class EcoSystem extends Component {
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => {
+                console.log(task.Start.split(' '))
+                let clock = task.Start.split(' ')[3].split(':')[0];
+                console.log(clock)
                 let catStyle = {
                   width: 130,
                   height: 130,
@@ -144,7 +147,7 @@ export default class EcoSystem extends Component {
                 onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
                   <Image 
                     style={{resizeMode: 'contain', overflow: 'hidden'}}
-                    source={require('../assets/clocks/one.png')}
+                    source={clocks[clock][1]}
                   />
                 </TouchableHighlight>
               )})
@@ -196,18 +199,19 @@ const images = [
 ]
 
 const clocks = [
-  [0, require("../assets/clocks/twelve.png")],
-  [0, require("../assets/clocks/one.png")],
-  [0, require("../assets/clocks/two.png")],
-  [0, require("../assets/clocks/three.png")],
-  [0, require("../assets/clocks/four.png")],
-  [0, require("../assets/clocks/five.png")],
-  [0, require("../assets/clocks/six.png")],
-  [0, require("../assets/clocks/seven.png")],
-  [0, require("../assets/clocks/eight.png")],
-  [0, require("../assets/clocks/nine.png")],
-  [0, require("../assets/clocks/ten.png")],
-  [0, require("../assets/clocks/eleven.png")],
+  [0, 'placeholder'],
+  [1, require("../assets/clocks/one.png")],
+  [2, require("../assets/clocks/two.png")],
+  [3, require("../assets/clocks/three.png")],
+  [4, require("../assets/clocks/four.png")],
+  [5, require("../assets/clocks/five.png")],
+  [6, require("../assets/clocks/six.png")],
+  [7, require("../assets/clocks/seven.png")],
+  [8, require("../assets/clocks/eight.png")],
+  [9, require("../assets/clocks/nine.png")],
+  [10, require("../assets/clocks/ten.png")],
+  [11, require("../assets/clocks/eleven.png")],
+  [12, require("../assets/clocks/twelve.png")]
 ]
 const { width, height } = Dimensions.get("window");
 
