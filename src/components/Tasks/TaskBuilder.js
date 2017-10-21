@@ -78,7 +78,7 @@ class TaskBuilder extends Component {
   }
 
   handleLocationChange(markerID, taskID) {
-    console.log('i heard you...', markerID, taskID)
+    // console.log('i heard you...', markerID, taskID)
     this.setState({
       markerID: markerID,
       taskID: taskID
@@ -86,6 +86,7 @@ class TaskBuilder extends Component {
   }
 
   handleCategoryChange(category) {
+    console.log('i hear you...', category)
     this.setState({category})
   }
 
@@ -130,7 +131,7 @@ class TaskBuilder extends Component {
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.218:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
+        axios.put('http://10.16.1.152:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((res) => {
           this.props.navigation.state.params = ''
           this.props.navigation.goBack();

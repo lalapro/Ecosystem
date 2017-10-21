@@ -39,9 +39,13 @@ class CategoryPicker extends Component {
 				let categories = response.data;
 				console.log('AM I BEING CALLED HERE?')
 				this.setState({
-					categories: categories,
-					category: categories[0].ID
+					categories: categories
 				})
+				if (!this.state.isEdit) {
+					this.setState({
+						category: categories[0].ID
+					})
+				}
 				console.log('state has been set ...', this.state.category)
 				if (specific) {
 
@@ -63,9 +67,9 @@ class CategoryPicker extends Component {
 
 //axios.get for existing categories
 	componentWillReceiveProps(oldone) {
-		console.log('receiving props... CATEGORIES was here', oldone)
+		console.log('receiving props... CATEGORIES was here', oldone, this.state.isEdit)
     if (oldone.task.Category_ID && !this.state.isEdit) {
-			// console.log('receiving props', oldone)
+			console.log('receiving props ABOUT TO CHANGE STATE YOOOO', oldone)
       this.setState({
         category: oldone.task.Category_ID,
         isEdit: true
@@ -106,7 +110,6 @@ class CategoryPicker extends Component {
 			.catch((err) => {
 				console.error(err)
 			})
-		}
 		}
 	}
 

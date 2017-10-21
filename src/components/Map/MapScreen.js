@@ -218,7 +218,7 @@ export default class MapScreen extends Component {
           {this.state.specifiedLocation ? (
             <MapView.Circle
               radius={25}
-              center={{latitude: this.state.radius.Latitude, longitude: this.state.radius.Longitude}}
+              center={{latitude: this.state.specifiedLocation.Latitude, longitude: this.state.specifiedLocation.Longitude}}
             />
           ) : null}
         </MapView>
