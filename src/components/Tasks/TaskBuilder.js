@@ -115,7 +115,7 @@ class TaskBuilder extends Component {
     let readyToSend = false;
 
     if (!this.state.editTask) {
-      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, markerID, endTime, category, frequency, userID})
+      axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, markerID, endTime, category, frequency, userID})
         .then((response) => this.setState({
           saved: 'Task Saved',
           title: '',
@@ -131,7 +131,7 @@ class TaskBuilder extends Component {
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.152:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
+        axios.put('http://10.16.1.218:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((res) => {
           this.props.navigation.state.params = ''
           this.props.navigation.goBack();

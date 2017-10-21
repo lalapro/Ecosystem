@@ -26,7 +26,7 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
       console.log('calling get markers', res.data)
       this.setState({
@@ -95,7 +95,7 @@ export default class EcoSystem extends Component {
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -292,9 +292,10 @@ const styles = StyleSheet.create({
    alignItems: 'center',
    justifyContent: 'center'
  },
- separator: {
+  separator: {
+    flex: .005,
     height: 1,
-    width: 400,
+    
     backgroundColor: '#8A7D80',
     // marginLeft: 15
   }
