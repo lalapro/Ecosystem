@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../../db/index.js');
 
 const handlenNewTask = (req, res) => {
-  console.log(req.body.markerID, 'here')
+  console.log(req.body, 'CHECK ME OUTTTTT')
   let Title = req.body.title;
   let Description = req.body.description;
   let Date = req.body.date;
@@ -10,7 +10,6 @@ const handlenNewTask = (req, res) => {
   let End = req.body.endTime;
   let Frequency = req.body.frequency;
   let Days = req.body.days;
-  //pull category_ID and marker_ID
   let Category_ID = req.body.category;
   let Marker_ID = req.body.markerID;
   let User_ID = req.body.userID;

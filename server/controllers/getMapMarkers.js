@@ -31,6 +31,7 @@ const getMapMarkers = (req, res) => {
               } else {
                 tasks.forEach(task => {
                   categories.forEach(category => {
+                    console.log(tasks)
                     if (task.Category_ID === category.ID) {
                       task.Category = category.Category;
                       task.Color = category.Color;
@@ -40,7 +41,7 @@ const getMapMarkers = (req, res) => {
                         marker.tasks.push(task)
                       }
                     }
-                  }) 
+                  })
                 })
               }
               count++;
@@ -48,7 +49,7 @@ const getMapMarkers = (req, res) => {
                 res.send(results)
               }
             })
-            
+
           }
         });
       }

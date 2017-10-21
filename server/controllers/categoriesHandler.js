@@ -14,6 +14,7 @@ const handleCategories = (req, res) => {
 }
 
 const handleNewCategories = (req, res) => {
+  console.log(req.body)
   let User_ID = req.body.userID;
   let Category = req.body.category;
   let Color = req.body.color;
