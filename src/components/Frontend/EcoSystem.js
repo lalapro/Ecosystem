@@ -51,27 +51,28 @@ export default class EcoSystem extends Component {
   }
 
   showCurrentLocation() {
-    console.log(this.state.currentLocation)
-    var locations = this.state.locations.map((curr, idx, arr) => {
-      return {
-        title: curr.Marker_Title,
-        longitude: curr.Longitude,
-        latitude: curr.Latitude,
-        index: idx
+    if (this.state.locations) {
+      var locations = this.state.locations.map((curr, idx, arr) => {
+        return {
+          title: curr.Marker_Title,
+          longitude: curr.Longitude,
+          latitude: curr.Latitude,
+          index: idx
+        }
+      })
+      var currentLocation = {
+        title: this.state.currentLocation.title,
+        longitude: this.state.currentLocation.longitude,
+        latitude: this.state.currentLocation.latitude
       }
-    })
-    var currentLocation = {
-      title: this.state.currentLocation.title,
-      longitude: this.state.currentLocation.longitude,
-      latitude: this.state.currentLocation.latitude
+      locations.forEach((location) => {
+        if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
+          this.setState({
+            index: location.index
+          })
+        }
+      })
     }
-    locations.forEach((location) => {
-      if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
-        this.setState({
-          index: location.index
-        })
-      }
-    })
   }
 
 
@@ -135,16 +136,16 @@ export default class EcoSystem extends Component {
             >
               {this.state.locations.map((location, index) => (
                 <View key={index} style={{alignItems: 'center', justifyContent: 'center'}}>
+                  <Image
+                    source={images[location.Avatar][1]}
+                    style={{width: 50, height: 50}}
+                  />
                   <Text style={styles.cardtitle}>
                     {location.Marker_Title}
                   </Text>
                   <Text style={styles.cardDescription}>
                     {location.Marker_Description}
                   </Text>
-                  <Image
-                    source={images[location.Avatar][1]}
-                    style={{width: 200, height: 200}}
-                  />
                 </View>
               ))}
             </Swiper>
@@ -169,11 +170,8 @@ export default class EcoSystem extends Component {
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => {
                 console.log('HIHI', task)
-                if(task.Start) {
-
-                }
-                // CLOCK WILL NOT RENDER IF COLOR IS NOT THERE
                 let clock = task.Start.split(' ')[3].split(':')[0];
+                // CLOCK WILL NOT RENDER IF COLOR IS NOT THERE
                 console.log(clock)
                 let catStyle = {
                   width: 130,
@@ -278,7 +276,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cardDescription: {
-    fontSize: 50,
+    fontSize: 25,
     color: "#444",
   },
   circle: {
