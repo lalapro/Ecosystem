@@ -128,11 +128,12 @@ export default class EcoSystem extends Component {
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => {
                 let catStyle = {
-                  width: 120,
-                  height: 120,
-                  borderRadius: 120,
+                  width: 130,
+                  height: 130,
+                  borderRadius: 130,
                   borderColor: task.Color || 'black',
-                  borderWidth: 1,
+                  borderWidth: 3,
+                  marginTop: 10,
                   margin: 5,
                   display: 'flex',
                   alignItems: 'center',
@@ -141,9 +142,10 @@ export default class EcoSystem extends Component {
               return (
                 <TouchableHighlight style={catStyle} key={index}
                 onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
-                  <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                    {task.Task_Title}
-                  </Text>
+                  <Image 
+                    style={{resizeMode: 'contain', overflow: 'hidden'}}
+                    source={require('../assets/clocks/one.png')}
+                  />
                 </TouchableHighlight>
               )})
             ) : null}
@@ -193,6 +195,20 @@ const images = [
   [3, require("../assets/egg5.png")]
 ]
 
+const clocks = [
+  [0, require("../assets/clocks/twelve.png")],
+  [0, require("../assets/clocks/one.png")],
+  [0, require("../assets/clocks/two.png")],
+  [0, require("../assets/clocks/three.png")],
+  [0, require("../assets/clocks/four.png")],
+  [0, require("../assets/clocks/five.png")],
+  [0, require("../assets/clocks/six.png")],
+  [0, require("../assets/clocks/seven.png")],
+  [0, require("../assets/clocks/eight.png")],
+  [0, require("../assets/clocks/nine.png")],
+  [0, require("../assets/clocks/ten.png")],
+  [0, require("../assets/clocks/eleven.png")],
+]
 const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
