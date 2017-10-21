@@ -17,27 +17,28 @@ export default class Profile extends Component {
             image: require('../assets/Profile.png'),
             uploading: false,
             visibleModal: false,
-            username: 'Minwoo',
-            userID: null
+            username: null,
+            tasks: null,
         }
-        // this.takePhoto = this.takePhoto.bind(this);
-        // this.pickPhoto = this.pickPhoto.bind(this);
-        // this.handlePicture = this.handlePicture.bind(this)
         this.showModal = this.showModal.bind(this);
         this.uploadPhoto = this.uploadPhoto.bind(this);
-
-        // this.SaveURI = this.SaveURI.bind(this);
+        this.getPicture = this.getPicture.bind(this);
+        this.getCompletedTask = this.getCompletedTask.bind(this);
     }
-
-		componentDidMount() {
+    componentDidMount() {
+        console.log(this.props.screenProps.userID, 'IS IT HERE?')
         this.setState({
-          userID: this.props.screenProps.userID
+            username: this.props.screenProps.userID
         })
+        this.getPicture();
+        this.getCompletedTask();
+    }
+    getPicture() {
         axios({
             method: 'get',
             url: 'http://10.16.1.152:3000/pictures',
             params: {
-              username: this.state.username
+              username: this.props.screenProps.userID
             }
         })
         .then(res => {
@@ -47,30 +48,21 @@ export default class Profile extends Component {
             })
         })
     }
-    // async componentWillMount() {
-    //  console.log('MOUNTED!')
-    //  const { status } = await Permissions.getAsync(Permissions.CAMERA);
-    //  if (status !== 'granted') {
-    //      alert('ITS NOT ACCEPTED!')
-    //  } else {
-    //      this.takePhoto()
-    //  }
-    // }
-    // Picker() {
-    //     var options = {
-    //       title: 'Select Avatar',
-    //       customButtons: [
-    //         {name: 'fb', title: 'Choose Photo from Facebook'},
-    //       ],
-    //       storageOptions: {
-    //         skipBackup: true,
-    //         path: 'images'
-    //       }
-    //     };
-    //     imgPicker.launchCamera(options, res => {
-    //         console.log(res);
-    //     })
-    // }
+    getCompletedTask() {
+        axios({
+            method: 'get',
+            url: 'http://10.16.1.152:3000/completedTask',
+            params: {
+              username: this.props.screenProps.userID
+            }
+        })
+        .then(res => {
+            console.log(res.data, 'why is it?')
+            this.setState({
+                tasks: res.data.tasks
+            })
+        })
+    }
     uploadImageAsync = async (uri) => {
     let apiUrl = 'http://10.16.1.152:3000/pictures';
     let uriParts = uri.split('.');
@@ -124,7 +116,7 @@ export default class Profile extends Component {
             this.uploadPhoto(picture);
         }
     }
-    // SaveURI(uri) {
+    // SaveURI(uri) {           // ImageStoreMethod for IOS
     //  ImageStore.getBase64ForTag(uri, (success) => {
     //      axios.post('http://10.16.1.152:3000/pictures', { Picture: uri })
     //          .then(res => {
@@ -135,154 +127,78 @@ export default class Profile extends Component {
     //  }, (failure) => {console.log(failure)})
     // }
     uploadPhoto(picture) {
-        // console.log(picture)
         let uri = picture.base64;
         console.log(!!uri)
-        // let stringified = JSON.stringify(uri);
-        // var image = new Image(),
-        // containerWidth = null,
-        // containerHeight = null;
-        // image.onload = function() {
-        //  containerWidth = image.width;
-        //  containerHeight = image.height;
-        // }
-
-        // image.src = 'data:image/jpg;base64,' + uri;
-        // this.setState({
-        //  image: image.src
-        // })
         let pictureText = 'data:image/jpg;base64,' + uri;
-        // console.log(stringified)
-        // console.log(pictureText.split(/,(.+)/)[1] === uri)
-        axios.post('http://10.16.1.152:3000/pictures', { picture: uri, username: 'Minwoo' })
+        axios.post('http://10.16.1.152:3000/pictures', { picture: uri, username: this.state.username })
             .then(res => {
-								let jpg = 'data:image/jpg;base64,' + res.data.picture
-
-								this.setState({
-									image: jpg
-								})
-                // let pictureText = 'data:image/jpg;base64' + res.data.Picture;
-                // this.setState({
-                //  image: pictureText
-                // })
-            })
+                let jpg = 'data:image/jpg;base64,' + res.data.picture
+                this.setState({
+                    image: jpg
+                })
+              })
         // ImageStore.addImageFromBase64(uri, (success) => { this.SaveURI(success) },
         //      (failure) => { console.log(failure) });
     }
     showModal(stat) {
         this.setState({ visibleModal: stat })
     }
-    toggleLogoutModal(stat) {
-      this.setState({ logoutModalVisibile: stat })
-    }
-    // uploadPhoto = () => {
-    //  let { image } = this.state;
-    //  if (!image) alert('you dont have image!');
-    //      else {return (
-    //       <View
-    //         style={{
-    //           marginTop: 30,
-    //           width: 250,
-    //           borderRadius: 3,
-    //           elevation: 2,
-    //           shadowColor: 'rgba(0,0,0,1)',
-    //           shadowOpacity: 0.2,
-    //           shadowOffset: { width: 4, height: 4 },
-    //           shadowRadius: 5,
-    //         }}>
-    //         <View
-    //           style={{
-    //             borderTopRightRadius: 3,
-    //             borderTopLeftRadius: 3,
-    //             overflow: 'hidden',
-    //           }}>
-    //           <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
-    //         </View>
-    //         <Text
-    //          // onPress={this.CameraPermission.bind(this)}
-    //           // onPress={this.takePhoto}
-    //           // onLongPress={this.share}
-    //           style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
-    //           {image}
-    //         </Text>
-    //       </View>
-    //      );
-    //      }
-    //  };
-    // addPhoto = () => {
-    //  Clipboard.setString(this.state.image);
-    //      alert('Hi');
-    // };
-  
- 	render() {
-     console.log(this.props.screenProps)
- 		// let Hidden = () => {
- 		// 	return this.state.showDiv ? <View style={{marignRight: 10, position: 'absolute' }}>
- 		// 		<Button onPress={this.takePhoto} title={`Take a Photo`}/>
- 		// 		<Button onPress={this.pickPhoto} title={`Select from Library`}/>
- 		// 	</View> : null;
- 		// }
-    return (
-
-      <View style={{flex: 1, backgroundColor: 'yellow', alignItems: 'center'}}>
-				<View style={{margin: 20, alignItems: 'flex-start', alignSelf: 'left'}}>
-          <Button
-            onPress={() => this.props.navigation.navigate('DrawerToggle')}
-            title="&#9776;"
-          />
-        </View>
-      	<View style={{flex: 1}}>
-      		<Image style={styles.photo} source={{uri: `${this.state.image}`}} />
-     			<Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
-	      </View>
-
-	      <View style={styles.location}>
-	      	<TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
-	      	onChangeText={(title) => {this.setState({title: title})}} />
-	      	<TextInput style={styles.input} placeholder="Add Location Name" placeholderTextColor="rgba(255, 255, 255, 0.7)"
-	      	onChange={(locationName) => {this.setState({locationName})}} />
-	      	<TextInput style={styles.input} placeholder="Add Location Address" placeholderTextColor="rgba(255, 255, 255, 0.7)"
-	      	onChange={(locationAddress) => {this.setState({locationAddress})}} />
+    render() {
+        let completedTasksRender = this.state.completedTasks ? this.state.completedTasks.map((ele, i) => {
+            return <View key={i}><Text>{ele.Task_Title}</Text></View>
+        }) : null;
+        return (
+    <View style={{flex: 1, backgroundColor: '#ddd'}}>
+        <View style={{marginLeft: 5, marginTop: 20, alignItems: 'flex-start', backgroundColor: 'yellow'}}>
             <Button
-              title="Logout"
-              onPress={
-                ()=> {Alert.alert(
-                  "Logout",
-                  "Are you sure you want to leave?",
-                  [
-                    {text: "Yes", onPress: () => this.props.screenProps.handleLogout()},
-                    {text: "No", onPress: () => console.log('cancel pressed')}
-                  ]
-                )}
-              }
+                onPress={() => this.props.navigation.navigate('DrawerToggle')}
+                title="&#9776;"
             />
-	      </View>
+        </View>
+        <View style={{flex: 1, alignItems: 'center', backgroundColor: 'blue'}}>
+            <Image style={styles.photo} source={{uri: `${this.state.image}`}} />
+            <Button onPress={() => this.showModal(!this.state.visibleModal)} title={'Edit'} style={{flex: 1}}/>
+        </View>
+        <View style={styles.location}>
+{/*
+            <TextInput style={styles.input} placeholder="Make a title" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                onChangeText={(title) => {this.setState({title: title})}} />
+            <TextInput style={styles.input} placeholder="Add Location Name" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                onChange={(locationName) => {this.setState({locationName})}} />
+            <TextInput style={styles.input} placeholder="Add Location Address" placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                onChange={(locationAddress) => {this.setState({locationAddress})}} /> */}
+            <View>
+                {completedTasksRender}
+            </View>
 
-      	<View style={styles.map} />
-	        <Modal
-	          animationType="slide"
-	          transparent={true}
-	          visible={this.state.visibleModal}
-	          onRequestClosed={() => {alert('Photo is not selected!!')}}
-	        >
-	         <View>
-	            <View style={{height: 470, opacity: 0.7, backgroundColor: '#ddd'}}>
-	            	<Image source={require('../assets/toastlogo.png')} style={{height: '100%', width: '100%', opacity: 0.8}}/>
-	            </View>
-	            <View style={{height: '100%', backgroundColor: '#ddd', opacity: 0.7}}>
-	          	  <View style={styles.button} >
-	            		<Button title={`Take a photo`} onPress={this.takePhoto}/>
-	            	</View>
-	            	<View style={styles.button} >
-	            		<Button title={`Photo from library`} onPress={this.pickPhoto} />
-	            	</View>
-	            	<View style={styles.button} >
-	            		<Button title={`Close`} onPress={() => {this.showModal(!this.state.visibleModal)}} />
-		          	</View>
-		          </View>
-	          </View>
-	        </Modal>
-	      </View>
+        </View>
+        <View style={styles.completedTasks}>
+
+        </View>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.visibleModal}
+              onRequestClosed={() => {alert('Photo is not selected!!')}}
+            >
+                <View>
+                <View style={{height: 470, opacity: 0.7, backgroundColor: '#ddd'}}>
+                    <Image source={require('../assets/toastlogo.png')} style={{height: '100%', width: '100%', opacity: 0.8}}/>
+                </View>
+                <View style={{height: '100%', backgroundColor: '#ddd', opacity: 0.7}}>
+                    <View style={styles.button} >
+                         <Button title={`Take a photo`} onPress={this.takePhoto}/>
+                    </View>
+                    <View style={styles.button} >
+                        <Button title={`Photo from library`} onPress={this.pickPhoto} />
+                    </View>
+                    <View style={styles.button} >
+                        <Button title={`Close`} onPress={() => {this.showModal(!this.state.visibleModal)}} />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+        </View>
     );
   }
 }
@@ -291,8 +207,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         flex: 9,
         marginTop: 10,
-        width: 200,
-        borderRadius: 70,
+        width: 100,
+        borderRadius: 40,
         opacity: 0.7,
         borderBottomLeftRadius: 50,
         shadowColor: 'rgba(0,0,0,1)',
@@ -301,20 +217,10 @@ const styles = StyleSheet.create({
         shadowRadius: 5
     },
     location: {
-        flex: 1,
+        flex: 2,
         width: '100%',
-        alignItems: 'center'
-    },
-    map: {
-        flex: 1,
-        width: '100%',
-    },
-    input: {
-        height: 30,
-        width: 220,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        marginTop: 5,
-        paddingHorizontal: 10
+        alignItems: 'center',
+        backgroundColor: 'red'
     },
     button: {
         backgroundColor: '#ddd',
@@ -326,5 +232,9 @@ const styles = StyleSheet.create({
         marginLeft: 60,
         marginTop: 5,
         marginBottom: 5
+    },
+    completedTasks: {
+        backgroundColor:'purple',
+        flex: 2
     }
 })

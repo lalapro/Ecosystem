@@ -168,7 +168,11 @@ export default class EcoSystem extends Component {
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => {
-                console.log(task.Start.split(' '))
+                console.log('HIHI', task)
+                if(task.Start) {
+
+                }
+                // CLOCK WILL NOT RENDER IF COLOR IS NOT THERE
                 let clock = task.Start.split(' ')[3].split(':')[0];
                 console.log(clock)
                 let catStyle = {
@@ -186,7 +190,7 @@ export default class EcoSystem extends Component {
               return (
                 <TouchableHighlight style={catStyle} key={index}
                 onPress={() => this.showTask(task, this.state.locations[this.state.index].tasks[index])}>
-                  <Image 
+                  <Image
                     style={{resizeMode: 'contain', overflow: 'hidden'}}
                     source={clocks[clock][1]}
                   />
