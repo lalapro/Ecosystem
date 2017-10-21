@@ -45,6 +45,8 @@ class CategoryPicker extends Component {
 					this.setState({
 						category: categories[0].ID
 					})
+					// change here
+					this.changeCategory(categories[0].ID)
 				}
 				console.log('state has been set ...', this.state.category)
 				if (specific) {
