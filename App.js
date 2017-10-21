@@ -12,7 +12,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      currentLocation: {}
+      currentLocation: {},
+      newUser: false
     }
   }
 
@@ -54,6 +55,7 @@ export default class App extends React.Component {
     return tokenInPhone;
   }
 
+ 
   render() {
     // console.log('before render', this.state)
     if (this.state.user !== null) {
