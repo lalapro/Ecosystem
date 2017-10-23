@@ -5,7 +5,7 @@ import Swipeout from 'react-native-swipeout';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import profile from './Profile';
 import axios from 'axios';
-
+import TutorialView from './TutorialView.js';
 import GetCurrentLocation from '../Map/GetCurrentLocation';
 
 export default class EcoSystem extends Component {
@@ -26,7 +26,7 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
       console.log('calling get markers', res.data)
       this.setState({
@@ -52,26 +52,28 @@ export default class EcoSystem extends Component {
 
   showCurrentLocation() {
     console.log(this.state.currentLocation)
-    var locations = this.state.locations.map((curr, idx, arr) => {
-      return {
-        title: curr.Marker_Title,
-        longitude: curr.Longitude,
-        latitude: curr.Latitude,
-        index: idx
+    if (this.state.locations.length > 0) {
+      var locations = this.state.locations.map((curr, idx, arr) => {
+        return {
+          title: curr.Marker_Title,
+          longitude: curr.Longitude,
+          latitude: curr.Latitude,
+          index: idx
+        }
+      })
+      var currentLocation = {
+        title: this.state.currentLocation.title,
+        longitude: this.state.currentLocation.longitude,
+        latitude: this.state.currentLocation.latitude
       }
-    })
-    var currentLocation = {
-      title: this.state.currentLocation.title,
-      longitude: this.state.currentLocation.longitude,
-      latitude: this.state.currentLocation.latitude
+      locations.forEach((location) => {
+        if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
+          this.setState({
+            index: location.index
+          })
+        }
+      })
     }
-    locations.forEach((location) => {
-      if (Math.abs((location.longitude - currentLocation.longitude) + (location.latitude - currentLocation.latitude)) < .0001) {
-        this.setState({
-          index: location.index
-        })
-      }
-    })
   }
 
 
@@ -95,7 +97,7 @@ export default class EcoSystem extends Component {
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -118,7 +120,7 @@ export default class EcoSystem extends Component {
         onPress: () => { this.deleteTask() }
      }
     ];
-    return this.state.render ? (this.state.locations ? (
+    return this.state.render ? (this.state.locations.length > 0 ? (
       <View style={styles.wrapper}>
         <View style={{margin: -10, marginLeft: 5, marginTop: 20, alignItems: 'flex-start'}}>
           <Button
@@ -204,10 +206,8 @@ export default class EcoSystem extends Component {
         </View>
       </View>
     ) :
-    <View>
-      <Text style={{marginTop: 30}}>
-        Looks like you don't have any locations added! Click on the map button to go to the map page!
-      </Text>
+    <View style={{display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+      <TutorialView />
       <Button
         title="Map"
         onPress={() => navigate('Map')}
@@ -292,9 +292,10 @@ const styles = StyleSheet.create({
    alignItems: 'center',
    justifyContent: 'center'
  },
- separator: {
+  separator: {
+    flex: .005,
     height: 1,
-    width: 400,
+    
     backgroundColor: '#8A7D80',
     // marginLeft: 15
   }

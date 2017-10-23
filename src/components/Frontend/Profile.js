@@ -36,7 +36,7 @@ export default class Profile extends Component {
     getPicture() {
         axios({
             method: 'get',
-            url: 'http://10.16.1.152:3000/pictures',
+            url: 'http://10.16.1.218:3000/pictures',
             params: {
               username: this.props.screenProps.userID
             }
@@ -51,7 +51,7 @@ export default class Profile extends Component {
     getCompletedTask() {
         axios({
             method: 'get',
-            url: 'http://10.16.1.152:3000/completedTask',
+            url: 'http://10.16.1.218:3000/completedTask',
             params: {
               username: this.props.screenProps.userID
             }
@@ -64,7 +64,7 @@ export default class Profile extends Component {
         })
     }
     uploadImageAsync = async (uri) => {
-    let apiUrl = 'http://10.16.1.152:3000/pictures';
+    let apiUrl = 'http://10.16.1.218:3000/pictures';
     let uriParts = uri.split('.');
     let fileType = uri[uri.length - 1];
     let formData = new FormData();
@@ -118,7 +118,7 @@ export default class Profile extends Component {
     }
     // SaveURI(uri) {           // ImageStoreMethod for IOS
     //  ImageStore.getBase64ForTag(uri, (success) => {
-    //      axios.post('http://10.16.1.152:3000/pictures', { Picture: uri })
+    //      axios.post('http://10.16.1.218:3000/pictures', { Picture: uri })
     //          .then(res => {
     //              console.log(res.data);
     //              let decoded = 'data:image/jpg;base64,' + success;
@@ -130,7 +130,7 @@ export default class Profile extends Component {
         let uri = picture.base64;
         console.log(!!uri)
         let pictureText = 'data:image/jpg;base64,' + uri;
-        axios.post('http://10.16.1.152:3000/pictures', { picture: uri, username: this.state.username })
+        axios.post('http://10.16.1.218:3000/pictures', { picture: uri, username: this.state.username })
             .then(res => {
                 let jpg = 'data:image/jpg;base64,' + res.data.picture
                 this.setState({
