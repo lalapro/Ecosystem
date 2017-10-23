@@ -15,7 +15,8 @@ class CategoryPicker extends Component {
 			userID: '',
 			categoryID: '',
 			isEdit: false,
-			color: null
+			color: null,
+			readyToRender: false
 		}
 		this.newCategory = this.newCategory.bind(this);
 		this.changeCategory = this.changeCategory.bind(this);
@@ -25,32 +26,30 @@ class CategoryPicker extends Component {
   //axios.get for existing categories
   componentWillMount() {
     //give axios user id and get category names
-		console.log('mounting')
+
 		this.grabCategories()
   }
 
-	componentDidMount() {
-		console.log('DID MOUNT')
-	}
-
 	grabCategories(specific) {
-		axios.get('http://10.16.1.218:3000/categories', {params: {userID: this.props.userID}})
+		axios.get('http://10.16.1.152:3000/categories', {params: {userID: this.props.userID}})
 			.then((response) => {
 				let categories = response.data;
+				console.log(categories)
 				console.log('AM I BEING CALLED HERE?')
 				this.setState({
 					categories: categories
 				})
-				if (!this.state.isEdit) {
+				console.log('I AM BEING CALLED', categories)
+				if (!this.state.isEdit && categories.length > 0) {
 					this.setState({
 						category: categories[0].ID
 					})
 					// change here
 					this.changeCategory(categories[0].ID)
+					// this.setState({readyToRender: true})
 				}
 				console.log('state has been set ...', this.state.category)
 				if (specific) {
-
 					for(let i = 0; i < categories.length; i++) {
 						console.log('loop loop', categories[i])
 						if (categories[i].Category === specific) {
@@ -61,6 +60,7 @@ class CategoryPicker extends Component {
 							console.log('ID should show', categories[i].ID)
 							this.changeCategory(categories[i].ID);
 						}
+						break;
 					}
 				}
 			})
@@ -80,14 +80,25 @@ class CategoryPicker extends Component {
 	}
 
 	changeCategory(category) {
+		// THIS CATEGORY REFERS TO THE ID
 		console.log('called.....', category)
 		this.setState({category})
 		this.props.onSelect(category);
+		this.currentColor(category)
 	}
 
-	addCategory(category) {
+	currentColor(category) {
+		// THIS CATEGORY REFERS TO THE ID
+		for (let i = 0; i < this.state.categories.length; i++) {
+			if (this.state.categories[i].ID === category) {
+				this.props.currentColor(this.state.categories[i].Color)
+			}
+		}
+	}
+
+	addCategory(newCategory) {
 		this.setState({
-			newCategory: category
+			newCategory: newCategory
 		})
 	}
 
@@ -100,7 +111,7 @@ class CategoryPicker extends Component {
     let category = this.state.newCategory;
 		let color = this.state.color;
 		if (category.length > 1) {
-			axios.post('http://10.16.1.218:3000/categories', {category, color, userID: this.props.userID})
+			axios.post('http://10.16.1.152:3000/categories', {category, color, userID: this.props.userID})
 			.then(response => {
 				console.log(`save category ${response}`)
 				this.grabCategories(category)
@@ -128,7 +139,7 @@ class CategoryPicker extends Component {
 			 	{this.state.categories ?
 						this.state.categories.map((category, i) => {
 							return (
-								<Picker.Item key={i} style={{borderColor: category.Color}} label={category.Category} value={category.ID} />
+								<Picker.Item key={i} style={{backgroundColor: 'red'}} label={category.Category} value={category.ID} />
 							)
 						}) : ''
 				}
@@ -140,7 +151,7 @@ class CategoryPicker extends Component {
 					placeholder="Create a new category"
 				/>
 				<ColorPicker
-					selectColor={this.selectColor} color={this.state.color}
+					selectColor={this.selectColor} color={this.state.color} userID={this.props.userID} usedColors={this.state.categories}
 				/>
 				<Button
 					onPress={this.newCategory}

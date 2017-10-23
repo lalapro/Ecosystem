@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker, ScrollView } from 'react-native';
+import{ StyleSheet, View, Image, Text, TouchableOpacity, Button, Picker, ScrollView, Alert } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import TaskForm from './TaskForm.js';
 import axios from 'axios';
@@ -61,6 +61,7 @@ class TaskBuilder extends Component {
     }
   }
 
+
   handleTaskTitleChange(title) {
     this.setState({title})
   }
@@ -114,15 +115,29 @@ class TaskBuilder extends Component {
     //need to send username to get userId
     let readyToSend = false;
 
-    if (!this.state.editTask) {
-      axios.post('http://10.16.1.218:3000/newTask', {title, description, startTime, markerID, endTime, category, frequency, userID})
+    //{title, description, startTime, markerID, endTime, category, frequency, userID}}
+    if (
+      title.length < 1 ||
+      description.length < 1 ||
+      startTime === null ||
+      endTime === null ||
+      category === ''
+    ) {
+      Alert.alert(
+        'Oops',
+        "Looks like you forgot to fill out some values!",
+        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        { cancelable: false }
+        )
+    } else if (!this.state.editTask) {
+      axios.post('http://10.16.1.152:3000/newTask', {title, description, startTime, markerID, endTime, category, frequency, userID})
         .then((response) => this.setState({
           saved: 'Task Saved',
           title: '',
           description: '',
           startTime: null,
           endTime: null,
-          category: 'none',
+          category: '',
           frequency: '',
           markerID: ''
         }))
@@ -131,7 +146,7 @@ class TaskBuilder extends Component {
         })
         .catch((err) => console.error('taskbuilderjs. line 82', err))
       } else {
-        axios.put('http://10.16.1.218:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
+        axios.put('http://10.16.1.152:3000/editTask', {taskID, title, description, startTime, endTime, markerID, category, frequency, userID})
         .then((res) => {
           this.props.navigation.state.params = ''
           this.props.navigation.goBack();

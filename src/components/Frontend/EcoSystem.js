@@ -7,6 +7,7 @@ import profile from './Profile';
 import axios from 'axios';
 import TutorialView from './TutorialView.js';
 import GetCurrentLocation from '../Map/GetCurrentLocation';
+import convertDate from './convertDate';
 
 export default class EcoSystem extends Component {
   constructor(props) {
@@ -26,11 +27,19 @@ export default class EcoSystem extends Component {
   }
 
   getMarkers() {
-    axios.get('http://10.16.1.218:3000/mapMarkers', {params: {userID: this.state.userID}})
+    axios.get('http://10.16.1.152:3000/mapMarkers', {params: {userID: this.state.userID}})
     .then(res => {
-      console.log('calling get markers', res.data)
+      let locations = res.data
+      let currentDate = new Date();
+      locations.forEach(location => {
+        location.tasks = location.tasks.filter(task => {
+          let taskDate = convertDate(task.Start);
+          console.log(taskDate.getFullYear() === currentDate.getFullYear() && taskDate.getMonth() === currentDate.getMonth() && taskDate.getDate() === currentDate.getDate())
+          return taskDate.getFullYear() === currentDate.getFullYear() && taskDate.getMonth() === currentDate.getMonth() && taskDate.getDate() === currentDate.getDate()
+        })
+      })
       this.setState({
-        locations: res.data,
+        locations: locations,
         currentDescription: '',
         currentTask: ''
       })
@@ -97,7 +106,7 @@ export default class EcoSystem extends Component {
   }
 
   deleteTask() {
-    axios.delete('http://10.16.1.218:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
+    axios.delete('http://10.16.1.152:3000/deleteTask', {params: {userID: this.state.userID, taskTitle: this.state.currentTask}})
     .then(res => this.getMarkers())
     .catch(err => console.error(err))
   }
@@ -137,16 +146,16 @@ export default class EcoSystem extends Component {
             >
               {this.state.locations.map((location, index) => (
                 <View key={index} style={{alignItems: 'center', justifyContent: 'center'}}>
+                  <Image
+                    source={images[location.Avatar][1]}
+                    style={{width: 50, height: 50}}
+                  />
                   <Text style={styles.cardtitle}>
                     {location.Marker_Title}
                   </Text>
                   <Text style={styles.cardDescription}>
                     {location.Marker_Description}
                   </Text>
-                  <Image
-                    source={images[location.Avatar][1]}
-                    style={{width: 200, height: 200}}
-                  />
                 </View>
               ))}
             </Swiper>
@@ -170,12 +179,8 @@ export default class EcoSystem extends Component {
           <ScrollView horizontal={true}>
             {this.state.locations[this.state.index].tasks ? (
               this.state.locations[this.state.index].tasks.map((task, index) => {
-                console.log('HIHI', task)
-                if(task.Start) {
-
-                }
-                // CLOCK WILL NOT RENDER IF COLOR IS NOT THERE
                 let clock = task.Start.split(' ')[3].split(':')[0];
+                // CLOCK WILL NOT RENDER IF COLOR IS NOT THERE
                 console.log(clock)
                 let catStyle = {
                   width: 130,
@@ -278,7 +283,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cardDescription: {
-    fontSize: 50,
+    fontSize: 25,
     color: "#444",
   },
   circle: {
@@ -295,7 +300,7 @@ const styles = StyleSheet.create({
   separator: {
     flex: .005,
     height: 1,
-    
+
     backgroundColor: '#8A7D80',
     // marginLeft: 15
   }
